@@ -2,11 +2,16 @@ html,
 body {
   min-height: 100vh;
   height: 100%;
-  width: 100vw;
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, var(--background) 0%, #1a1a2e 100%);
+  width: 100vw;
   box-sizing: border-box;
+  background: linear-gradient(135deg, var(--background) 0%, #1a1a2e 100%);
+}
+
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 * {
