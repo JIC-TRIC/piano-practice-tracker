@@ -125,7 +125,7 @@ function App() {
           p.id === editingPiece.id ? { ...p, ...pieceData } : p
         )
       );
-      showToast("Stück aktualisiert!");
+      showToast("Piece updated!");
     } else {
       const newPiece = {
         id: Date.now().toString(),
@@ -135,7 +135,7 @@ function App() {
         createdAt: new Date().toISOString(),
       };
       setPieces([...pieces, newPiece]);
-      showToast("Stück hinzugefügt!");
+      showToast("Piece added!");
     }
     setIsAddModalOpen(false);
     setEditingPiece(null);
@@ -154,7 +154,7 @@ function App() {
 
   const confirmDelete = () => {
     setPieces(pieces.filter((p) => p.id !== deletingPieceId));
-    showToast("Stück gelöscht");
+    showToast("Piece deleted");
     setIsDeleteModalOpen(false);
     setDeletingPieceId(null);
   };
@@ -178,7 +178,7 @@ function App() {
             : p
         )
       );
-      showToast(`Übungszeit gespeichert!`);
+      showToast(`Practice time saved!`);
     }
   };
 

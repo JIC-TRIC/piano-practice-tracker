@@ -4,10 +4,10 @@ function EmptyState({ onAddClick }) {
   return (
     <div className="empty-state">
       <div className="empty-icon">🎵</div>
-      <div className="empty-title">Noch keine Stücke</div>
-      <div className="empty-text">Füge dein erstes Klavierstück hinzu!</div>
+      <div className="empty-title">You haven't added any pieces yet</div>
+      <div className="empty-text">Add your first piano piece!</div>
       <button className="btn btn-primary" onClick={onAddClick}>
-        Erstes Stück hinzufügen
+        Add Your First Piece
       </button>
     </div>
   );

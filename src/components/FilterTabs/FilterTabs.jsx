@@ -11,31 +11,31 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
 
   // Filter-Optionen
   const difficultyOptions = [
-    { value: "all", label: "Alle Schwierigkeiten" },
+    { value: "all", label: "All Difficulties" },
     { value: "Free", label: "Free" },
-    { value: "Easy", label: "Einfach" },
-    { value: "Medium", label: "Mittel" },
-    { value: "Hard", label: "Schwer" },
-    { value: "Ultrahard", label: "Ultraschwer" },
+    { value: "Easy", label: "Easy" },
+    { value: "Medium", label: "Medium" },
+    { value: "Hard", label: "Hard" },
+    { value: "Ultrahard", label: "Ultrahard" },
   ];
 
   const progressOptions = [
-    { value: "all", label: "Alle Fortschritte" },
-    { value: "not_started", label: "Noch nicht begonnen" },
-    { value: "hands_separate", label: "Hände einzeln" },
-    { value: "hands_together", label: "Hände zusammen" },
-    { value: "perfected", label: "Perfektioniert" },
-    { value: "memorized", label: "Auswendig" },
+    { value: "all", label: "Alle Progress Levels" },
+    { value: "not_started", label: "Not Started" },
+    { value: "hands_separate", label: "Separate Hands" },
+    { value: "hands_together", label: "Hands Together" },
+    { value: "perfected", label: "Perfected" },
+    { value: "memorized", label: "Memorized" },
   ];
 
   const sortOptions = [
-    { value: "default", label: "Standard" },
-    { value: "random", label: "Zufällig" },
-    { value: "lastPracticed", label: "Zuletzt geübt" },
-    { value: "progress", label: "Nach Fortschritt" },
-    { value: "difficulty", label: "Nach Schwierigkeit" },
-    { value: "title", label: "Nach Titel" },
-    { value: "practiceTime", label: "Nach Übungszeit" },
+    { value: "default", label: "Default" },
+    { value: "random", label: "Randopm" },
+    { value: "lastPracticed", label: "Last Practiced" },
+    { value: "progress", label: "Progress" },
+    { value: "difficulty", label: "Difficulty" },
+    { value: "title", label: "Title" },
+    { value: "practiceTime", label: "Practice Time" },
   ];
 
   const handleSearchChange = (e) => {
@@ -73,11 +73,10 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
       {/* Suchfeld */}
       <div className="search-bar">
         <div className="search-input-wrapper">
-          <span className="search-icon">🔍</span>
           <input
             type="text"
             className="search-input"
-            placeholder="Suche nach Titel oder Interpret..."
+            placeholder="Search by title or artist..."
             value={searchQuery}
             onChange={handleSearchChange}
           />
@@ -103,7 +102,6 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
           }`}
           onClick={() => setShowFilters(!showFilters)}
         >
-          <span className="control-icon">🔽</span>
           Filter
           {hasActiveFilters && <span className="active-dot"></span>}
         </button>
@@ -123,7 +121,7 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
           <button
             className={`reverse-btn ${sortReverse ? "active" : ""}`}
             onClick={handleSortReverseToggle}
-            title="Sortierung umkehren"
+            title="Reverse order"
           >
             {sortReverse ? "↓" : "↑"}
           </button>
@@ -134,7 +132,7 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
       {showFilters && (
         <div className="filter-panel">
           <div className="filter-group">
-            <label className="filter-label">Schwierigkeit</label>
+            <label className="filter-label">Difficulty</label>
             <div className="filter-chips">
               {difficultyOptions.map((option) => (
                 <button
@@ -151,7 +149,7 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
           </div>
 
           <div className="filter-group">
-            <label className="filter-label">Fortschritt</label>
+            <label className="filter-label">Progress</label>
             <div className="filter-chips">
               {progressOptions.map((option) => (
                 <button
@@ -176,7 +174,7 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
                 onFilterChange({ difficulty: "all", progress: "all" });
               }}
             >
-              Alle Filter zurücksetzen
+              Reset all Filters
             </button>
           )}
         </div>

@@ -10,7 +10,85 @@ function YouTubeModal({
   onSavePracticeTime,
 }) {
   const [seconds, setSeconds] = useState(0);
+  const [playbackRate, setPlaybackRate] = useState(1);
+  const [player, setPlayer] = useState(null);
   const intervalRef = useRef(null);
+  const playerRef = useRef(null);
+
+  const speedOptions = [
+    { value: 0.25, label: "0.25x" },
+    { value: 0.5, label: "0.5x" },
+    { value: 0.6, label: "0.6x" },
+    { value: 0.7, label: "0.7x" },
+    { value: 0.75, label: "0.75x" },
+    { value: 0.8, label: "0.8x" },
+    { value: 0.9, label: "0.9x" },
+    { value: 1, label: "1x" },
+    { value: 1.25, label: "1.25x" },
+  ];
+
+  // Load YouTube IFrame API
+  useEffect(() => {
+    // Check if API is already loaded
+    if (window.YT && window.YT.Player) {
+      return;
+    }
+
+    // Load the IFrame Player API code asynchronously
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // API ready callback
+    window.onYouTubeIframeAPIReady = () => {
+      console.log("YouTube API ready");
+    };
+  }, []);
+
+  // Initialize player when modal opens
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const videoId = extractVideoId(videoUrl);
+    if (!videoId) return;
+
+    // Wait for API to be ready
+    const initPlayer = () => {
+      if (!window.YT || !window.YT.Player) {
+        setTimeout(initPlayer, 100);
+        return;
+      }
+
+      // Create player
+      const newPlayer = new window.YT.Player("youtube-player", {
+        videoId: videoId,
+        playerVars: {
+          autoplay: 0,
+          controls: 1,
+          modestbranding: 1,
+          rel: 0,
+        },
+        events: {
+          onReady: (event) => {
+            playerRef.current = event.target;
+            setPlayer(event.target);
+            // Set initial playback rate
+            event.target.setPlaybackRate(playbackRate);
+          },
+        },
+      });
+    };
+
+    initPlayer();
+
+    // Cleanup
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.destroy();
+      }
+    };
+  }, [isOpen, videoUrl]);
 
   // Start timer when modal opens
   useEffect(() => {
@@ -29,9 +107,15 @@ function YouTubeModal({
     };
   }, [isOpen]);
 
+  const handleSpeedChange = (speed) => {
+    setPlaybackRate(speed);
+    if (player && player.setPlaybackRate) {
+      player.setPlaybackRate(speed);
+    }
+  };
+
   const handleClose = () => {
     if (seconds > 0) {
-      // Übergebe auch den Timestamp, wann geübt wurde
       onSavePracticeTime(pieceId, seconds, new Date().toISOString());
     }
     onClose();
@@ -43,29 +127,40 @@ function YouTubeModal({
 
   return (
     <div className={`modal ${isOpen ? "active" : ""}`}>
-      <div className="modal-content" style={{ maxWidth: "800px" }}>
+      <div className="modal-content youtube-modal-content">
         <div className="modal-header">
           <h2 className="modal-title">YouTube Video</h2>
-          <div
-            className="timer-display"
-            style={{ fontSize: "1rem", marginLeft: "auto" }}
-          >
-            ⏱️ {formatTimerDisplay(seconds)}
+          <div className="timer-display">⏱️ {formatTimerDisplay(seconds)}</div>
+        </div>
+
+        {/* Playback Speed Controls */}
+        <div className="playback-speed-controls">
+          <label className="speed-label">Playback Speed:</label>
+          <div className="speed-buttons">
+            {speedOptions.map((option) => (
+              <button
+                key={option.value}
+                className={`speed-btn ${
+                  playbackRate === option.value ? "active" : ""
+                }`}
+                onClick={() => handleSpeedChange(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
           </div>
         </div>
+
+        {/* YouTube Player */}
         {videoId && (
-          <iframe
-            width="100%"
-            height="450"
-            src={`https://www.youtube.com/embed/${videoId}`}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+          <div className="video-container">
+            <div id="youtube-player"></div>
+          </div>
         )}
-        <div style={{ marginTop: "1rem" }}>
+
+        <div className="modal-actions">
           <button className="btn btn-secondary" onClick={handleClose}>
-            Schließen und Zeit speichern
+            Close and save time
           </button>
         </div>
       </div>

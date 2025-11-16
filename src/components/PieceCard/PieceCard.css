@@ -204,13 +204,14 @@
 
 /* Action Buttons */
 .piece-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 8px;
   margin-top: 4px;
+  align-items: center;
 }
 
 .action-btn {
+  flex: 1;
   padding: 10px;
   background: var(--surface-light);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -240,9 +241,34 @@
   border-color: var(--primary);
 }
 
-.action-btn-delete:hover {
+/* Kleiner Delete Button - nur Icon */
+.action-btn-delete-small {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  background: var(--surface-light);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.action-btn-delete-small:hover {
   background: var(--danger);
   border-color: var(--danger);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(248, 113, 113, 0.3);
+}
+
+.action-btn-delete-small:active {
+  transform: translateY(0);
 }
 
 /* Tablet Breakpoint */
@@ -354,5 +380,12 @@
   .action-btn {
     font-size: 0.85rem;
     min-height: 40px;
+  }
+
+  .action-btn-delete-small {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    font-size: 1rem;
   }
 }

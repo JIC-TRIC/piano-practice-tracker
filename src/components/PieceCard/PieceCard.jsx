@@ -4,13 +4,13 @@ import { formatTime } from "../../utils/youtube";
 // Hilfsfunktion für Fortschritt-Label
 const getProgressLabel = (progress) => {
   const labels = {
-    not_started: "Noch nicht begonnen",
-    hands_separate: "Hände einzeln",
-    hands_together: "Hände zusammen",
-    perfected: "Perfektioniert",
-    memorized: "Auswendig",
+    not_started: "Not Started",
+    hands_separate: "Hands Separately",
+    hands_together: "Hands Together",
+    perfected: "Perfected",
+    memorized: "Memorized",
   };
-  return labels[progress] || "Unbekannt";
+  return labels[progress] || "Unknown";
 };
 
 // Hilfsfunktion für Fortschritt-Prozent (für Progressbar)
@@ -112,16 +112,16 @@ function PieceCard({ piece, onEdit, onDelete, onYouTubeClick }) {
           <button
             className="action-btn action-btn-edit"
             onClick={() => onEdit(piece.id)}
-            title="Bearbeiten"
+            title="Edit"
           >
             Edit
           </button>
           <button
-            className="action-btn action-btn-delete"
+            className="action-btn-delete-small"
             onClick={() => onDelete(piece.id)}
-            title="Löschen"
+            title="Delete"
           >
-            Delete
+            🗑️
           </button>
         </div>
       </div>

@@ -13,11 +13,11 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
 
   // Fortschritt-Optionen
   const progressOptions = [
-    { value: "not_started", label: "Noch nicht begonnen" },
-    { value: "hands_separate", label: "Hände einzeln" },
-    { value: "hands_together", label: "Hände zusammen" },
-    { value: "perfected", label: "Perfektioniert" },
-    { value: "memorized", label: "Auswendig" },
+    { value: "not_started", label: "Not Started" },
+    { value: "hands_separate", label: "Separate Hands" },
+    { value: "hands_together", label: "Hands Together" },
+    { value: "perfected", label: "Perfected" },
+    { value: "memorized", label: "Memorized" },
   ];
 
   useEffect(() => {
@@ -76,7 +76,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Titel</label>
+            <label className="form-label">Title</label>
             <input
               type="text"
               className="form-input"
@@ -89,7 +89,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Interpret / Komponist</label>
+            <label className="form-label">Interpret</label>
             <input
               type="text"
               className="form-input"
@@ -102,7 +102,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Schwierigkeit</label>
+            <label className="form-label">Difficulty</label>
             <select
               className="form-input"
               name="difficulty"
@@ -119,7 +119,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Fortschritt</label>
+            <label className="form-label">Progress</label>
             <select
               className="form-input"
               name="progress"
@@ -141,10 +141,10 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
               className="btn btn-secondary"
               onClick={onClose}
             >
-              Abbrechen
+              Cancel
             </button>
             <button type="submit" className="btn btn-primary">
-              Speichern
+              Safe
             </button>
           </div>
         </form>
