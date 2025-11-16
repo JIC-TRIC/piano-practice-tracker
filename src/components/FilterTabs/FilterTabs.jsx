@@ -29,7 +29,8 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
   ];
 
   const sortOptions = [
-    { value: "default", label: "Default" },
+    { value: "default", label: "Date Added" },
+    { value: "trending", label: "Trending" }, // NEU
     { value: "random", label: "Random" },
     { value: "lastPracticed", label: "Last Practiced" },
     { value: "progress", label: "Progress" },

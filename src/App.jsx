@@ -116,9 +116,41 @@ function App() {
       result = result.sort(
         (a, b) => (b.practiceTime || 0) - (a.practiceTime || 0)
       );
+    } else if (sort.sortBy === "trending") {
+      // NEU: Trending basierend auf Sessions der letzten 7 Tage
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+      result = result.sort((a, b) => {
+        // Zähle Practice-Sessions in den letzten 7 Tagen
+        const aWeeklyPractices = (a.practiceLog || []).filter(
+          (log) => new Date(log.timestamp) >= oneWeekAgo
+        );
+        const bWeeklyPractices = (b.practiceLog || []).filter(
+          (log) => new Date(log.timestamp) >= oneWeekAgo
+        );
+
+        // Berechne Trending-Score: Anzahl Sessions × Gesamtzeit
+        const aScore =
+          aWeeklyPractices.length *
+          aWeeklyPractices.reduce((sum, log) => sum + log.duration, 0);
+        const bScore =
+          bWeeklyPractices.length *
+          bWeeklyPractices.reduce((sum, log) => sum + log.duration, 0);
+
+        return bScore - aScore;
+      });
+    } else if (sort.sortBy === "default") {
+      // NEU: Default = nach createdAt sortieren
+      result = result.sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
+        const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
+        return dateB - dateA; // Neueste zuerst
+      });
     }
 
-    if (sort.reverse && sort.sortBy !== "default") {
+    // NEU: Reverse auch für "default" erlauben
+    if (sort.reverse && sort.sortBy !== "random") {
       result = result.reverse();
     }
 
@@ -150,6 +182,7 @@ function App() {
         ...pieceData,
         practiceTime: 0,
         lastPracticed: null,
+        practiceLog: [], // NEU: Leeres Practice-Log
         createdAt: new Date().toISOString(),
       };
       setPieces([...pieces, newPiece]);
@@ -180,6 +213,10 @@ function App() {
                 ...p,
                 practiceTime: (p.practiceTime || 0) + seconds,
                 lastPracticed: timestamp,
+                practiceLog: [
+                  ...(p.practiceLog || []),
+                  { timestamp, duration: seconds },
+                ],
               }
             : p
         )
