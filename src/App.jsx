@@ -8,7 +8,6 @@ import FilterTabs from "./components/FilterTabs/FilterTabs";
 import PieceCard from "./components/PieceCard/PieceCard";
 import EmptyState from "./components/EmptyState/EmptyState";
 import AddEditModal from "./components/Modal/AddEditModal";
-import DeleteModal from "./components/Modal/DeleteModal";
 import YouTubeModal from "./components/Modal/YouTubeModal";
 import Toast from "./components/Toast/Toast";
 
@@ -21,10 +20,8 @@ function App() {
   });
   const [sort, setSort] = useState({ sortBy: "default", reverse: false });
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isYouTubeModalOpen, setIsYouTubeModalOpen] = useState(false);
   const [editingPiece, setEditingPiece] = useState(null);
-  const [deletingPieceId, setDeletingPieceId] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [practicingPieceId, setPracticingPieceId] = useState(null);
   const [toast, setToast] = useState({ message: "", isVisible: false });
@@ -192,18 +189,6 @@ function App() {
     const piece = pieces.find((p) => p.id === id);
     setEditingPiece(piece);
     setIsAddModalOpen(true);
-  };
-
-  const handleDeletePiece = (id) => {
-    setDeletingPieceId(id);
-    setIsDeleteModalOpen(true);
-  };
-
-  const confirmDelete = () => {
-    setPieces(pieces.filter((p) => p.id !== deletingPieceId));
-    showToast("Piece deleted");
-    setIsDeleteModalOpen(false);
-    setDeletingPieceId(null);
   };
 
   const handleOpenYouTube = (url, pieceId) => {

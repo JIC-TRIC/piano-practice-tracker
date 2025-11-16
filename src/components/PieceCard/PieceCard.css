@@ -76,7 +76,7 @@
   transform: scale(1);
 }
 
-/* Practice Time Badge */
+/* Badges auf Thumbnail */
 .practice-time-badge {
   position: absolute;
   top: 8px;
@@ -88,6 +88,20 @@
   border-radius: 12px;
   font-size: 0.7rem;
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.difficulty-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -139,39 +153,18 @@
   overflow: hidden;
 }
 
-/* Inline Badges - nebeneinander */
-.piece-badges {
+/* Progress Section */
+.progress-section {
   display: flex;
+  flex-direction: column;
   gap: 6px;
-  align-items: center;
-  margin-top: 4px;
+  margin-top: auto;
 }
 
-.difficulty-badge-inline {
-  color: white;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  flex-shrink: 0;
-}
-
-.progress-badge-inline {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  background: var(--surface-light);
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.progress-emoji {
-  font-size: 0.85rem;
-  line-height: 1;
+.progress-text {
+  font-size: 0.75rem;
+  color: var(--text);
+  font-weight: 500;
 }
 
 /* Progress Bar */
@@ -181,7 +174,6 @@
   border-radius: 10px;
   overflow: hidden;
   position: relative;
-  margin-top: auto;
 }
 
 .progress-fill {
@@ -234,22 +226,22 @@
     font-size: 0.85rem;
   }
 
-  .difficulty-badge-inline {
-    font-size: 0.7rem;
-    padding: 5px 10px;
-  }
-
-  .progress-badge-inline {
-    width: 28px;
-    height: 28px;
-  }
-
-  .progress-emoji {
-    font-size: 1rem;
+  .progress-text {
+    font-size: 0.8rem;
   }
 
   .progress-bar {
     height: 8px;
+  }
+
+  .difficulty-badge {
+    font-size: 0.7rem;
+    padding: 5px 12px;
+  }
+
+  .practice-time-badge {
+    font-size: 0.75rem;
+    padding: 5px 12px;
   }
 }
 
@@ -272,31 +264,22 @@
     font-size: 0.9rem;
   }
 
-  .piece-badges {
-    gap: 8px;
-  }
-
-  .difficulty-badge-inline {
-    font-size: 0.75rem;
-    padding: 6px 12px;
-  }
-
-  .progress-badge-inline {
-    width: 30px;
-    height: 30px;
-  }
-
-  .progress-emoji {
-    font-size: 1.1rem;
+  .progress-text {
+    font-size: 0.85rem;
   }
 
   .progress-bar {
     height: 10px;
   }
 
-  .practice-time-badge {
+  .difficulty-badge {
     font-size: 0.75rem;
-    padding: 6px 12px;
+    padding: 6px 14px;
+  }
+
+  .practice-time-badge {
+    font-size: 0.8rem;
+    padding: 6px 14px;
   }
 }
 
@@ -315,6 +298,13 @@
     top: 6px;
     right: 6px;
     font-size: 0.65rem;
+    padding: 3px 7px;
+  }
+
+  .difficulty-badge {
+    top: 6px;
+    left: 6px;
+    font-size: 0.6rem;
     padding: 3px 7px;
   }
 
@@ -339,29 +329,16 @@
     font-size: 0.7rem;
   }
 
-  .piece-badges {
-    gap: 5px;
-    margin-top: 2px;
+  .progress-section {
+    gap: 4px;
   }
 
-  .difficulty-badge-inline {
-    font-size: 0.6rem;
-    padding: 3px 6px;
-    border-radius: 8px;
-  }
-
-  .progress-badge-inline {
-    width: 20px;
-    height: 20px;
-  }
-
-  .progress-emoji {
-    font-size: 0.75rem;
+  .progress-text {
+    font-size: 0.7rem;
   }
 
   .progress-bar {
     height: 5px;
-    margin-top: 4px;
   }
 
   /* Play Icon kleiner */

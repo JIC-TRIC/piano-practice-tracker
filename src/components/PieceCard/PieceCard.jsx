@@ -1,6 +1,18 @@
 import "./PieceCard.css";
 import { formatTime } from "../../utils/youtube";
 
+// Hilfsfunktion für Fortschritt-Label
+const getProgressLabel = (progress) => {
+  const labels = {
+    not_started: "Not Started",
+    hands_separate: "Hands Separately",
+    hands_together: "Hands Together",
+    perfected: "Perfected",
+    memorized: "Memorized",
+  };
+  return labels[progress] || "Unknown";
+};
+
 // Hilfsfunktion für Fortschritt-Prozent (für Progressbar)
 const getProgressPercentage = (progress) => {
   const percentages = {
@@ -13,18 +25,18 @@ const getProgressPercentage = (progress) => {
   return percentages[progress] || 0;
 };
 
-// Hilfsfunktion für Fortschritt-Farbe (dynamisch basierend auf Prozent)
+// Hilfsfunktion für Fortschritt-Farbe - Gelb → Grün → Blau → Lila
 const getProgressColor = (percentage) => {
   if (percentage === 0) {
-    return "linear-gradient(90deg, #6b7280 0%, #9ca3af 100%)";
+    return "linear-gradient(90deg, #6b7280 0%, #9ca3af 100%)"; // Grau - nicht begonnen
   } else if (percentage <= 25) {
-    return "linear-gradient(90deg, #ef4444 0%, #f87171 100%)";
+    return "linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%)"; // Gelb - einzelne Hände
   } else if (percentage <= 50) {
-    return "linear-gradient(90deg, #f97316 0%, #fb923c 100%)";
+    return "linear-gradient(90deg, #22c55e 0%, #4ade80 100%)"; // Grün - zusammen spielbar
   } else if (percentage <= 75) {
-    return "linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%)";
+    return "linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%)"; // Blau - perfektioniert
   } else {
-    return "linear-gradient(90deg, #22c55e 0%, #4ade80 100%)";
+    return "linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%)"; // Lila - auswendig gemeistert
   }
 };
 
@@ -38,18 +50,6 @@ const getDifficultyColor = (difficulty) => {
     Ultrahard: "#ef4444",
   };
   return colors[difficulty] || "#a1a1aa";
-};
-
-// Hilfsfunktion für Progress-Emoji
-const getProgressEmoji = (progress) => {
-  const emojis = {
-    not_started: "⏸️",
-    hands_separate: "👋",
-    hands_together: "🙌",
-    perfected: "⭐",
-    memorized: "🏆",
-  };
-  return emojis[progress] || "📝";
 };
 
 function PieceCard({ piece, onEdit, onYouTubeClick }) {
@@ -77,6 +77,12 @@ function PieceCard({ piece, onEdit, onYouTubeClick }) {
         <div className="practice-time-badge">
           {formatTime(piece.practiceTime || 0)}
         </div>
+        <div
+          className="difficulty-badge"
+          style={{ backgroundColor: difficultyColor }}
+        >
+          {piece.difficulty}
+        </div>
       </div>
 
       <div className="piece-content" onClick={() => onEdit(piece.id)}>
@@ -85,28 +91,19 @@ function PieceCard({ piece, onEdit, onYouTubeClick }) {
           <div className="piece-artist">{piece.artist}</div>
         </div>
 
-        <div className="piece-badges">
-          <div
-            className="difficulty-badge-inline"
-            style={{ backgroundColor: difficultyColor }}
-          >
-            {piece.difficulty}
+        <div className="progress-section">
+          <div className="progress-text">
+            {getProgressLabel(piece.progress)}
           </div>
-          <div className="progress-badge-inline">
-            <span className="progress-emoji">
-              {getProgressEmoji(piece.progress)}
-            </span>
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{
+                width: `${progressPercentage}%`,
+                background: progressColor,
+              }}
+            ></div>
           </div>
-        </div>
-
-        <div className="progress-bar">
-          <div
-            className="progress-fill"
-            style={{
-              width: `${progressPercentage}%`,
-              background: progressColor,
-            }}
-          ></div>
         </div>
       </div>
     </div>
