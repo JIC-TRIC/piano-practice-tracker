@@ -114,6 +114,10 @@ function YouTubeModal({
     }
   };
 
+  const handleCloseWithoutSaving = () => {
+    onClose();
+  };
+
   const handleClose = () => {
     if (seconds > 0) {
       onSavePracticeTime(pieceId, seconds, new Date().toISOString());
@@ -159,8 +163,14 @@ function YouTubeModal({
         )}
 
         <div className="modal-actions">
-          <button className="btn btn-secondary" onClick={handleClose}>
-            Close and save time
+          <button className="btn btn-primary" onClick={handleClose}>
+            Close and Save
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={handleCloseWithoutSaving}
+          >
+            Close
           </button>
         </div>
       </div>

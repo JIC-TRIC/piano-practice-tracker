@@ -73,7 +73,6 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
       {/* Search Bar mit Filter Button */}
       <div className="search-filter-bar">
         <div className="search-input-wrapper">
-          <span className="search-icon">🔍</span>
           <input
             type="text"
             className="search-input"

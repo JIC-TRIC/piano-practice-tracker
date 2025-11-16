@@ -265,6 +265,8 @@
 
 .modal-actions {
   margin-top: 1rem;
+  display: flex;
+  gap: 1rem; /* Fügt 1rem Abstand zwischen den Buttons hinzu */
 }
 
 /* Mobile Optimization */

@@ -9,7 +9,6 @@ import PieceCard from "./components/PieceCard/PieceCard";
 import EmptyState from "./components/EmptyState/EmptyState";
 import AddEditModal from "./components/Modal/AddEditModal";
 import YouTubeModal from "./components/Modal/YouTubeModal";
-import Toast from "./components/Toast/Toast";
 
 function App() {
   const [pieces, setPieces] = useLocalStorage("pianoPieces", []);
@@ -24,41 +23,6 @@ function App() {
   const [editingPiece, setEditingPiece] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [practicingPieceId, setPracticingPieceId] = useState(null);
-  const [toast, setToast] = useState({ message: "", isVisible: false });
-  const [showScrollTop, setShowScrollTop] = useState(false);
-  const [headerVisible, setHeaderVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  // Scroll Handler für Auto-Hide Header
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY < lastScrollY || currentScrollY < 50) {
-        setHeaderVisible(true);
-      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setHeaderVisible(false);
-      }
-
-      setShowScrollTop(currentScrollY > 300);
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const showToast = (message) => {
-    setToast({ message, isVisible: true });
-  };
-
-  const hideToast = () => {
-    setToast({ message: "", isVisible: false });
-  };
 
   // Prüft ob YouTube URL bereits existiert (basierend auf Video-ID)
   const isDuplicateYouTubeUrl = (url, excludeId = null) => {
@@ -222,7 +186,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className={`app-header ${headerVisible ? "visible" : "hidden"}`}>
+      <div className="scroll-container">
         <Header onAddClick={() => setIsAddModalOpen(true)} />
         <StatsBar pieces={pieces} />
         <div className="container">
@@ -232,32 +196,24 @@ function App() {
             onSortChange={setSort}
           />
         </div>
-      </div>
 
-      <div className="container">
-        {processedPieces.length === 0 ? (
-          <EmptyState onAddClick={() => setIsAddModalOpen(true)} />
-        ) : (
-          <div className="pieces-grid">
-            {processedPieces.map((piece) => (
-              <PieceCard
-                key={piece.id}
-                piece={piece}
-                onEdit={handleEditPiece}
-                onYouTubeClick={handleOpenYouTube}
-              />
-            ))}
-          </div>
-        )}
+        <div className="container">
+          {processedPieces.length === 0 ? (
+            <EmptyState onAddClick={() => setIsAddModalOpen(true)} />
+          ) : (
+            <div className="pieces-grid">
+              {processedPieces.map((piece) => (
+                <PieceCard
+                  key={piece.id}
+                  piece={piece}
+                  onEdit={handleEditPiece}
+                  onYouTubeClick={handleOpenYouTube}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-
-      <button
-        className={`scroll-to-top ${showScrollTop ? "visible" : ""}`}
-        onClick={scrollToTop}
-        title="Scroll to top"
-      >
-        ↑
-      </button>
 
       <AddEditModal
         isOpen={isAddModalOpen}
@@ -275,12 +231,6 @@ function App() {
         videoUrl={youtubeUrl}
         pieceId={practicingPieceId}
         onSavePracticeTime={handleSavePracticeTime}
-      />
-
-      <Toast
-        message={toast.message}
-        isVisible={toast.isVisible}
-        onHide={hideToast}
       />
     </div>
   );

@@ -2,15 +2,22 @@ import "./StatsBar.css";
 import { formatTime } from "../../utils/youtube";
 
 function StatsBar({ pieces }) {
-  const totalTime = pieces.reduce((sum, p) => sum + (p.practiceTime || 0), 0);
   // Gemeistert = "memorized" and "perfected"
   const mastered = pieces.filter(
     (p) => p.progress === "memorized" || p.progress === "perfected"
   ).length;
-  const weekTime = pieces.reduce(
-    (sum, p) => sum + Math.min(p.practiceTime || 0, 3600),
-    0
-  );
+
+  const todayTime = pieces.reduce((sum, p) => {
+    if (!p.lastPracticed) return sum;
+
+    const lastPracticedDate = new Date(p.lastPracticed).toDateString();
+    const todayDate = new Date().toDateString();
+
+    if (lastPracticedDate === todayDate) {
+      return sum + (p.practiceTime || 0);
+    }
+    return sum;
+  }, 0);
 
   return (
     <div className="stats-bar">
@@ -19,12 +26,8 @@ function StatsBar({ pieces }) {
         <span className="stat-value">{pieces.length}</span>
       </div>
       <div className="stat-item">
-        <span className="stat-label">Total time</span>
-        <span className="stat-value">{formatTime(totalTime)}</span>
-      </div>
-      <div className="stat-item">
-        <span className="stat-label">This week</span>
-        <span className="stat-value">{formatTime(weekTime)}</span>
+        <span className="stat-label">Today</span>
+        <span className="stat-value">{formatTime(todayTime)}</span>
       </div>
       <div className="stat-item">
         <span className="stat-label">Mastered</span>
