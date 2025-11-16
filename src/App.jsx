@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import "./App.css";
 import { useLocalStorage } from "./hooks/useLocalStorage";
+import { extractVideoId } from "./utils/youtube";
 import Header from "./components/Header/Header";
 import StatsBar from "./components/StatsBar/StatsBar";
 import FilterTabs from "./components/FilterTabs/FilterTabs";
@@ -36,16 +37,13 @@ function App() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Show/Hide Header basierend auf Scroll-Richtung
       if (currentScrollY < lastScrollY || currentScrollY < 50) {
         setHeaderVisible(true);
       } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setHeaderVisible(false);
       }
 
-      // Show Scroll-to-Top Button
       setShowScrollTop(currentScrollY > 300);
-
       setLastScrollY(currentScrollY);
     };
 
@@ -63,6 +61,20 @@ function App() {
 
   const hideToast = () => {
     setToast({ message: "", isVisible: false });
+  };
+
+  // Prüft ob YouTube URL bereits existiert (basierend auf Video-ID)
+  const isDuplicateYouTubeUrl = (url, excludeId = null) => {
+    const newVideoId = extractVideoId(url);
+    if (!newVideoId) return false;
+
+    return pieces.some((piece) => {
+      // Überspringe das aktuell zu editierende Piece
+      if (excludeId && piece.id === excludeId) return false;
+
+      const existingVideoId = extractVideoId(piece.youtubeUrl);
+      return existingVideoId === newVideoId;
+    });
   };
 
   // Hilfsfunktion für Fortschritt-Prozent
@@ -93,7 +105,6 @@ function App() {
   const processedPieces = useMemo(() => {
     let result = [...pieces];
 
-    // 1. Suche anwenden
     if (searchQuery) {
       result = result.filter((piece) => {
         const searchLower = searchQuery.toLowerCase();
@@ -104,7 +115,6 @@ function App() {
       });
     }
 
-    // 2. Filter anwenden
     if (filters.difficulty !== "all") {
       result = result.filter((p) => p.difficulty === filters.difficulty);
     }
@@ -112,7 +122,6 @@ function App() {
       result = result.filter((p) => p.progress === filters.progress);
     }
 
-    // 3. Sortierung anwenden
     if (sort.sortBy === "random") {
       result = result.sort(() => Math.random() - 0.5);
     } else if (sort.sortBy === "lastPracticed") {
@@ -138,7 +147,6 @@ function App() {
       );
     }
 
-    // 4. Umkehrung anwenden
     if (sort.reverse && sort.sortBy !== "default") {
       result = result.reverse();
     }
@@ -147,6 +155,17 @@ function App() {
   }, [pieces, searchQuery, filters, sort]);
 
   const handleSavePiece = (pieceData) => {
+    // Duplikat-Prüfung
+    const isDuplicate = isDuplicateYouTubeUrl(
+      pieceData.youtubeUrl,
+      editingPiece?.id
+    );
+
+    if (isDuplicate) {
+      showToast("⚠️ This YouTube video already exists!");
+      return;
+    }
+
     if (editingPiece) {
       setPieces(
         pieces.map((p) =>
@@ -248,7 +267,6 @@ function App() {
         )}
       </div>
 
-      {/* Scroll to Top Button */}
       <button
         className={`scroll-to-top ${showScrollTop ? "visible" : ""}`}
         onClick={scrollToTop}
