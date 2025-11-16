@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import "./App.css";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import Header from "./components/Header/Header";
@@ -27,6 +27,35 @@ function App() {
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [practicingPieceId, setPracticingPieceId] = useState(null);
   const [toast, setToast] = useState({ message: "", isVisible: false });
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // Scroll Handler für Auto-Hide Header
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Show/Hide Header basierend auf Scroll-Richtung
+      if (currentScrollY < lastScrollY || currentScrollY < 50) {
+        setHeaderVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setHeaderVisible(false);
+      }
+
+      // Show Scroll-to-Top Button
+      setShowScrollTop(currentScrollY > 300);
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const showToast = (message) => {
     setToast({ message, isVisible: true });
@@ -87,7 +116,6 @@ function App() {
     if (sort.sortBy === "random") {
       result = result.sort(() => Math.random() - 0.5);
     } else if (sort.sortBy === "lastPracticed") {
-      // Sortiere nach letztem Übungszeitpunkt (neueste zuerst)
       result = result.sort((a, b) => {
         const dateA = a.lastPracticed ? new Date(a.lastPracticed) : new Date(0);
         const dateB = b.lastPracticed ? new Date(b.lastPracticed) : new Date(0);
@@ -131,7 +159,7 @@ function App() {
         id: Date.now().toString(),
         ...pieceData,
         practiceTime: 0,
-        lastPracticed: null, // Initial null
+        lastPracticed: null,
         createdAt: new Date().toISOString(),
       };
       setPieces([...pieces, newPiece]);
@@ -173,7 +201,7 @@ function App() {
             ? {
                 ...p,
                 practiceTime: (p.practiceTime || 0) + seconds,
-                lastPracticed: timestamp, // Speichere Zeitpunkt
+                lastPracticed: timestamp,
               }
             : p
         )
@@ -190,16 +218,19 @@ function App() {
 
   return (
     <div className="App">
-      <Header onAddClick={() => setIsAddModalOpen(true)} />
-      <StatsBar pieces={pieces} />
+      <div className={`app-header ${headerVisible ? "visible" : "hidden"}`}>
+        <Header onAddClick={() => setIsAddModalOpen(true)} />
+        <StatsBar pieces={pieces} />
+        <div className="container">
+          <FilterTabs
+            onSearchChange={setSearchQuery}
+            onFilterChange={setFilters}
+            onSortChange={setSort}
+          />
+        </div>
+      </div>
 
       <div className="container">
-        <FilterTabs
-          onSearchChange={setSearchQuery}
-          onFilterChange={setFilters}
-          onSortChange={setSort}
-        />
-
         {processedPieces.length === 0 ? (
           <EmptyState onAddClick={() => setIsAddModalOpen(true)} />
         ) : (
@@ -216,6 +247,15 @@ function App() {
           </div>
         )}
       </div>
+
+      {/* Scroll to Top Button */}
+      <button
+        className={`scroll-to-top ${showScrollTop ? "visible" : ""}`}
+        onClick={scrollToTop}
+        title="Scroll to top"
+      >
+        ↑
+      </button>
 
       <AddEditModal
         isOpen={isAddModalOpen}

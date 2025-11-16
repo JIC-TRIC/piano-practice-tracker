@@ -3,7 +3,6 @@
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.05);
   position: relative;
   height: 100%;
@@ -106,10 +105,8 @@
 
 /* Content Section */
 .piece-content {
-  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
   flex: 1;
 }
 
@@ -117,7 +114,6 @@
 .piece-header {
   display: flex;
   flex-direction: column;
-  gap: 4px;
 }
 
 .piece-title {
@@ -271,39 +267,6 @@
   transform: translateY(0);
 }
 
-/* Tablet Breakpoint */
-@media (min-width: 768px) {
-  .piece-thumbnail {
-    height: 200px;
-  }
-
-  .piece-content {
-    padding: 20px;
-  }
-
-  .piece-title {
-    font-size: 1.05rem;
-  }
-
-  .piece-artist {
-    font-size: 0.9rem;
-  }
-
-  .practice-time-badge {
-    font-size: 0.8rem;
-    padding: 7px 14px;
-  }
-
-  .difficulty-badge {
-    font-size: 0.75rem;
-    padding: 7px 14px;
-  }
-
-  .action-btn {
-    font-size: 0.95rem;
-  }
-}
-
 /* Desktop Breakpoint */
 @media (min-width: 1024px) {
   .piece-thumbnail {
@@ -336,56 +299,94 @@
   }
 }
 
-/* Mobile optimization */
+/* Mobile optimization - KOMPAKTE VERSION */
 @media (max-width: 480px) {
   .piece-card {
-    border-radius: 12px;
+    border-radius: 10px;
+    min-height: auto;
   }
 
+  /* VIEL kleineres Thumbnail für mehr Cards auf dem Screen */
   .piece-thumbnail {
-    height: 160px;
+    height: 100px !important;
   }
 
   .practice-time-badge {
-    top: 8px;
-    right: 8px;
-    font-size: 0.7rem;
-    padding: 5px 10px;
+    top: 6px;
+    right: 6px;
+    font-size: 0.65rem;
+    padding: 4px 8px;
   }
 
   .difficulty-badge {
-    top: 8px;
-    left: 8px;
-    font-size: 0.65rem;
-    padding: 5px 10px;
+    top: 6px;
+    left: 6px;
+    font-size: 0.6rem;
+    padding: 4px 8px;
   }
 
+  /* Kompakterer Content-Bereich */
   .piece-content {
-    padding: 12px;
-    gap: 12px;
+    padding: 8px !important;
+    gap: 8px !important;
+  }
+
+  .piece-header {
+    gap: 2px;
   }
 
   .piece-title {
-    font-size: 0.95rem;
+    font-size: 0.875rem;
+    line-height: 1.3;
+    -webkit-line-clamp: 1;
+    min-height: auto;
   }
 
   .piece-artist {
-    font-size: 0.8rem;
-  }
-
-  .progress-text {
     font-size: 0.75rem;
   }
 
+  .progress-section {
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .progress-text {
+    font-size: 0.7rem;
+  }
+
+  .progress-bar {
+    height: 6px;
+  }
+
+  /* Kompaktere Buttons */
+  .piece-actions {
+    gap: 6px;
+    margin-top: 2px;
+  }
+
   .action-btn {
-    font-size: 0.85rem;
-    min-height: 40px;
+    font-size: 0.8rem;
+    min-height: 36px;
+    padding: 8px;
   }
 
   .action-btn-delete-small {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
+  }
+
+  /* Play Icon kleiner */
+  .play-icon {
     width: 40px;
-    min-width: 40px;
     height: 40px;
-    font-size: 1rem;
+    font-size: 16px;
+  }
+
+  /* Hover-Effekte auf Mobile reduzieren */
+  .piece-card:hover {
+    transform: none;
   }
 }

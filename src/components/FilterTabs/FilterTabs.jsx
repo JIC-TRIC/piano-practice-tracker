@@ -20,9 +20,9 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
   ];
 
   const progressOptions = [
-    { value: "all", label: "Alle Progress Levels" },
+    { value: "all", label: "All Progress Levels" },
     { value: "not_started", label: "Not Started" },
-    { value: "hands_separate", label: "Separate Hands" },
+    { value: "hands_separate", label: "Hands Separately" },
     { value: "hands_together", label: "Hands Together" },
     { value: "perfected", label: "Perfected" },
     { value: "memorized", label: "Memorized" },
@@ -30,7 +30,7 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
 
   const sortOptions = [
     { value: "default", label: "Default" },
-    { value: "random", label: "Randopm" },
+    { value: "random", label: "Random" },
     { value: "lastPracticed", label: "Last Practiced" },
     { value: "progress", label: "Progress" },
     { value: "difficulty", label: "Difficulty" },
@@ -70,9 +70,10 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
 
   return (
     <div className="filter-sort-container">
-      {/* Suchfeld */}
-      <div className="search-bar">
+      {/* Search Bar mit Filter Button */}
+      <div className="search-filter-bar">
         <div className="search-input-wrapper">
+          <span className="search-icon">🔍</span>
           <input
             type="text"
             className="search-input"
@@ -92,20 +93,21 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
             </button>
           )}
         </div>
-      </div>
 
-      {/* Filter & Sort Controls */}
-      <div className="controls-bar">
         <button
-          className={`control-btn ${showFilters ? "active" : ""} ${
+          className={`filter-btn ${showFilters ? "active" : ""} ${
             hasActiveFilters ? "has-filters" : ""
           }`}
           onClick={() => setShowFilters(!showFilters)}
+          title="Filter options"
         >
-          Filter
+          <span className="filter-icon">🔽</span>
           {hasActiveFilters && <span className="active-dot"></span>}
         </button>
+      </div>
 
+      {/* Sort Controls */}
+      <div className="controls-bar">
         <div className="sort-controls">
           <select
             className="sort-select"
