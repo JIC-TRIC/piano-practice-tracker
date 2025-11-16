@@ -8,7 +8,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
     title: "",
     artist: "",
     difficulty: "Medium",
-    progress: "not_started", // Geändert von 0 zu "not_started"
+    progress: "not_started",
   });
 
   // Fortschritt-Optionen
@@ -33,6 +33,19 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
       });
     }
   }, [editingPiece, isOpen]);
+
+  const handlePasteFromClipboard = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      setFormData((prev) => ({
+        ...prev,
+        youtubeUrl: text,
+      }));
+    } catch (error) {
+      console.error("Failed to read clipboard:", error);
+      alert("Clipboard access denied. Please paste manually.");
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,15 +77,25 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label">YouTube Link</label>
-            <input
-              type="url"
-              className="form-input"
-              name="youtubeUrl"
-              value={formData.youtubeUrl}
-              onChange={handleChange}
-              placeholder="https://youtube.com/watch?v=..."
-              required
-            />
+            <div className="input-with-button">
+              <input
+                type="url"
+                className="form-input"
+                name="youtubeUrl"
+                value={formData.youtubeUrl}
+                onChange={handleChange}
+                placeholder="https://youtube.com/watch?v=..."
+                required
+              />
+              <button
+                type="button"
+                className="btn-paste"
+                onClick={handlePasteFromClipboard}
+                title="Paste from clipboard"
+              >
+                📋
+              </button>
+            </div>
           </div>
 
           <div className="form-group">
@@ -83,7 +106,6 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              placeholder="z.B. River Flows in You"
               required
             />
           </div>
@@ -96,7 +118,6 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
               name="artist"
               value={formData.artist}
               onChange={handleChange}
-              placeholder="z.B. Yiruma"
               required
             />
           </div>

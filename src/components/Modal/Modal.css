@@ -308,3 +308,35 @@
     font-size: 0.75rem;
   }
 }
+
+/* Input with Paste Button */
+.input-with-button {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.input-with-button .form-input {
+  flex: 1;
+}
+
+.btn-paste {
+  padding: 0.75rem 1rem;
+  background: var(--surface-light);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+
+.btn-paste:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.05);
+}
+
+.btn-paste:active {
+  transform: scale(0.95);
+}
