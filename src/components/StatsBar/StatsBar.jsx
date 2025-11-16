@@ -3,7 +3,8 @@ import { formatTime } from "../../utils/youtube";
 
 function StatsBar({ pieces }) {
   const totalTime = pieces.reduce((sum, p) => sum + (p.practiceTime || 0), 0);
-  const mastered = pieces.filter((p) => p.progress === 100).length;
+  // Gemeistert = "memorized"
+  const mastered = pieces.filter((p) => p.progress === "memorized").length;
   const weekTime = pieces.reduce(
     (sum, p) => sum + Math.min(p.practiceTime || 0, 3600),
     0

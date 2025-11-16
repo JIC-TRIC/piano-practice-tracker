@@ -21,20 +21,18 @@ function YouTubeModal({
       }, 1000);
     }
 
-    // Cleanup: stop timer and save time when modal closes
+    // Cleanup: stop timer when modal closes
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
-        if (isOpen && seconds > 0) {
-          onSavePracticeTime(pieceId, seconds);
-        }
       }
     };
   }, [isOpen]);
 
   const handleClose = () => {
     if (seconds > 0) {
-      onSavePracticeTime(pieceId, seconds);
+      // Übergebe auch den Timestamp, wann geübt wurde
+      onSavePracticeTime(pieceId, seconds, new Date().toISOString());
     }
     onClose();
   };

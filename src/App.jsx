@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import "./App.css";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import Header from "./components/Header/Header";
@@ -8,12 +8,17 @@ import PieceCard from "./components/PieceCard/PieceCard";
 import EmptyState from "./components/EmptyState/EmptyState";
 import AddEditModal from "./components/Modal/AddEditModal";
 import DeleteModal from "./components/Modal/DeleteModal";
-import YouTubeModal from "./components/Modal/YoutubeModal";
+import YouTubeModal from "./components/Modal/YouTubeModal";
 import Toast from "./components/Toast/Toast";
 
 function App() {
   const [pieces, setPieces] = useLocalStorage("pianoPieces", []);
-  const [currentFilter, setCurrentFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filters, setFilters] = useState({
+    difficulty: "all",
+    progress: "all",
+  });
+  const [sort, setSort] = useState({ sortBy: "default", reverse: false });
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isYouTubeModalOpen, setIsYouTubeModalOpen] = useState(false);
@@ -31,18 +36,87 @@ function App() {
     setToast({ message: "", isVisible: false });
   };
 
-  const getFilteredPieces = () => {
-    if (currentFilter === "learning") {
-      return pieces.filter((p) => p.progress < 100);
-    } else if (currentFilter === "mastered") {
-      return pieces.filter((p) => p.progress === 100);
-    } else if (
-      ["Free", "Easy", "Medium", "Hard", "Ultrahard"].includes(currentFilter)
-    ) {
-      return pieces.filter((p) => p.difficulty === currentFilter);
-    }
-    return pieces;
+  // Hilfsfunktion für Fortschritt-Prozent
+  const getProgressValue = (progress) => {
+    const values = {
+      not_started: 0,
+      hands_separate: 1,
+      hands_together: 2,
+      perfected: 3,
+      memorized: 4,
+    };
+    return values[progress] || 0;
   };
+
+  // Hilfsfunktion für Schwierigkeit-Wert
+  const getDifficultyValue = (difficulty) => {
+    const values = {
+      Free: 0,
+      Easy: 1,
+      Medium: 2,
+      Hard: 3,
+      Ultrahard: 4,
+    };
+    return values[difficulty] || 0;
+  };
+
+  // Filter, Sort und Search kombiniert
+  const processedPieces = useMemo(() => {
+    let result = [...pieces];
+
+    // 1. Suche anwenden
+    if (searchQuery) {
+      result = result.filter((piece) => {
+        const searchLower = searchQuery.toLowerCase();
+        return (
+          piece.title.toLowerCase().includes(searchLower) ||
+          piece.artist.toLowerCase().includes(searchLower)
+        );
+      });
+    }
+
+    // 2. Filter anwenden
+    if (filters.difficulty !== "all") {
+      result = result.filter((p) => p.difficulty === filters.difficulty);
+    }
+    if (filters.progress !== "all") {
+      result = result.filter((p) => p.progress === filters.progress);
+    }
+
+    // 3. Sortierung anwenden
+    if (sort.sortBy === "random") {
+      result = result.sort(() => Math.random() - 0.5);
+    } else if (sort.sortBy === "lastPracticed") {
+      // Sortiere nach letztem Übungszeitpunkt (neueste zuerst)
+      result = result.sort((a, b) => {
+        const dateA = a.lastPracticed ? new Date(a.lastPracticed) : new Date(0);
+        const dateB = b.lastPracticed ? new Date(b.lastPracticed) : new Date(0);
+        return dateB - dateA;
+      });
+    } else if (sort.sortBy === "progress") {
+      result = result.sort(
+        (a, b) => getProgressValue(a.progress) - getProgressValue(b.progress)
+      );
+    } else if (sort.sortBy === "difficulty") {
+      result = result.sort(
+        (a, b) =>
+          getDifficultyValue(a.difficulty) - getDifficultyValue(b.difficulty)
+      );
+    } else if (sort.sortBy === "title") {
+      result = result.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sort.sortBy === "practiceTime") {
+      result = result.sort(
+        (a, b) => (b.practiceTime || 0) - (a.practiceTime || 0)
+      );
+    }
+
+    // 4. Umkehrung anwenden
+    if (sort.reverse && sort.sortBy !== "default") {
+      result = result.reverse();
+    }
+
+    return result;
+  }, [pieces, searchQuery, filters, sort]);
 
   const handleSavePiece = (pieceData) => {
     if (editingPiece) {
@@ -57,6 +131,7 @@ function App() {
         id: Date.now().toString(),
         ...pieceData,
         practiceTime: 0,
+        lastPracticed: null, // Initial null
         createdAt: new Date().toISOString(),
       };
       setPieces([...pieces, newPiece]);
@@ -90,12 +165,16 @@ function App() {
     setIsYouTubeModalOpen(true);
   };
 
-  const handleSavePracticeTime = (pieceId, seconds) => {
+  const handleSavePracticeTime = (pieceId, seconds, timestamp) => {
     if (pieceId && seconds > 0) {
       setPieces(
         pieces.map((p) =>
           p.id === pieceId
-            ? { ...p, practiceTime: (p.practiceTime || 0) + seconds }
+            ? {
+                ...p,
+                practiceTime: (p.practiceTime || 0) + seconds,
+                lastPracticed: timestamp, // Speichere Zeitpunkt
+              }
             : p
         )
       );
@@ -109,8 +188,6 @@ function App() {
     setPracticingPieceId(null);
   };
 
-  const filteredPieces = getFilteredPieces();
-
   return (
     <div className="App">
       <Header onAddClick={() => setIsAddModalOpen(true)} />
@@ -118,15 +195,16 @@ function App() {
 
       <div className="container">
         <FilterTabs
-          currentFilter={currentFilter}
-          onFilterChange={setCurrentFilter}
+          onSearchChange={setSearchQuery}
+          onFilterChange={setFilters}
+          onSortChange={setSort}
         />
 
-        {filteredPieces.length === 0 ? (
+        {processedPieces.length === 0 ? (
           <EmptyState onAddClick={() => setIsAddModalOpen(true)} />
         ) : (
           <div className="pieces-grid">
-            {filteredPieces.map((piece) => (
+            {processedPieces.map((piece) => (
               <PieceCard
                 key={piece.id}
                 piece={piece}

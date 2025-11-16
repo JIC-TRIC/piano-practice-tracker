@@ -8,8 +8,17 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
     title: "",
     artist: "",
     difficulty: "Medium",
-    progress: 0,
+    progress: "not_started", // Geändert von 0 zu "not_started"
   });
+
+  // Fortschritt-Optionen
+  const progressOptions = [
+    { value: "not_started", label: "Noch nicht begonnen" },
+    { value: "hands_separate", label: "Hände einzeln" },
+    { value: "hands_together", label: "Hände zusammen" },
+    { value: "perfected", label: "Perfektioniert" },
+    { value: "memorized", label: "Auswendig" },
+  ];
 
   useEffect(() => {
     if (editingPiece) {
@@ -20,7 +29,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
         title: "",
         artist: "",
         difficulty: "Medium",
-        progress: 0,
+        progress: "not_started",
       });
     }
   }, [editingPiece, isOpen]);
@@ -38,7 +47,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "progress" ? parseInt(value) : value,
+      [name]: value,
     }));
   };
 
@@ -110,21 +119,20 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label">
-              Fortschritt: {formData.progress}%
-            </label>
-            <div className="slider-container">
-              <input
-                type="range"
-                className="slider"
-                name="progress"
-                min="0"
-                max="100"
-                step="5"
-                value={formData.progress}
-                onChange={handleChange}
-              />
-            </div>
+            <label className="form-label">Fortschritt</label>
+            <select
+              className="form-input"
+              name="progress"
+              value={formData.progress}
+              onChange={handleChange}
+              required
+            >
+              {progressOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="form-actions">
