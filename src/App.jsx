@@ -9,6 +9,7 @@ import PieceCard from "./components/PieceCard/PieceCard";
 import EmptyState from "./components/EmptyState/EmptyState";
 import AddEditModal from "./components/Modal/AddEditModal";
 import YouTubeModal from "./components/Modal/YouTubeModal";
+import Toast from "./components/Toast/Toast";
 
 function App() {
   const [pieces, setPieces] = useLocalStorage("pianoPieces", []);
@@ -23,6 +24,15 @@ function App() {
   const [editingPiece, setEditingPiece] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [practicingPieceId, setPracticingPieceId] = useState(null);
+  const [toast, setToast] = useState({ message: "", isVisible: false });
+
+  const showToast = (message) => {
+    setToast({ message, isVisible: true });
+  };
+
+  const hideToast = () => {
+    setToast({ message: "", isVisible: false });
+  };
 
   // Prüft ob YouTube URL bereits existiert (basierend auf Video-ID)
   const isDuplicateYouTubeUrl = (url, excludeId = null) => {
@@ -231,6 +241,12 @@ function App() {
         videoUrl={youtubeUrl}
         pieceId={practicingPieceId}
         onSavePracticeTime={handleSavePracticeTime}
+      />
+
+      <Toast
+        message={toast.message}
+        isVisible={toast.isVisible}
+        onHide={hideToast}
       />
     </div>
   );
