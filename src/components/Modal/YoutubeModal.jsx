@@ -1,7 +1,44 @@
+import { useState, useEffect, useRef } from "react";
 import "./Modal.css";
-import { extractVideoId } from "../../utils/youtube";
+import { extractVideoId, formatTimerDisplay } from "../../utils/youtube";
 
-function YouTubeModal({ isOpen, onClose, videoUrl }) {
+function YouTubeModal({
+  isOpen,
+  onClose,
+  videoUrl,
+  pieceId,
+  onSavePracticeTime,
+}) {
+  const [seconds, setSeconds] = useState(0);
+  const intervalRef = useRef(null);
+
+  // Start timer when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setSeconds(0);
+      intervalRef.current = setInterval(() => {
+        setSeconds((prev) => prev + 1);
+      }, 1000);
+    }
+
+    // Cleanup: stop timer and save time when modal closes
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        if (isOpen && seconds > 0) {
+          onSavePracticeTime(pieceId, seconds);
+        }
+      }
+    };
+  }, [isOpen]);
+
+  const handleClose = () => {
+    if (seconds > 0) {
+      onSavePracticeTime(pieceId, seconds);
+    }
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   const videoId = extractVideoId(videoUrl);
@@ -11,6 +48,12 @@ function YouTubeModal({ isOpen, onClose, videoUrl }) {
       <div className="modal-content" style={{ maxWidth: "800px" }}>
         <div className="modal-header">
           <h2 className="modal-title">YouTube Video</h2>
+          <div
+            className="timer-display"
+            style={{ fontSize: "1rem", marginLeft: "auto" }}
+          >
+            ⏱️ {formatTimerDisplay(seconds)}
+          </div>
         </div>
         {videoId && (
           <iframe
@@ -23,8 +66,8 @@ function YouTubeModal({ isOpen, onClose, videoUrl }) {
           />
         )}
         <div style={{ marginTop: "1rem" }}>
-          <button className="btn btn-secondary" onClick={onClose}>
-            Schließen
+          <button className="btn btn-secondary" onClick={handleClose}>
+            Schließen und Zeit speichern
           </button>
         </div>
       </div>

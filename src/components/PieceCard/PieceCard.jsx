@@ -1,12 +1,12 @@
 import "./PieceCard.css";
 import { formatTime } from "../../utils/youtube";
 
-function PieceCard({ piece, onEdit, onDelete, onTimer, onYouTubeClick }) {
+function PieceCard({ piece, onEdit, onDelete, onYouTubeClick }) {
   return (
     <div className="piece-card">
       <div
         className="piece-thumbnail"
-        onClick={() => onYouTubeClick(piece.youtubeUrl)}
+        onClick={() => onYouTubeClick(piece.youtubeUrl, piece.id)}
       >
         <img
           src={piece.thumbnail}
@@ -42,9 +42,6 @@ function PieceCard({ piece, onEdit, onDelete, onTimer, onYouTubeClick }) {
         </div>
 
         <div className="piece-actions">
-          <button className="action-btn" onClick={() => onTimer(piece.id)}>
-            ⏱️ Üben
-          </button>
           <button className="action-btn" onClick={() => onEdit(piece.id)}>
             ✏️ Edit
           </button>

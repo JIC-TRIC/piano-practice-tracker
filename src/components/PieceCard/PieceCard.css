@@ -20,6 +20,7 @@
   object-fit: cover;
   background: var(--surface-light);
   position: relative;
+  cursor: pointer;
 }
 
 .piece-thumbnail img {

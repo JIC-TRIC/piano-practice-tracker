@@ -7,7 +7,6 @@ import FilterTabs from "./components/FilterTabs/FilterTabs";
 import PieceCard from "./components/PieceCard/PieceCard";
 import EmptyState from "./components/EmptyState/EmptyState";
 import AddEditModal from "./components/Modal/AddEditModal";
-import TimerModal from "./components/Modal/TimerModal";
 import DeleteModal from "./components/Modal/DeleteModal";
 import YouTubeModal from "./components/Modal/YoutubeModal";
 import Toast from "./components/Toast/Toast";
@@ -16,13 +15,12 @@ function App() {
   const [pieces, setPieces] = useLocalStorage("pianoPieces", []);
   const [currentFilter, setCurrentFilter] = useState("all");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isTimerModalOpen, setIsTimerModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isYouTubeModalOpen, setIsYouTubeModalOpen] = useState(false);
   const [editingPiece, setEditingPiece] = useState(null);
   const [deletingPieceId, setDeletingPieceId] = useState(null);
-  const [timerPieceId, setTimerPieceId] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [practicingPieceId, setPracticingPieceId] = useState(null);
   const [toast, setToast] = useState({ message: "", isVisible: false });
 
   const showToast = (message) => {
@@ -86,29 +84,29 @@ function App() {
     setDeletingPieceId(null);
   };
 
-  const handleOpenTimer = (id) => {
-    setTimerPieceId(id);
-    setIsTimerModalOpen(true);
+  const handleOpenYouTube = (url, pieceId) => {
+    setYoutubeUrl(url);
+    setPracticingPieceId(pieceId);
+    setIsYouTubeModalOpen(true);
   };
 
-  const handleSaveTimer = (seconds) => {
-    if (timerPieceId && seconds > 0) {
+  const handleSavePracticeTime = (pieceId, seconds) => {
+    if (pieceId && seconds > 0) {
       setPieces(
         pieces.map((p) =>
-          p.id === timerPieceId
+          p.id === pieceId
             ? { ...p, practiceTime: (p.practiceTime || 0) + seconds }
             : p
         )
       );
       showToast(`Übungszeit gespeichert!`);
     }
-    setIsTimerModalOpen(false);
-    setTimerPieceId(null);
   };
 
-  const handleOpenYouTube = (url) => {
-    setYoutubeUrl(url);
-    setIsYouTubeModalOpen(true);
+  const handleCloseYouTube = () => {
+    setIsYouTubeModalOpen(false);
+    setYoutubeUrl("");
+    setPracticingPieceId(null);
   };
 
   const filteredPieces = getFilteredPieces();
@@ -134,7 +132,6 @@ function App() {
                 piece={piece}
                 onEdit={handleEditPiece}
                 onDelete={handleDeletePiece}
-                onTimer={handleOpenTimer}
                 onYouTubeClick={handleOpenYouTube}
               />
             ))}
@@ -152,12 +149,6 @@ function App() {
         editingPiece={editingPiece}
       />
 
-      <TimerModal
-        isOpen={isTimerModalOpen}
-        onClose={() => setIsTimerModalOpen(false)}
-        onSave={handleSaveTimer}
-      />
-
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
@@ -166,8 +157,10 @@ function App() {
 
       <YouTubeModal
         isOpen={isYouTubeModalOpen}
-        onClose={() => setIsYouTubeModalOpen(false)}
+        onClose={handleCloseYouTube}
         videoUrl={youtubeUrl}
+        pieceId={practicingPieceId}
+        onSavePracticeTime={handleSavePracticeTime}
       />
 
       <Toast
