@@ -1,18 +1,6 @@
 import "./PieceCard.css";
 import { formatTime } from "../../utils/youtube";
 
-// Hilfsfunktion für Fortschritt-Label
-const getProgressLabel = (progress) => {
-  const labels = {
-    not_started: "Not Started",
-    hands_separate: "Hands Separately",
-    hands_together: "Hands Together",
-    perfected: "Perfected",
-    memorized: "Memorized",
-  };
-  return labels[progress] || "Unknown";
-};
-
 // Hilfsfunktion für Fortschritt-Prozent (für Progressbar)
 const getProgressPercentage = (progress) => {
   const percentages = {
@@ -28,15 +16,15 @@ const getProgressPercentage = (progress) => {
 // Hilfsfunktion für Fortschritt-Farbe (dynamisch basierend auf Prozent)
 const getProgressColor = (percentage) => {
   if (percentage === 0) {
-    return "linear-gradient(90deg, #6b7280 0%, #9ca3af 100%)"; // Grau - nicht begonnen
+    return "linear-gradient(90deg, #6b7280 0%, #9ca3af 100%)";
   } else if (percentage <= 25) {
-    return "linear-gradient(90deg, #ef4444 0%, #f87171 100%)"; // Rot - Anfang
+    return "linear-gradient(90deg, #ef4444 0%, #f87171 100%)";
   } else if (percentage <= 50) {
-    return "linear-gradient(90deg, #f97316 0%, #fb923c 100%)"; // Orange - mittlerer Anfang
+    return "linear-gradient(90deg, #f97316 0%, #fb923c 100%)";
   } else if (percentage <= 75) {
-    return "linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%)"; // Gelb - fast da
+    return "linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%)";
   } else {
-    return "linear-gradient(90deg, #22c55e 0%, #4ade80 100%)"; // Grün - perfekt/auswendig
+    return "linear-gradient(90deg, #22c55e 0%, #4ade80 100%)";
   }
 };
 
@@ -52,7 +40,19 @@ const getDifficultyColor = (difficulty) => {
   return colors[difficulty] || "#a1a1aa";
 };
 
-function PieceCard({ piece, onEdit, onDelete, onYouTubeClick }) {
+// Hilfsfunktion für Progress-Emoji
+const getProgressEmoji = (progress) => {
+  const emojis = {
+    not_started: "⏸️",
+    hands_separate: "👋",
+    hands_together: "🙌",
+    perfected: "⭐",
+    memorized: "🏆",
+  };
+  return emojis[progress] || "📝";
+};
+
+function PieceCard({ piece, onEdit, onYouTubeClick }) {
   const progressPercentage = getProgressPercentage(piece.progress);
   const progressColor = getProgressColor(progressPercentage);
   const difficultyColor = getDifficultyColor(piece.difficulty);
@@ -77,52 +77,36 @@ function PieceCard({ piece, onEdit, onDelete, onYouTubeClick }) {
         <div className="practice-time-badge">
           {formatTime(piece.practiceTime || 0)}
         </div>
-        <div
-          className="difficulty-badge"
-          style={{ backgroundColor: difficultyColor }}
-        >
-          {piece.difficulty}
-        </div>
       </div>
 
-      <div className="piece-content">
+      <div className="piece-content" onClick={() => onEdit(piece.id)}>
         <div className="piece-header">
           <div className="piece-title">{piece.title}</div>
           <div className="piece-artist">{piece.artist}</div>
         </div>
 
-        <div className="progress-section">
-          <div className="progress-label">
-            <span className="progress-text">
-              {getProgressLabel(piece.progress)}
-            </span>
+        <div className="piece-badges">
+          <div
+            className="difficulty-badge-inline"
+            style={{ backgroundColor: difficultyColor }}
+          >
+            {piece.difficulty}
           </div>
-          <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{
-                width: `${progressPercentage}%`,
-                background: progressColor,
-              }}
-            ></div>
+          <div className="progress-badge-inline">
+            <span className="progress-emoji">
+              {getProgressEmoji(piece.progress)}
+            </span>
           </div>
         </div>
 
-        <div className="piece-actions">
-          <button
-            className="action-btn action-btn-edit"
-            onClick={() => onEdit(piece.id)}
-            title="Edit"
-          >
-            Edit
-          </button>
-          <button
-            className="action-btn-delete-small"
-            onClick={() => onDelete(piece.id)}
-            title="Delete"
-          >
-            🗑️
-          </button>
+        <div className="progress-bar">
+          <div
+            className="progress-fill"
+            style={{
+              width: `${progressPercentage}%`,
+              background: progressColor,
+            }}
+          ></div>
         </div>
       </div>
     </div>

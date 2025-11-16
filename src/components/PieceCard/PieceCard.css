@@ -67,69 +67,70 @@
   padding-left: 4px;
 }
 
+.piece-card:hover .thumbnail-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+}
+
 .piece-card:hover .play-icon {
   transform: scale(1);
 }
 
-/* Badges */
+/* Practice Time Badge */
 .practice-time-badge {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 8px;
+  right: 8px;
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(10px);
   color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.difficulty-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
+  padding: 4px 10px;
+  border-radius: 12px;
   font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-weight: 600;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Content Section */
+/* Content Section - Clickable für Edit */
 .piece-content {
+  padding: 10px;
   display: flex;
   flex-direction: column;
+  gap: 8px;
   flex: 1;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-/* Piece Header - Titel und Interpret näher zusammen */
+.piece-content:hover {
+  background: var(--surface-light);
+}
+
+.piece-content:active {
+  background: var(--surface);
+}
+
+/* Piece Header */
 .piece-header {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .piece-title {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--text);
-  line-height: 1.4;
+  line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 2.8em;
+  min-height: 2.4em;
 }
 
 .piece-artist {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   font-weight: 500;
   display: -webkit-box;
@@ -138,32 +139,49 @@
   overflow: hidden;
 }
 
-/* Progress Section - weiter weg vom Header */
-.progress-section {
+/* Inline Badges - nebeneinander */
+.piece-badges {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: auto;
+  gap: 6px;
+  align-items: center;
+  margin-top: 4px;
 }
 
-.progress-label {
+.difficulty-badge-inline {
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+
+.progress-badge-inline {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--surface-light);
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
-.progress-text {
-  font-size: 0.8rem;
-  color: var(--text);
-  font-weight: 500;
+.progress-emoji {
+  font-size: 0.85rem;
+  line-height: 1;
 }
 
+/* Progress Bar */
 .progress-bar {
-  height: 8px;
+  height: 6px;
   background: var(--surface-light);
   border-radius: 10px;
   overflow: hidden;
   position: relative;
+  margin-top: auto;
 }
 
 .progress-fill {
@@ -198,73 +216,41 @@
   }
 }
 
-/* Action Buttons */
-.piece-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 4px;
-  align-items: center;
-}
+/* Tablet Breakpoint */
+@media (min-width: 768px) {
+  .piece-thumbnail {
+    height: 200px;
+  }
 
-.action-btn {
-  flex: 1;
-  padding: 10px;
-  background: var(--surface-light);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.9rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-}
+  .piece-content {
+    padding: 16px;
+  }
 
-.action-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
+  .piece-title {
+    font-size: 1rem;
+  }
 
-.action-btn:active {
-  transform: translateY(0);
-}
+  .piece-artist {
+    font-size: 0.85rem;
+  }
 
-.action-btn-edit:hover {
-  background: var(--primary);
-  border-color: var(--primary);
-}
+  .difficulty-badge-inline {
+    font-size: 0.7rem;
+    padding: 5px 10px;
+  }
 
-/* Kleiner Delete Button - nur Icon */
-.action-btn-delete-small {
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
-  padding: 0;
-  background: var(--surface-light);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
+  .progress-badge-inline {
+    width: 28px;
+    height: 28px;
+  }
 
-.action-btn-delete-small:hover {
-  background: var(--danger);
-  border-color: var(--danger);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(248, 113, 113, 0.3);
-}
+  .progress-emoji {
+    font-size: 1rem;
+  }
 
-.action-btn-delete-small:active {
-  transform: translateY(0);
+  .progress-bar {
+    height: 8px;
+  }
 }
 
 /* Desktop Breakpoint */
@@ -274,119 +260,123 @@
   }
 
   .piece-content {
-    padding: 24px;
-    gap: 18px;
+    padding: 20px;
+    gap: 10px;
   }
 
   .piece-title {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 
   .piece-artist {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
-  .progress-text {
-    font-size: 0.85rem;
+  .piece-badges {
+    gap: 8px;
+  }
+
+  .difficulty-badge-inline {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+
+  .progress-badge-inline {
+    width: 30px;
+    height: 30px;
+  }
+
+  .progress-emoji {
+    font-size: 1.1rem;
   }
 
   .progress-bar {
     height: 10px;
   }
 
-  .action-btn {
-    font-size: 1rem;
+  .practice-time-badge {
+    font-size: 0.75rem;
+    padding: 6px 12px;
   }
 }
 
-/* Mobile optimization - KOMPAKTE VERSION */
+/* Mobile optimization - 2 SPALTEN LAYOUT */
 @media (max-width: 480px) {
   .piece-card {
-    border-radius: 10px;
-    min-height: auto;
+    border-radius: 12px;
   }
 
-  /* VIEL kleineres Thumbnail für mehr Cards auf dem Screen */
+  /* Größeres Thumbnail auf Mobile */
   .piece-thumbnail {
-    height: 100px !important;
+    height: 120px !important;
   }
 
   .practice-time-badge {
     top: 6px;
     right: 6px;
     font-size: 0.65rem;
-    padding: 4px 8px;
+    padding: 3px 7px;
   }
 
-  .difficulty-badge {
-    top: 6px;
-    left: 6px;
-    font-size: 0.6rem;
-    padding: 4px 8px;
-  }
-
-  /* Kompakterer Content-Bereich */
+  /* Kompakter Content */
   .piece-content {
     padding: 8px !important;
-    gap: 8px !important;
+    gap: 6px !important;
   }
 
   .piece-header {
-    gap: 2px;
+    gap: 1px;
   }
 
   .piece-title {
-    font-size: 0.875rem;
-    line-height: 1.3;
+    font-size: 0.8rem;
+    line-height: 1.2;
     -webkit-line-clamp: 1;
     min-height: auto;
   }
 
   .piece-artist {
-    font-size: 0.75rem;
-  }
-
-  .progress-section {
-    gap: 6px;
-    margin-top: 4px;
-  }
-
-  .progress-text {
     font-size: 0.7rem;
   }
 
-  .progress-bar {
-    height: 6px;
-  }
-
-  /* Kompaktere Buttons */
-  .piece-actions {
-    gap: 6px;
+  .piece-badges {
+    gap: 5px;
     margin-top: 2px;
   }
 
-  .action-btn {
-    font-size: 0.8rem;
-    min-height: 36px;
-    padding: 8px;
+  .difficulty-badge-inline {
+    font-size: 0.6rem;
+    padding: 3px 6px;
+    border-radius: 8px;
   }
 
-  .action-btn-delete-small {
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
-    font-size: 0.95rem;
+  .progress-badge-inline {
+    width: 20px;
+    height: 20px;
+  }
+
+  .progress-emoji {
+    font-size: 0.75rem;
+  }
+
+  .progress-bar {
+    height: 5px;
+    margin-top: 4px;
   }
 
   /* Play Icon kleiner */
   .play-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
   }
 
-  /* Hover-Effekte auf Mobile reduzieren */
+  /* Reduzierte Hover-Effekte auf Touch */
   .piece-card:hover {
     transform: none;
+  }
+
+  .piece-content:hover {
+    background: transparent;
   }
 }

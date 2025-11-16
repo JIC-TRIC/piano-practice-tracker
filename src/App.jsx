@@ -259,7 +259,6 @@ function App() {
                 key={piece.id}
                 piece={piece}
                 onEdit={handleEditPiece}
-                onDelete={handleDeletePiece}
                 onYouTubeClick={handleOpenYouTube}
               />
             ))}
@@ -283,12 +282,6 @@ function App() {
         }}
         onSave={handleSavePiece}
         editingPiece={editingPiece}
-      />
-
-      <DeleteModal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={confirmDelete}
       />
 
       <YouTubeModal
