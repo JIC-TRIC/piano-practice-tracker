@@ -206,12 +206,11 @@ function App() {
 
   const handleSavePracticeTime = (pieceId, seconds, timestamp) => {
     if (pieceId && seconds > 0) {
-      setPieces(
-        pieces.map((p) =>
+      setPieces((prevPieces) =>
+        prevPieces.map((p) =>
           p.id === pieceId
             ? {
                 ...p,
-                practiceTime: (p.practiceTime || 0) + seconds,
                 lastPracticed: timestamp,
                 practiceLog: [
                   ...(p.practiceLog || []),

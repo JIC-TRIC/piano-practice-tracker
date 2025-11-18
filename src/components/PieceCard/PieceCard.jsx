@@ -57,6 +57,11 @@ function PieceCard({ piece, onEdit, onYouTubeClick }) {
   const progressColor = getProgressColor(progressPercentage);
   const difficultyColor = getDifficultyColor(piece.difficulty);
 
+  // Gesamtzeit aus practiceLog berechnen
+  const totalPracticeTime = piece.practiceLog
+    ? piece.practiceLog.reduce((sum, log) => sum + log.duration, 0)
+    : 0;
+
   return (
     <div className="piece-card">
       <div
@@ -75,7 +80,7 @@ function PieceCard({ piece, onEdit, onYouTubeClick }) {
           <div className="play-icon">▶</div>
         </div>
         <div className="practice-time-badge">
-          {formatTime(piece.practiceTime || 0)}
+          {formatTime(totalPracticeTime)}
         </div>
         <div
           className="difficulty-badge"
