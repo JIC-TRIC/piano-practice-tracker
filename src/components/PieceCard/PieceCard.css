@@ -11,12 +11,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.piece-card:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 32px rgba(108, 92, 231, 0.05);
-  border-color: rgba(108, 92, 231, 0.1);
-}
-
 .piece-card:active {
   transform: translateY(-2px);
 }
@@ -67,15 +61,6 @@
   padding-left: 4px;
 }
 
-.piece-card:hover .thumbnail-overlay {
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 1;
-}
-
-.piece-card:hover .play-icon {
-  transform: scale(1);
-}
-
 /* Badges auf Thumbnail */
 .practice-time-badge {
   position: absolute;
@@ -114,10 +99,6 @@
   flex: 1;
   cursor: pointer;
   transition: background 0.2s ease;
-}
-
-.piece-content:hover {
-  background: var(--surface-light);
 }
 
 .piece-content:active {
@@ -346,14 +327,5 @@
     width: 36px;
     height: 36px;
     font-size: 14px;
-  }
-
-  /* Reduzierte Hover-Effekte auf Touch */
-  .piece-card:hover {
-    transform: none;
-  }
-
-  .piece-content:hover {
-    background: transparent;
   }
 }

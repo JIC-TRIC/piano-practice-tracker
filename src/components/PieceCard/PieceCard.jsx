@@ -52,15 +52,16 @@ const getDifficultyColor = (difficulty) => {
   return colors[difficulty] || "#a1a1aa";
 };
 
-function PieceCard({ piece, onEdit, onYouTubeClick }) {
+function PieceCard({ piece, sessions, onEdit, onYouTubeClick }) {
   const progressPercentage = getProgressPercentage(piece.progress);
   const progressColor = getProgressColor(progressPercentage);
   const difficultyColor = getDifficultyColor(piece.difficulty);
 
   // Gesamtzeit aus practiceLog berechnen
-  const totalPracticeTime = piece.practiceLog
-    ? piece.practiceLog.reduce((sum, log) => sum + log.duration, 0)
-    : 0;
+  const totalPracticeTime = sessions.reduce(
+    (sum, log) => sum + log.duration,
+    0
+  );
 
   return (
     <div className="piece-card">
@@ -76,9 +77,6 @@ function PieceCard({ piece, onEdit, onYouTubeClick }) {
               "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'><rect fill='%232a2a3e' width='16' height='9'/><text x='8' y='5' text-anchor='middle' fill='%23666' font-size='3'>🎹</text></svg>";
           }}
         />
-        <div className="thumbnail-overlay">
-          <div className="play-icon">▶</div>
-        </div>
         <div className="practice-time-badge">
           {formatTime(totalPracticeTime)}
         </div>

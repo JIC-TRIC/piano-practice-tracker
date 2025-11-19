@@ -30,7 +30,7 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
 
   const sortOptions = [
     { value: "default", label: "Date Added" },
-    { value: "trending", label: "Trending" }, // NEU
+    { value: "trending", label: "Trending" },
     { value: "random", label: "Random" },
     { value: "lastPracticed", label: "Last Practiced" },
     { value: "progress", label: "Progress" },
@@ -101,7 +101,21 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
           onClick={() => setShowFilters(!showFilters)}
           title="Filter options"
         >
-          <span className="filter-icon">🔽</span>
+          <svg
+            className="filter-icon"
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2.5 5.83333H6.66667M6.66667 5.83333C6.66667 7.67428 8.15905 9.16667 10 9.16667C11.8409 9.16667 13.3333 7.67428 13.3333 5.83333M6.66667 5.83333C6.66667 3.99238 8.15905 2.5 10 2.5C11.8409 2.5 13.3333 3.99238 13.3333 5.83333M13.3333 5.83333H17.5M2.5 14.1667H8.33333M8.33333 14.1667C8.33333 16.0076 9.82572 17.5 11.6667 17.5C13.5076 17.5 15 16.0076 15 14.1667M8.33333 14.1667C8.33333 12.3257 9.82572 10.8333 11.6667 10.8333C13.5076 10.8333 15 12.3257 15 14.1667M15 14.1667H17.5"
+              stroke="currentColor"
+              strokeWidth="1.67"
+              strokeLinecap="round"
+            />
+          </svg>
           {hasActiveFilters && <span className="active-dot"></span>}
         </button>
       </div>
@@ -125,7 +139,39 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
             onClick={handleSortReverseToggle}
             title="Reverse order"
           >
-            {sortReverse ? "↓" : "↑"}
+            {sortReverse ? (
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 4L12 20M12 20L18 14M12 20L6 14"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            ) : (
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 20L12 4M12 4L6 10M12 4L18 10"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
           </button>
         </div>
       </div>

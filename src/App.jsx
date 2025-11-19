@@ -11,8 +11,39 @@ import AddEditModal from "./components/Modal/AddEditModal";
 import YouTubeModal from "./components/Modal/YouTubeModal";
 import Toast from "./components/Toast/Toast";
 
+function getSessionWeight(daysAgo) {
+  if (daysAgo <= 2) return 10.0;
+  if (daysAgo <= 4) return 1.0;
+  if (daysAgo <= 7) return 0.7;
+  if (daysAgo <= 30) return 0.4;
+  if (daysAgo <= 90) return 0.15;
+  return 0.01;
+}
+
+function trendingScore(piece, now) {
+  const threeMonthsAgo = new Date(now);
+  threeMonthsAgo.setMonth(now.getMonth() - 3);
+
+  const logs = practiceSessions[piece.id] || [];
+
+  let score = 0;
+  for (let log of logs) {
+    const logDate = new Date(log.timestamp);
+    const daysAgo = Math.floor((now - logDate) / (1000 * 60 * 60 * 24));
+
+    const weight = getSessionWeight(daysAgo);
+    score += log.duration * weight;
+  }
+  return score;
+}
+
 function App() {
   const [pieces, setPieces] = useLocalStorage("pianoPieces", []);
+  const [practiceSessions, setPracticeSessions] = useLocalStorage(
+    "practiceSessions",
+    {}
+  );
+
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     difficulty: "all",
@@ -34,21 +65,17 @@ function App() {
     setToast({ message: "", isVisible: false });
   };
 
-  // Prüft ob YouTube URL bereits existiert (basierend auf Video-ID)
   const isDuplicateYouTubeUrl = (url, excludeId = null) => {
     const newVideoId = extractVideoId(url);
     if (!newVideoId) return false;
 
     return pieces.some((piece) => {
-      // Überspringe das aktuell zu editierende Piece
       if (excludeId && piece.id === excludeId) return false;
-
       const existingVideoId = extractVideoId(piece.youtubeUrl);
       return existingVideoId === newVideoId;
     });
   };
 
-  // Hilfsfunktion für Fortschritt-Prozent
   const getProgressValue = (progress) => {
     const values = {
       not_started: 0,
@@ -60,7 +87,6 @@ function App() {
     return values[progress] || 0;
   };
 
-  // Hilfsfunktion für Schwierigkeit-Wert
   const getDifficultyValue = (difficulty) => {
     const values = {
       Free: 0,
@@ -72,7 +98,6 @@ function App() {
     return values[difficulty] || 0;
   };
 
-  // Filter, Sort und Search kombiniert
   const processedPieces = useMemo(() => {
     let result = [...pieces];
 
@@ -117,39 +142,19 @@ function App() {
         (a, b) => (b.practiceTime || 0) - (a.practiceTime || 0)
       );
     } else if (sort.sortBy === "trending") {
-      // NEU: Trending basierend auf Sessions der letzten 7 Tage
-      const oneWeekAgo = new Date();
-      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
-      result = result.sort((a, b) => {
-        // Zähle Practice-Sessions in den letzten 7 Tagen
-        const aWeeklyPractices = (a.practiceLog || []).filter(
-          (log) => new Date(log.timestamp) >= oneWeekAgo
-        );
-        const bWeeklyPractices = (b.practiceLog || []).filter(
-          (log) => new Date(log.timestamp) >= oneWeekAgo
-        );
-
-        // Berechne Trending-Score: Anzahl Sessions × Gesamtzeit
-        const aScore =
-          aWeeklyPractices.length *
-          aWeeklyPractices.reduce((sum, log) => sum + log.duration, 0);
-        const bScore =
-          bWeeklyPractices.length *
-          bWeeklyPractices.reduce((sum, log) => sum + log.duration, 0);
-
-        return bScore - aScore;
-      });
+      // NEU: Trending-Algorithmus mit Gewichtung über 3 Monate
+      const now = new Date();
+      result = result.sort(
+        (a, b) => trendingScore(b, now) - trendingScore(a, now)
+      );
     } else if (sort.sortBy === "default") {
-      // NEU: Default = nach createdAt sortieren
       result = result.sort((a, b) => {
         const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
         const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
-        return dateB - dateA; // Neueste zuerst
+        return dateB - dateA;
       });
     }
 
-    // NEU: Reverse auch für "default" erlauben
     if (sort.reverse && sort.sortBy !== "random") {
       result = result.reverse();
     }
@@ -158,7 +163,6 @@ function App() {
   }, [pieces, searchQuery, filters, sort]);
 
   const handleSavePiece = (pieceData) => {
-    // Duplikat-Prüfung
     const isDuplicate = isDuplicateYouTubeUrl(
       pieceData.youtubeUrl,
       editingPiece?.id
@@ -182,7 +186,6 @@ function App() {
         ...pieceData,
         practiceTime: 0,
         lastPracticed: null,
-        practiceLog: [], // NEU: Leeres Practice-Log
         createdAt: new Date().toISOString(),
       };
       setPieces([...pieces, newPiece]);
@@ -206,21 +209,19 @@ function App() {
 
   const handleSavePracticeTime = (pieceId, seconds, timestamp) => {
     if (pieceId && seconds > 0) {
-      setPieces((prevPieces) =>
-        prevPieces.map((p) =>
-          p.id === pieceId
-            ? {
-                ...p,
-                lastPracticed: timestamp,
-                practiceLog: [
-                  ...(p.practiceLog || []),
-                  { timestamp, duration: seconds },
-                ],
-              }
-            : p
+      setPracticeSessions((prev) => {
+        const pieceLogs = prev[pieceId] || [];
+        const updated = [...pieceLogs, { timestamp, duration: seconds }];
+        return { ...prev, [pieceId]: updated };
+      });
+
+      // Nur noch das letzte Übungsdatum im Piece speichern!
+      setPieces((prev) =>
+        prev.map((p) =>
+          p.id === pieceId ? { ...p, lastPracticed: timestamp } : p
         )
       );
-      showToast(`Practice time saved!`);
+      showToast("Practice time saved!");
     }
   };
 
@@ -234,7 +235,7 @@ function App() {
     <div className="App">
       <div className="scroll-container">
         <Header onAddClick={() => setIsAddModalOpen(true)} />
-        <StatsBar pieces={pieces} />
+        <StatsBar pieces={pieces} practiceSessions={practiceSessions} />
         <div className="container">
           <FilterTabs
             onSearchChange={setSearchQuery}
@@ -252,6 +253,7 @@ function App() {
                 <PieceCard
                   key={piece.id}
                   piece={piece}
+                  sessions={practiceSessions[piece.id] || []}
                   onEdit={handleEditPiece}
                   onYouTubeClick={handleOpenYouTube}
                 />

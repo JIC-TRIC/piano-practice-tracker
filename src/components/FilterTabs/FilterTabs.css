@@ -104,11 +104,6 @@
 
 .filter-icon {
   font-size: 1rem;
-  transition: transform 0.3s ease;
-}
-
-.filter-btn.active .filter-icon {
-  transform: rotate(180deg);
 }
 
 .active-dot {
@@ -183,12 +178,6 @@
 .reverse-btn:hover {
   background: var(--surface-light);
   border-color: rgba(255, 255, 255, 0.2);
-}
-
-.reverse-btn.active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
 }
 
 /* Filter Panel */
