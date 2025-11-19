@@ -36,12 +36,12 @@
 }
 
 .search-input {
+  font-size: 16px;
   flex: 1;
   background: transparent;
   border: none;
   padding: 12px 8px;
   color: var(--text);
-  font-size: 0.95rem;
   outline: none;
 }
 

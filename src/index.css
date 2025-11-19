@@ -7,6 +7,11 @@ body {
   width: 100vw;
   box-sizing: border-box;
   background: linear-gradient(135deg, var(--background) 0%, #1a1a2e 100%);
+  overscroll-behavior-y: contain; /* Verhindert Bounce/Scroll "Überlauf" */
+  touch-action: manipulation; /* Verhindert ungewollte Gesten */
+  -webkit-user-select: none; /* Optional: verhindert Textauswahl beim Tippen */
+  -webkit-touch-callout: none; /* Kein Callout-Menü auf iOS automatisch */
+  overflow-x: hidden;
 }
 
 body {
