@@ -20,23 +20,6 @@ function getSessionWeight(daysAgo) {
   return 0.01;
 }
 
-function trendingScore(piece, now) {
-  const threeMonthsAgo = new Date(now);
-  threeMonthsAgo.setMonth(now.getMonth() - 3);
-
-  const logs = practiceSessions[piece.id] || [];
-
-  let score = 0;
-  for (let log of logs) {
-    const logDate = new Date(log.timestamp);
-    const daysAgo = Math.floor((now - logDate) / (1000 * 60 * 60 * 24));
-
-    const weight = getSessionWeight(daysAgo);
-    score += log.duration * weight;
-  }
-  return score;
-}
-
 function App() {
   const [pieces, setPieces] = useLocalStorage("pianoPieces", []);
   const [practiceSessions, setPracticeSessions] = useLocalStorage(
@@ -49,7 +32,7 @@ function App() {
     difficulty: "all",
     progress: "all",
   });
-  const [sort, setSort] = useState({ sortBy: "default", reverse: false });
+  const [sort, setSort] = useState({ sortBy: "trending", reverse: false });
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isYouTubeModalOpen, setIsYouTubeModalOpen] = useState(false);
   const [editingPiece, setEditingPiece] = useState(null);
@@ -98,6 +81,25 @@ function App() {
     return values[difficulty] || 0;
   };
 
+  const trendingScore = (piece, now) => {
+    const logs = practiceSessions[piece.id] || [];
+
+    let score = 0;
+    for (let log of logs) {
+      const logDate = new Date(log.timestamp);
+      const daysAgo = Math.floor((now - logDate) / (1000 * 60 * 60 * 24));
+
+      const weight = getSessionWeight(daysAgo);
+      score += log.duration * weight;
+    }
+    return score;
+  };
+
+  const getTotalPracticeTime = (pieceId) => {
+    const logs = practiceSessions[pieceId] || [];
+    return logs.reduce((sum, log) => sum + log.duration, 0);
+  };
+
   const processedPieces = useMemo(() => {
     let result = [...pieces];
 
@@ -139,7 +141,7 @@ function App() {
       result = result.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sort.sortBy === "practiceTime") {
       result = result.sort(
-        (a, b) => (b.practiceTime || 0) - (a.practiceTime || 0)
+        (a, b) => getTotalPracticeTime(b.id) - getTotalPracticeTime(a.id)
       );
     } else if (sort.sortBy === "trending") {
       // NEU: Trending-Algorithmus mit Gewichtung über 3 Monate
@@ -160,7 +162,7 @@ function App() {
     }
 
     return result;
-  }, [pieces, searchQuery, filters, sort]);
+  }, [pieces, searchQuery, filters, sort, practiceSessions]);
 
   const handleSavePiece = (pieceData) => {
     const isDuplicate = isDuplicateYouTubeUrl(

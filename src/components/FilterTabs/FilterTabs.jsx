@@ -5,7 +5,7 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState("all");
   const [progressFilter, setProgressFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("default");
+  const [sortBy, setSortBy] = useState("trending");
   const [sortReverse, setSortReverse] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 

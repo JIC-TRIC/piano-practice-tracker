@@ -293,6 +293,34 @@
   }
 }
 
+/* Open in YouTube Button */
+.btn-open-youtube {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  background: #ca0808;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 16px;
+}
+
+.btn-open-youtube:hover {
+  background: #a50d0d;
+}
+
+.btn-open-youtube svg {
+  width: 20px;
+  height: 20px;
+}
+
 @media (max-width: 480px) {
   .youtube-modal-content {
     max-width: 100%;
