@@ -21,10 +21,10 @@ function YouTubeModal({
   const progressOptions = [
     { value: "not_started", label: "Not Started" },
     { value: "learning_notes", label: "Learning Notes" },
+    { value: "slow_hands_separate", label: "Slow Hands Separate" },
     { value: "hands_separate", label: "Hands Separate" },
-    { value: "slow_hands_together", label: "Slow Hands Together" },
-    { value: "building_speed", label: "Building Speed" },
-    { value: "practicing_dynamics", label: "Practicing Dynamics" },
+    { value: "hands_together", label: "Hands Together" },
+    { value: "refining_details", label: "Refining Details" },
     { value: "performance_ready", label: "Performance Ready" },
     { value: "memorized", label: "Memorized" },
   ];

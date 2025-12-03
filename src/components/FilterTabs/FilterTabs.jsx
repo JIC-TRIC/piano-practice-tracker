@@ -22,10 +22,10 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
   const progressOptions = [
     { value: "not_started", label: "Not Started" },
     { value: "learning_notes", label: "Learning Notes" },
-    { value: "hands_separate", label: "Hands Separately" },
-    { value: "slow_hands_together", label: "Slow Together" },
-    { value: "building_speed", label: "Building Speed" },
-    { value: "practicing_dynamics", label: "Refining Details" },
+    { value: "slow_hands_separate", label: "Slow Hands Separate" },
+    { value: "hands_separate", label: "Hands Separate" },
+    { value: "hands_together", label: "Hands Together" },
+    { value: "refining_details", label: "Refining Details" },
     { value: "performance_ready", label: "Performance Ready" },
     { value: "memorized", label: "Memorized" },
   ];

@@ -34,8 +34,8 @@ function App() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
-    difficulty: "all",
-    progress: "all",
+    difficulty: [],
+    progress: [],
   });
   const [sort, setSort] = useState({ sortBy: "trending", reverse: false });
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -85,10 +85,10 @@ function App() {
     const values = {
       not_started: 0,
       learning_notes: 1,
-      hands_separate: 2,
-      slow_hands_together: 3,
-      building_speed: 4,
-      practicing_dynamics: 5,
+      slow_hands_separate: 2,
+      hands_separate: 3,
+      hands_together: 4,
+      refining_details: 5,
       performance_ready: 6,
       memorized: 7,
     };

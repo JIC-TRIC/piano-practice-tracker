@@ -6,10 +6,10 @@ const getProgressLabel = (progress) => {
   const labels = {
     not_started: "Not Started",
     learning_notes: "Learning Notes",
-    hands_separate: "Hands Separately",
-    slow_hands_together: "Slow Together",
-    building_speed: "Building Speed",
-    practicing_dynamics: "Refining Details",
+    slow_hands_separate: "Slow Hands Separate",
+    hands_separate: "Hands Separate",
+    hands_together: "Hands Together",
+    refining_details: "Refining Details",
     performance_ready: "Performance Ready",
     memorized: "Memorized",
   };
@@ -21,10 +21,10 @@ const getProgressPercentage = (progress) => {
   const percentages = {
     not_started: 0,
     learning_notes: 12,
-    hands_separate: 25,
-    slow_hands_together: 40,
-    building_speed: 55,
-    practicing_dynamics: 70,
+    slow_hands_separate: 25,
+    hands_separate: 37,
+    hands_together: 50,
+    refining_details: 65,
     performance_ready: 85,
     memorized: 100,
   };
@@ -34,17 +34,17 @@ const getProgressPercentage = (progress) => {
 // Hilfsfunktion für Fortschritt-Farbe - Gelb → Grün → Blau → Lila
 const getProgressColor = (percentage) => {
   if (percentage === 0) {
-    return "linear-gradient(90deg, #6b7280 0%, #9ca3af 100%)"; // Grau - nicht begonnen
+    return "linear-gradient(90deg, #6b7280 0%, #9ca3af 100%)"; // Grau - Not Started
   } else if (percentage <= 12) {
     return "linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%)"; // Orange/Gelb - Learning Notes
   } else if (percentage <= 25) {
-    return "linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%)"; // Gelb - Hands Separate
-  } else if (percentage <= 40) {
-    return "linear-gradient(90deg, #84cc16 0%, #a3e635 100%)"; // Lime - Slow Together
-  } else if (percentage <= 55) {
-    return "linear-gradient(90deg, #22c55e 0%, #4ade80 100%)"; // Grün - Building Speed
-  } else if (percentage <= 70) {
-    return "linear-gradient(90deg, #14b8a6 0%, #2dd4bf 100%)"; // Teal - Practicing Dynamics
+    return "linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%)"; // Gelb - Slow Hands Separate
+  } else if (percentage <= 37) {
+    return "linear-gradient(90deg, #84cc16 0%, #a3e635 100%)"; // Lime - Hands Separate
+  } else if (percentage <= 50) {
+    return "linear-gradient(90deg, #22c55e 0%, #4ade80 100%)"; // Grün - Hands Together
+  } else if (percentage <= 65) {
+    return "linear-gradient(90deg, #14b8a6 0%, #2dd4bf 100%)"; // Teal - Refining Details
   } else if (percentage <= 85) {
     return "linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%)"; // Blau - Performance Ready
   } else {
