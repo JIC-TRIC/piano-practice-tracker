@@ -11,10 +11,11 @@ const isSameDay = (date1, date2) => {
 };
 
 function StatsBar({ pieces, practiceSessions }) {
-  // Gemeistert = "performance_ready" und "memorized"
-  const mastered = pieces.filter(
-    (p) => p.progress === "memorized" || p.progress === "performance_ready"
-  ).length;
+  // Gemeistert = 7 oder 8 Meilensteine erreicht
+  const mastered = pieces.filter((p) => {
+    const milestones = p.milestones || [];
+    return milestones.length >= 7;
+  }).length;
 
   const today = new Date();
 

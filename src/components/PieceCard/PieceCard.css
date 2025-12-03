@@ -142,6 +142,28 @@
   margin-top: auto;
 }
 
+.status-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.status-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.milestone-count {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-left: auto;
+}
+
 .progress-text {
   font-size: 0.75rem;
   color: var(--text);

@@ -20,14 +20,11 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
   ];
 
   const progressOptions = [
-    { value: "not_started", label: "Not Started" },
-    { value: "learning_notes", label: "Learning Notes" },
-    { value: "slow_hands_separate", label: "Slow Hands Separate" },
-    { value: "hands_separate", label: "Hands Separate" },
-    { value: "hands_together", label: "Hands Together" },
-    { value: "refining_details", label: "Refining Details" },
-    { value: "performance_ready", label: "Performance Ready" },
-    { value: "memorized", label: "Memorized" },
+    { value: "not_started", label: "⚪ Not Started" },
+    { value: "learning", label: "🎯 Learning" },
+    { value: "practicing", label: "🎹 Practicing" },
+    { value: "polishing", label: "⭐ Polishing" },
+    { value: "mastered", label: "✨ Mastered" },
   ];
 
   const sortOptions = [

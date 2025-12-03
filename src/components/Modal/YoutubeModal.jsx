@@ -13,26 +13,26 @@ function YouTubeModal({
 }) {
   const [seconds, setSeconds] = useState(0);
   const [player, setPlayer] = useState(null);
-  const [selectedProgress, setSelectedProgress] = useState("");
+  const [selectedMilestones, setSelectedMilestones] = useState([]);
   const intervalRef = useRef(null);
   const playerRef = useRef(null);
   const startTimeRef = useRef(null);
 
-  const progressOptions = [
-    { value: "not_started", label: "Not Started" },
-    { value: "learning_notes", label: "Learning Notes" },
-    { value: "slow_hands_separate", label: "Slow Hands Separate" },
-    { value: "hands_separate", label: "Hands Separate" },
-    { value: "hands_together", label: "Hands Together" },
-    { value: "refining_details", label: "Refining Details" },
-    { value: "performance_ready", label: "Performance Ready" },
-    { value: "memorized", label: "Memorized" },
+  const milestoneOptions = [
+    { id: "notes_learned", label: "Notes Learned" },
+    { id: "right_hand", label: "Right Hand Mastered" },
+    { id: "left_hand", label: "Left Hand Mastered" },
+    { id: "hands_together", label: "Hands Together" },
+    { id: "tempo_reached", label: "Target Tempo Reached" },
+    { id: "dynamics_added", label: "Dynamics Added" },
+    { id: "performance_ready", label: "Performance Ready" },
+    { id: "memorized", label: "Memorized" },
   ];
 
-  // Initialize selectedProgress when modal opens
+  // Initialize selectedMilestones when modal opens
   useEffect(() => {
     if (isOpen && piece) {
-      setSelectedProgress(piece.progress || "not_started");
+      setSelectedMilestones(piece.milestones || []);
     }
   }, [isOpen, piece]);
 
@@ -144,8 +144,12 @@ function YouTubeModal({
     };
   }, [isOpen]);
 
-  const handleProgressChange = (e) => {
-    setSelectedProgress(e.target.value);
+  const toggleMilestone = (milestoneId) => {
+    setSelectedMilestones((prev) =>
+      prev.includes(milestoneId)
+        ? prev.filter((id) => id !== milestoneId)
+        : [...prev, milestoneId]
+    );
   };
 
   const handleCloseWithoutSaving = () => {
@@ -156,8 +160,11 @@ function YouTubeModal({
     if (seconds > 0 && piece) {
       onSavePracticeTime(piece.id, seconds, new Date().toISOString());
     }
-    if (selectedProgress !== piece?.progress) {
-      onUpdateProgress(piece.id, selectedProgress);
+    const milestonesChanged =
+      JSON.stringify(selectedMilestones) !==
+      JSON.stringify(piece?.milestones || []);
+    if (milestonesChanged) {
+      onUpdateProgress(piece.id, selectedMilestones);
     }
     onClose();
   };
@@ -178,20 +185,28 @@ function YouTubeModal({
           <div className="timer-display">⏱️ {formatTimerDisplay(seconds)}</div>
         </div>
 
-        {/* Progress Selector */}
+        {/* Milestone Selector */}
         <div className="form-group">
-          <label className="form-label">Update Progress</label>
-          <select
-            className="form-input"
-            value={selectedProgress}
-            onChange={handleProgressChange}
-          >
-            {progressOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
+          <label className="form-label">
+            Milestones ({selectedMilestones.length}/8)
+          </label>
+          <div className="milestone-list">
+            {milestoneOptions.map((milestone) => (
+              <label
+                key={milestone.id}
+                className="milestone-item"
+                onClick={() => toggleMilestone(milestone.id)}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedMilestones.includes(milestone.id)}
+                  onChange={() => {}}
+                  className="milestone-checkbox"
+                />
+                <span className="milestone-label">{milestone.label}</span>
+              </label>
             ))}
-          </select>
+          </div>
         </div>
 
         {/* Show either external button OR YouTube player */}

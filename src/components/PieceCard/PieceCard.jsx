@@ -1,58 +1,22 @@
 import "./PieceCard.css";
 import { formatTime } from "../../utils/youtube";
 
-// Hilfsfunktion für Fortschritt-Label
-const getProgressLabel = (progress) => {
-  const labels = {
-    not_started: "Not Started",
-    learning_notes: "Learning Notes",
-    slow_hands_separate: "Slow Hands Separate",
-    hands_separate: "Hands Separate",
-    hands_together: "Hands Together",
-    refining_details: "Refining Details",
-    performance_ready: "Performance Ready",
-    memorized: "Memorized",
-  };
-  return labels[progress] || "Unknown";
-};
+// Hilfsfunktion für Status basierend auf Meilensteinen
+const getStatusFromMilestones = (milestones = []) => {
+  const count = milestones.length;
 
-// Hilfsfunktion für Fortschritt-Prozent (für Progressbar)
-const getProgressPercentage = (progress) => {
-  const percentages = {
-    not_started: 0,
-    learning_notes: 12,
-    slow_hands_separate: 25,
-    hands_separate: 37,
-    hands_together: 50,
-    refining_details: 65,
-    performance_ready: 85,
-    memorized: 100,
-  };
-  return percentages[progress] || 0;
-};
-
-// Hilfsfunktion für Fortschritt-Farbe - Gelb → Grün → Blau → Lila
-const getProgressColor = (percentage) => {
-  if (percentage === 0) {
-    return "linear-gradient(90deg, #6b7280 0%, #9ca3af 100%)"; // Grau - Not Started
-  } else if (percentage <= 12) {
-    return "linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%)"; // Orange/Gelb - Learning Notes
-  } else if (percentage <= 25) {
-    return "linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%)"; // Gelb - Slow Hands Separate
-  } else if (percentage <= 37) {
-    return "linear-gradient(90deg, #84cc16 0%, #a3e635 100%)"; // Lime - Hands Separate
-  } else if (percentage <= 50) {
-    return "linear-gradient(90deg, #22c55e 0%, #4ade80 100%)"; // Grün - Hands Together
-  } else if (percentage <= 65) {
-    return "linear-gradient(90deg, #14b8a6 0%, #2dd4bf 100%)"; // Teal - Refining Details
-  } else if (percentage <= 85) {
-    return "linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%)"; // Blau - Performance Ready
+  if (count === 0) {
+    return { icon: "⚪", label: "Not Started", color: "#6b7280" };
+  } else if (count <= 2) {
+    return { icon: "🎯", label: "Learning", color: "#f59e0b" };
+  } else if (count <= 4) {
+    return { icon: "🎹", label: "Practicing", color: "#22c55e" };
+  } else if (count <= 6) {
+    return { icon: "⭐", label: "Polishing", color: "#3b82f6" };
   } else {
-    return "linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%)"; // Lila - Memorized
+    return { icon: "✨", label: "Mastered", color: "#8b5cf6" };
   }
-};
-
-// Hilfsfunktion für Schwierigkeit-Farbe
+}; // Hilfsfunktion für Schwierigkeit-Farbe
 const getDifficultyColor = (difficulty) => {
   const colors = {
     Unknown: "#6b7280",
@@ -66,8 +30,8 @@ const getDifficultyColor = (difficulty) => {
 };
 
 function PieceCard({ piece, sessions, onEdit, onYouTubeClick }) {
-  const progressPercentage = getProgressPercentage(piece.progress);
-  const progressColor = getProgressColor(progressPercentage);
+  const milestones = piece.milestones || [];
+  const status = getStatusFromMilestones(milestones);
   const difficultyColor = getDifficultyColor(piece.difficulty);
 
   // Gesamtzeit aus practiceLog berechnen
@@ -108,17 +72,12 @@ function PieceCard({ piece, sessions, onEdit, onYouTubeClick }) {
         </div>
 
         <div className="progress-section">
-          <div className="progress-text">
-            {getProgressLabel(piece.progress)}
-          </div>
-          <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{
-                width: `${progressPercentage}%`,
-                background: progressColor,
-              }}
-            ></div>
+          <div className="status-display">
+            <span className="status-icon">{status.icon}</span>
+            <span className="status-label" style={{ color: status.color }}>
+              {status.label}
+            </span>
+            <span className="milestone-count">({milestones.length}/8)</span>
           </div>
         </div>
       </div>

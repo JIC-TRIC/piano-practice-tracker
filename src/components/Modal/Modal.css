@@ -289,3 +289,54 @@
 .btn-paste:active {
   transform: scale(0.95);
 }
+
+/* Milestone List */
+.milestone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--surface-light);
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.milestone-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background: var(--surface);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.milestone-item:hover {
+  background: var(--surface-light);
+  border-color: var(--primary);
+}
+
+.milestone-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+.milestone-label {
+  flex: 1;
+  color: var(--text);
+  font-size: 0.95rem;
+  user-select: none;
+}
+
+.milestone-item:has(.milestone-checkbox:checked) {
+  background: rgba(108, 92, 231, 0.1);
+  border-color: var(--primary);
+}
+
+.milestone-item:has(.milestone-checkbox:checked) .milestone-label {
+  color: var(--primary);
+  font-weight: 500;
+}

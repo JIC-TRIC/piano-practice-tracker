@@ -8,31 +8,34 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
     title: "",
     artist: "",
     difficulty: "Unknown",
-    progress: "not_started",
+    milestones: [],
   });
 
-  // Fortschritt-Optionen
-  const progressOptions = [
-    { value: "not_started", label: "Not Started" },
-    { value: "learning_notes", label: "Learning Notes" },
-    { value: "slow_hands_separate", label: "Slow Hands Separate" },
-    { value: "hands_separate", label: "Hands Separate" },
-    { value: "hands_together", label: "Hands Together" },
-    { value: "refining_details", label: "Refining Details" },
-    { value: "performance_ready", label: "Performance Ready" },
-    { value: "memorized", label: "Memorized" },
+  // Meilenstein-Optionen
+  const milestoneOptions = [
+    { id: "notes_learned", label: "Notes Learned" },
+    { id: "right_hand", label: "Right Hand Mastered" },
+    { id: "left_hand", label: "Left Hand Mastered" },
+    { id: "hands_together", label: "Hands Together" },
+    { id: "tempo_reached", label: "Target Tempo Reached" },
+    { id: "dynamics_added", label: "Dynamics Added" },
+    { id: "performance_ready", label: "Performance Ready" },
+    { id: "memorized", label: "Memorized" },
   ];
 
   useEffect(() => {
     if (editingPiece) {
-      setFormData(editingPiece);
+      setFormData({
+        ...editingPiece,
+        milestones: editingPiece.milestones || [],
+      });
     } else {
       setFormData({
         youtubeUrl: "",
         title: "",
         artist: "",
         difficulty: "Unknown",
-        progress: "not_started",
+        milestones: [],
       });
     }
   }, [editingPiece, isOpen]);
@@ -65,6 +68,16 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const toggleMilestone = (milestoneId) => {
+    setFormData((prev) => {
+      const milestones = prev.milestones || [];
+      const newMilestones = milestones.includes(milestoneId)
+        ? milestones.filter((id) => id !== milestoneId)
+        : [...milestones, milestoneId];
+      return { ...prev, milestones: newMilestones };
+    });
   };
 
   if (!isOpen) return null;
@@ -144,20 +157,28 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Progress</label>
-            <select
-              className="form-input"
-              name="progress"
-              value={formData.progress}
-              onChange={handleChange}
-              required
-            >
-              {progressOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
+            <label className="form-label">
+              Milestones ({formData.milestones?.length || 0}/8)
+            </label>
+            <div className="milestone-list">
+              {milestoneOptions.map((milestone) => (
+                <label
+                  key={milestone.id}
+                  className="milestone-item"
+                  onClick={() => toggleMilestone(milestone.id)}
+                >
+                  <input
+                    type="checkbox"
+                    checked={
+                      formData.milestones?.includes(milestone.id) || false
+                    }
+                    onChange={() => {}}
+                    className="milestone-checkbox"
+                  />
+                  <span className="milestone-label">{milestone.label}</span>
+                </label>
               ))}
-            </select>
+            </div>
           </div>
 
           <div className="form-actions">

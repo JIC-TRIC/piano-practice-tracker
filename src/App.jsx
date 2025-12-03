@@ -81,18 +81,24 @@ function App() {
     });
   };
 
-  const getProgressValue = (progress) => {
+  const getStatusFromMilestones = (milestones = []) => {
+    const count = milestones.length;
+    if (count === 0) return "not_started";
+    if (count <= 2) return "learning";
+    if (count <= 4) return "practicing";
+    if (count <= 6) return "polishing";
+    return "mastered";
+  };
+
+  const getStatusValue = (status) => {
     const values = {
       not_started: 0,
-      learning_notes: 1,
-      slow_hands_separate: 2,
-      hands_separate: 3,
-      hands_together: 4,
-      refining_details: 5,
-      performance_ready: 6,
-      memorized: 7,
+      learning: 1,
+      practicing: 2,
+      polishing: 3,
+      mastered: 4,
     };
-    return values[progress] || 0;
+    return values[status] || 0;
   };
 
   const getDifficultyValue = (difficulty) => {
@@ -143,7 +149,10 @@ function App() {
       result = result.filter((p) => filters.difficulty.includes(p.difficulty));
     }
     if (filters.progress && filters.progress.length > 0) {
-      result = result.filter((p) => filters.progress.includes(p.progress));
+      result = result.filter((p) => {
+        const status = getStatusFromMilestones(p.milestones);
+        return filters.progress.includes(status);
+      });
     }
 
     if (sort.sortBy === "random") {
@@ -155,9 +164,11 @@ function App() {
         return dateB - dateA;
       });
     } else if (sort.sortBy === "progress") {
-      result = result.sort(
-        (a, b) => getProgressValue(a.progress) - getProgressValue(b.progress)
-      );
+      result = result.sort((a, b) => {
+        const statusA = getStatusFromMilestones(a.milestones);
+        const statusB = getStatusFromMilestones(b.milestones);
+        return getStatusValue(statusA) - getStatusValue(statusB);
+      });
     } else if (sort.sortBy === "difficulty") {
       result = result.sort(
         (a, b) =>
@@ -254,9 +265,11 @@ function App() {
     }
   };
 
-  const handleUpdateProgress = (pieceId, newProgress) => {
+  const handleUpdateProgress = (pieceId, newMilestones) => {
     setPieces((prev) =>
-      prev.map((p) => (p.id === pieceId ? { ...p, progress: newProgress } : p))
+      prev.map((p) =>
+        p.id === pieceId ? { ...p, milestones: newMilestones } : p
+      )
     );
     showToast("Progress updated!");
   };
