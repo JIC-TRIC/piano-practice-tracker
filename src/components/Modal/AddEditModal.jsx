@@ -14,9 +14,12 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
   // Fortschritt-Optionen
   const progressOptions = [
     { value: "not_started", label: "Not Started" },
-    { value: "hands_separate", label: "Separate Hands" },
-    { value: "hands_together", label: "Hands Together" },
-    { value: "perfected", label: "Perfected" },
+    { value: "learning_notes", label: "Learning Notes" },
+    { value: "hands_separate", label: "Hands Separately" },
+    { value: "slow_hands_together", label: "Slow Together" },
+    { value: "building_speed", label: "Building Speed" },
+    { value: "practicing_dynamics", label: "Refining Details" },
+    { value: "performance_ready", label: "Performance Ready" },
     { value: "memorized", label: "Memorized" },
   ];
 

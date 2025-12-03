@@ -84,10 +84,13 @@ function App() {
   const getProgressValue = (progress) => {
     const values = {
       not_started: 0,
-      hands_separate: 1,
-      hands_together: 2,
-      perfected: 3,
-      memorized: 4,
+      learning_notes: 1,
+      hands_separate: 2,
+      slow_hands_together: 3,
+      building_speed: 4,
+      practicing_dynamics: 5,
+      performance_ready: 6,
+      memorized: 7,
     };
     return values[progress] || 0;
   };
