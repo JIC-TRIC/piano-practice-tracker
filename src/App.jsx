@@ -11,6 +11,7 @@ import AddEditModal from "./components/Modal/AddEditModal";
 import YouTubeModal from "./components/Modal/YouTubeModal";
 import Toast from "./components/Toast/Toast";
 import Settings from "./components/Settings/Settings";
+import PracticeHistory from "./components/PracticeHistory/PracticeHistory";
 
 function getSessionWeight(daysAgo) {
   if (daysAgo <= 2) return 10.0;
@@ -40,6 +41,7 @@ function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isYouTubeModalOpen, setIsYouTubeModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [editingPiece, setEditingPiece] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [practicingPieceId, setPracticingPieceId] = useState(null);
@@ -302,6 +304,17 @@ function App() {
         onClose={() => setIsSettingsOpen(false)}
         settings={settings}
         onSaveSettings={handleSaveSettings}
+        onViewHistory={() => {
+          setIsSettingsOpen(false);
+          setIsHistoryOpen(true);
+        }}
+      />
+
+      <PracticeHistory
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        pieces={pieces}
+        practiceSessions={practiceSessions}
       />
 
       <Toast
