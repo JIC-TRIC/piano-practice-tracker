@@ -46,6 +46,21 @@ function App() {
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [practicingPieceId, setPracticingPieceId] = useState(null);
   const [toast, setToast] = useState({ message: "", isVisible: false });
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Scroll-to-Top Button visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const showToast = (message) => {
     setToast({ message, isVisible: true });
@@ -120,11 +135,11 @@ function App() {
       });
     }
 
-    if (filters.difficulty !== "all") {
-      result = result.filter((p) => p.difficulty === filters.difficulty);
+    if (filters.difficulty && filters.difficulty.length > 0) {
+      result = result.filter((p) => filters.difficulty.includes(p.difficulty));
     }
-    if (filters.progress !== "all") {
-      result = result.filter((p) => p.progress === filters.progress);
+    if (filters.progress && filters.progress.length > 0) {
+      result = result.filter((p) => filters.progress.includes(p.progress));
     }
 
     if (sort.sortBy === "random") {
@@ -322,6 +337,28 @@ function App() {
         isVisible={toast.isVisible}
         onHide={hideToast}
       />
+
+      <button
+        className={`scroll-to-top ${showScrollTop ? "visible" : ""}`}
+        onClick={scrollToTop}
+        aria-label="Scroll to top"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 19V5M5 12l7-7 7 7"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
     </div>
   );
 }

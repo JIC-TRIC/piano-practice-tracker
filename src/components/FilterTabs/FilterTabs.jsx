@@ -3,15 +3,14 @@ import "./FilterTabs.css";
 
 function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [difficultyFilter, setDifficultyFilter] = useState("all");
-  const [progressFilter, setProgressFilter] = useState("all");
+  const [difficultyFilter, setDifficultyFilter] = useState([]);
+  const [progressFilter, setProgressFilter] = useState([]);
   const [sortBy, setSortBy] = useState("trending");
   const [sortReverse, setSortReverse] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
   // Filter-Optionen
   const difficultyOptions = [
-    { value: "all", label: "All Difficulties" },
     { value: "Free", label: "Free" },
     { value: "Easy", label: "Easy" },
     { value: "Medium", label: "Medium" },
@@ -20,7 +19,6 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
   ];
 
   const progressOptions = [
-    { value: "all", label: "All Progress Levels" },
     { value: "not_started", label: "Not Started" },
     { value: "hands_separate", label: "Hands Separately" },
     { value: "hands_together", label: "Hands Together" },
@@ -46,13 +44,19 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
   };
 
   const handleDifficultyChange = (value) => {
-    setDifficultyFilter(value);
-    onFilterChange({ difficulty: value, progress: progressFilter });
+    const newFilter = difficultyFilter.includes(value)
+      ? difficultyFilter.filter((v) => v !== value)
+      : [...difficultyFilter, value];
+    setDifficultyFilter(newFilter);
+    onFilterChange({ difficulty: newFilter, progress: progressFilter });
   };
 
   const handleProgressChange = (value) => {
-    setProgressFilter(value);
-    onFilterChange({ difficulty: difficultyFilter, progress: value });
+    const newFilter = progressFilter.includes(value)
+      ? progressFilter.filter((v) => v !== value)
+      : [...progressFilter, value];
+    setProgressFilter(newFilter);
+    onFilterChange({ difficulty: difficultyFilter, progress: newFilter });
   };
 
   const handleSortChange = (value) => {
@@ -67,7 +71,7 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
   };
 
   const hasActiveFilters =
-    difficultyFilter !== "all" || progressFilter !== "all";
+    difficultyFilter.length > 0 || progressFilter.length > 0;
 
   return (
     <div className="filter-sort-container">
@@ -186,7 +190,7 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
                 <button
                   key={option.value}
                   className={`filter-chip ${
-                    difficultyFilter === option.value ? "active" : ""
+                    difficultyFilter.includes(option.value) ? "active" : ""
                   }`}
                   onClick={() => handleDifficultyChange(option.value)}
                 >
@@ -203,7 +207,7 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
                 <button
                   key={option.value}
                   className={`filter-chip ${
-                    progressFilter === option.value ? "active" : ""
+                    progressFilter.includes(option.value) ? "active" : ""
                   }`}
                   onClick={() => handleProgressChange(option.value)}
                 >
@@ -217,9 +221,9 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
             <button
               className="clear-filters-btn"
               onClick={() => {
-                setDifficultyFilter("all");
-                setProgressFilter("all");
-                onFilterChange({ difficulty: "all", progress: "all" });
+                setDifficultyFilter([]);
+                setProgressFilter([]);
+                onFilterChange({ difficulty: [], progress: [] });
               }}
             >
               Reset all Filters
