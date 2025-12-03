@@ -10,6 +10,7 @@ import EmptyState from "./components/EmptyState/EmptyState";
 import AddEditModal from "./components/Modal/AddEditModal";
 import YouTubeModal from "./components/Modal/YouTubeModal";
 import Toast from "./components/Toast/Toast";
+import Settings from "./components/Settings/Settings";
 
 function getSessionWeight(daysAgo) {
   if (daysAgo <= 2) return 10.0;
@@ -26,6 +27,9 @@ function App() {
     "practiceSessions",
     {}
   );
+  const [settings, setSettings] = useLocalStorage("pianoSettings", {
+    showExternalYouTubeButton: true,
+  });
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
@@ -35,6 +39,7 @@ function App() {
   const [sort, setSort] = useState({ sortBy: "trending", reverse: false });
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isYouTubeModalOpen, setIsYouTubeModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [editingPiece, setEditingPiece] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [practicingPieceId, setPracticingPieceId] = useState(null);
@@ -233,10 +238,18 @@ function App() {
     setPracticingPieceId(null);
   };
 
+  const handleSaveSettings = (newSettings) => {
+    setSettings(newSettings);
+    showToast("Settings saved!");
+  };
+
   return (
     <div className="App">
       <div className="scroll-container">
-        <Header onAddClick={() => setIsAddModalOpen(true)} />
+        <Header
+          onAddClick={() => setIsAddModalOpen(true)}
+          onSettingsClick={() => setIsSettingsOpen(true)}
+        />
         <StatsBar pieces={pieces} practiceSessions={practiceSessions} />
         <div className="container">
           <FilterTabs
@@ -281,6 +294,14 @@ function App() {
         videoUrl={youtubeUrl}
         pieceId={practicingPieceId}
         onSavePracticeTime={handleSavePracticeTime}
+        settings={settings}
+      />
+
+      <Settings
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        settings={settings}
+        onSaveSettings={handleSaveSettings}
       />
 
       <Toast

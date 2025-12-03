@@ -8,12 +8,14 @@ function YouTubeModal({
   videoUrl,
   pieceId,
   onSavePracticeTime,
+  settings,
 }) {
   const [seconds, setSeconds] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [player, setPlayer] = useState(null);
   const intervalRef = useRef(null);
   const playerRef = useRef(null);
+  const startTimeRef = useRef(null);
 
   const speedOptions = [
     { value: 0.25, label: "0.25x" },
@@ -93,9 +95,14 @@ function YouTubeModal({
   // Start timer when modal opens
   useEffect(() => {
     if (isOpen) {
+      // Speichere Startzeit
+      startTimeRef.current = Date.now();
       setSeconds(0);
+
+      // Update Timer basierend auf verstrichener Zeit
       intervalRef.current = setInterval(() => {
-        setSeconds((prev) => prev + 1);
+        const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+        setSeconds(elapsed);
       }, 1000);
     }
 
@@ -104,6 +111,26 @@ function YouTubeModal({
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
+      startTimeRef.current = null;
+    };
+  }, [isOpen]);
+
+  // Zusätzlicher Effect: Update bei visibility change (App wird wieder aktiv)
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden && startTimeRef.current) {
+        // App ist wieder aktiv - berechne korrekte Zeit
+        const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+        setSeconds(elapsed);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [isOpen]);
 
@@ -142,28 +169,30 @@ function YouTubeModal({
         </div>
 
         {/* Open in YouTube Button */}
-        <button
-          className="btn-open-youtube"
-          onClick={handleOpenInYouTube}
-          title="Open in YouTube (ad-free with Premium)"
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        {settings?.showExternalYouTubeButton && (
+          <button
+            className="btn-open-youtube"
+            onClick={handleOpenInYouTube}
+            title="Open in YouTube (ad-free with Premium)"
           >
-            <path
-              d="M10 6H6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H16C17.1046 20 18 19.1046 18 18V14M14 4H20M20 4V10M20 4L10 14"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          Open in YouTube
-        </button>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 6H6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H16C17.1046 20 18 19.1046 18 18V14M14 4H20M20 4V10M20 4L10 14"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Open in YouTube
+          </button>
+        )}
 
         {/* Playback Speed Controls */}
         <div className="playback-speed-controls">

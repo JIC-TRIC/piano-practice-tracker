@@ -16,12 +16,65 @@
   align-items: center;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--primary);
+}
+
+.logo svg {
+  opacity: 0.9;
+}
+
 .app-title {
   font-size: 1.5rem;
   font-weight: 700;
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.icon-btn {
+  background: var(--surface-light);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: var(--surface);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.icon-btn:active {
+  transform: translateY(0);
+}
+
+.youtube-btn:hover {
+  border-color: #ff0000;
+  color: #ff0000;
+}
+
+.settings-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .add-btn {
@@ -30,14 +83,57 @@
   border: none;
   width: 45px;
   height: 45px;
-  border-radius: 50%;
-  font-size: 1.5rem;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .add-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.5);
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+}
+
+.add-btn:active {
+  transform: translateY(0);
+}
+
+/* Mobile Optimization */
+@media (max-width: 480px) {
+  .app-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .logo svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .app-title {
+    font-size: 1.25rem;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .icon-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .add-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .add-btn svg {
+    width: 20px;
+    height: 20px;
+  }
 }
