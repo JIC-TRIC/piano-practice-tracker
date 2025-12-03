@@ -14,12 +14,10 @@ import Settings from "./components/Settings/Settings";
 import PracticeHistory from "./components/PracticeHistory/PracticeHistory";
 
 function getSessionWeight(daysAgo) {
-  if (daysAgo <= 2) return 10.0;
-  if (daysAgo <= 4) return 1.0;
-  if (daysAgo <= 7) return 0.7;
-  if (daysAgo <= 30) return 0.4;
-  if (daysAgo <= 90) return 0.15;
-  return 0.01;
+  // Exponentieller Abfall: Jeder Tag macht einen Unterschied
+  // Nach 30 Tagen noch 1/10 des heutigen Werts
+  // Formel: 10 * e^(-daysAgo/13) erreicht genau 1.0 nach 30 Tagen
+  return 10 * Math.exp(-daysAgo / 13);
 }
 
 function App() {
