@@ -11,6 +11,7 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
 
   // Filter-Optionen
   const difficultyOptions = [
+    { value: "Unknown", label: "Unknown" },
     { value: "Free", label: "Free" },
     { value: "Easy", label: "Easy" },
     { value: "Medium", label: "Medium" },

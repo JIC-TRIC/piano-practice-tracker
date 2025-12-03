@@ -6,31 +6,43 @@ function YouTubeModal({
   isOpen,
   onClose,
   videoUrl,
-  pieceId,
+  piece,
   onSavePracticeTime,
+  onUpdateProgress,
   settings,
 }) {
   const [seconds, setSeconds] = useState(0);
-  const [playbackRate, setPlaybackRate] = useState(1);
   const [player, setPlayer] = useState(null);
+  const [selectedProgress, setSelectedProgress] = useState("");
   const intervalRef = useRef(null);
   const playerRef = useRef(null);
   const startTimeRef = useRef(null);
 
-  const speedOptions = [
-    { value: 0.25, label: "0.25x" },
-    { value: 0.5, label: "0.5x" },
-    { value: 0.6, label: "0.6x" },
-    { value: 0.7, label: "0.7x" },
-    { value: 0.75, label: "0.75x" },
-    { value: 0.8, label: "0.8x" },
-    { value: 0.9, label: "0.9x" },
-    { value: 1, label: "1x" },
-    { value: 1.25, label: "1.25x" },
+  const progressOptions = [
+    { value: "not_started", label: "Not Started" },
+    { value: "learning_notes", label: "Learning Notes" },
+    { value: "hands_separate", label: "Hands Separate" },
+    { value: "slow_hands_together", label: "Slow Hands Together" },
+    { value: "building_speed", label: "Building Speed" },
+    { value: "practicing_dynamics", label: "Practicing Dynamics" },
+    { value: "performance_ready", label: "Performance Ready" },
+    { value: "memorized", label: "Memorized" },
   ];
+
+  // Initialize selectedProgress when modal opens
+  useEffect(() => {
+    if (isOpen && piece) {
+      setSelectedProgress(piece.progress || "not_started");
+    }
+  }, [isOpen, piece]);
 
   // Load YouTube IFrame API
   useEffect(() => {
+    // Only load API if we're showing the player
+    if (settings?.showExternalYouTubeButton) {
+      return;
+    }
+
     // Check if API is already loaded
     if (window.YT && window.YT.Player) {
       return;
@@ -46,11 +58,11 @@ function YouTubeModal({
     window.onYouTubeIframeAPIReady = () => {
       console.log("YouTube API ready");
     };
-  }, []);
+  }, [settings]);
 
-  // Initialize player when modal opens
+  // Initialize player when modal opens (only if not showing external button)
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || settings?.showExternalYouTubeButton) return;
 
     const videoId = extractVideoId(videoUrl);
     if (!videoId) return;
@@ -75,8 +87,6 @@ function YouTubeModal({
           onReady: (event) => {
             playerRef.current = event.target;
             setPlayer(event.target);
-            // Set initial playback rate
-            event.target.setPlaybackRate(playbackRate);
           },
         },
       });
@@ -90,7 +100,7 @@ function YouTubeModal({
         playerRef.current.destroy();
       }
     };
-  }, [isOpen, videoUrl]);
+  }, [isOpen, videoUrl, settings]);
 
   // Start timer when modal opens
   useEffect(() => {
@@ -134,11 +144,8 @@ function YouTubeModal({
     };
   }, [isOpen]);
 
-  const handleSpeedChange = (speed) => {
-    setPlaybackRate(speed);
-    if (player && player.setPlaybackRate) {
-      player.setPlaybackRate(speed);
-    }
+  const handleProgressChange = (e) => {
+    setSelectedProgress(e.target.value);
   };
 
   const handleCloseWithoutSaving = () => {
@@ -146,8 +153,11 @@ function YouTubeModal({
   };
 
   const handleClose = () => {
-    if (seconds > 0) {
-      onSavePracticeTime(pieceId, seconds, new Date().toISOString());
+    if (seconds > 0 && piece) {
+      onSavePracticeTime(piece.id, seconds, new Date().toISOString());
+    }
+    if (selectedProgress !== piece?.progress) {
+      onUpdateProgress(piece.id, selectedProgress);
     }
     onClose();
   };
@@ -164,12 +174,28 @@ function YouTubeModal({
     <div className={`modal ${isOpen ? "active" : ""}`}>
       <div className="modal-content youtube-modal-content">
         <div className="modal-header">
-          <h2 className="modal-title">YouTube Video</h2>
+          <h2 className="modal-title">{piece?.title || "YouTube Video"}</h2>
           <div className="timer-display">⏱️ {formatTimerDisplay(seconds)}</div>
         </div>
 
-        {/* Open in YouTube Button */}
-        {settings?.showExternalYouTubeButton && (
+        {/* Progress Selector */}
+        <div className="form-group">
+          <label className="form-label">Update Progress</label>
+          <select
+            className="form-input"
+            value={selectedProgress}
+            onChange={handleProgressChange}
+          >
+            {progressOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Show either external button OR YouTube player */}
+        {settings?.showExternalYouTubeButton ? (
           <button
             className="btn-open-youtube"
             onClick={handleOpenInYouTube}
@@ -192,31 +218,12 @@ function YouTubeModal({
             </svg>
             Open in YouTube
           </button>
-        )}
-
-        {/* Playback Speed Controls */}
-        <div className="playback-speed-controls">
-          <label className="speed-label">Playback Speed:</label>
-          <div className="speed-buttons">
-            {speedOptions.map((option) => (
-              <button
-                key={option.value}
-                className={`speed-btn ${
-                  playbackRate === option.value ? "active" : ""
-                }`}
-                onClick={() => handleSpeedChange(option.value)}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* YouTube Player */}
-        {videoId && (
-          <div className="video-container">
-            <div id="youtube-player"></div>
-          </div>
+        ) : (
+          videoId && (
+            <div className="video-container">
+              <div id="youtube-player"></div>
+            </div>
+          )
         )}
 
         <div className="modal-actions">

@@ -11,9 +11,9 @@ const isSameDay = (date1, date2) => {
 };
 
 function StatsBar({ pieces, practiceSessions }) {
-  // Gemeistert = "memorized" und "perfected"
+  // Gemeistert = "performance_ready" und "memorized"
   const mastered = pieces.filter(
-    (p) => p.progress === "memorized" || p.progress === "perfected"
+    (p) => p.progress === "memorized" || p.progress === "performance_ready"
   ).length;
 
   const today = new Date();

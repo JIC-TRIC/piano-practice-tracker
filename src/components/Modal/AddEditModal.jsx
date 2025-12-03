@@ -7,7 +7,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
     youtubeUrl: "",
     title: "",
     artist: "",
-    difficulty: "Medium",
+    difficulty: "Unknown",
     progress: "not_started",
   });
 
@@ -15,8 +15,8 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
   const progressOptions = [
     { value: "not_started", label: "Not Started" },
     { value: "learning_notes", label: "Learning Notes" },
-    { value: "hands_separate", label: "Hands Separately" },
-    { value: "slow_hands_together", label: "Slow Together" },
+    { value: "hands_separate", label: "Hands Separate" },
+    { value: "slow_hands_together", label: "Slow Hands Together" },
     { value: "building_speed", label: "Building Speed" },
     { value: "practicing_dynamics", label: "Refining Details" },
     { value: "performance_ready", label: "Performance Ready" },
@@ -31,7 +31,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
         youtubeUrl: "",
         title: "",
         artist: "",
-        difficulty: "Medium",
+        difficulty: "Unknown",
         progress: "not_started",
       });
     }
@@ -134,6 +134,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
               onChange={handleChange}
               required
             >
+              <option value="Unknown">Unknown</option>
               <option value="Free">Free</option>
               <option value="Easy">Easy</option>
               <option value="Medium">Medium</option>

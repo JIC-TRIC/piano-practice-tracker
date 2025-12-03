@@ -44,7 +44,7 @@ function App() {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [editingPiece, setEditingPiece] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState("");
-  const [practicingPieceId, setPracticingPieceId] = useState(null);
+  const [practicingPiece, setPracticingPiece] = useState(null);
   const [toast, setToast] = useState({ message: "", isVisible: false });
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -97,6 +97,7 @@ function App() {
 
   const getDifficultyValue = (difficulty) => {
     const values = {
+      Unknown: -1,
       Free: 0,
       Easy: 1,
       Medium: 2,
@@ -229,8 +230,9 @@ function App() {
   };
 
   const handleOpenYouTube = (url, pieceId) => {
+    const piece = pieces.find((p) => p.id === pieceId);
     setYoutubeUrl(url);
-    setPracticingPieceId(pieceId);
+    setPracticingPiece(piece);
     setIsYouTubeModalOpen(true);
   };
 
@@ -252,10 +254,17 @@ function App() {
     }
   };
 
+  const handleUpdateProgress = (pieceId, newProgress) => {
+    setPieces((prev) =>
+      prev.map((p) => (p.id === pieceId ? { ...p, progress: newProgress } : p))
+    );
+    showToast("Progress updated!");
+  };
+
   const handleCloseYouTube = () => {
     setIsYouTubeModalOpen(false);
     setYoutubeUrl("");
-    setPracticingPieceId(null);
+    setPracticingPiece(null);
   };
 
   const handleSaveSettings = (newSettings) => {
@@ -312,8 +321,9 @@ function App() {
         isOpen={isYouTubeModalOpen}
         onClose={handleCloseYouTube}
         videoUrl={youtubeUrl}
-        pieceId={practicingPieceId}
+        piece={practicingPiece}
         onSavePracticeTime={handleSavePracticeTime}
+        onUpdateProgress={handleUpdateProgress}
         settings={settings}
       />
 

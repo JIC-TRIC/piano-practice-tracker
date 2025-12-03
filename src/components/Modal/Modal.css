@@ -191,58 +191,6 @@
   font-weight: 600;
 }
 
-/* Playback Speed Controls */
-.playback-speed-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 16px;
-  padding: 16px;
-  background: var(--surface-light);
-  border-radius: 12px;
-}
-
-.speed-label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.speed-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.speed-btn {
-  padding: 8px 16px;
-  background: var(--surface);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: var(--text);
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.speed-btn:hover {
-  background: var(--surface-light);
-  border-color: var(--primary);
-  transform: translateY(-1px);
-}
-
-.speed-btn.active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
-}
-
-.speed-btn:active {
-  transform: translateY(0);
-}
-
 /* Video Container */
 .video-container {
   position: relative;
@@ -271,23 +219,6 @@
 
 /* Mobile Optimization */
 @media (max-width: 640px) {
-  .playback-speed-controls {
-    padding: 12px;
-  }
-
-  .speed-label {
-    font-size: 0.85rem;
-  }
-
-  .speed-buttons {
-    gap: 6px;
-  }
-
-  .speed-btn {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-  }
-
   .timer-display {
     font-size: 0.9rem;
   }
@@ -324,16 +255,6 @@
 @media (max-width: 480px) {
   .youtube-modal-content {
     max-width: 100%;
-  }
-
-  .speed-buttons {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .speed-btn {
-    padding: 8px 4px;
-    font-size: 0.75rem;
   }
 }
 
