@@ -246,7 +246,7 @@ function App() {
   };
 
   const handleSavePracticeTime = (pieceId, seconds, timestamp) => {
-    if (pieceId && seconds > 0) {
+    if (pieceId && seconds >= 30) {
       setPracticeSessions((prev) => {
         const pieceLogs = prev[pieceId] || [];
         const updated = [...pieceLogs, { timestamp, duration: seconds }];
@@ -260,6 +260,13 @@ function App() {
         )
       );
       showToast("Practice time saved!");
+    } else if (pieceId && seconds > 0) {
+      // Update last practiced even for short sessions
+      setPieces((prev) =>
+        prev.map((p) =>
+          p.id === pieceId ? { ...p, lastPracticed: timestamp } : p
+        )
+      );
     }
   };
 
@@ -270,6 +277,15 @@ function App() {
       )
     );
     showToast("Progress updated!");
+  };
+
+  const handleDeleteSession = (pieceId, timestamp) => {
+    setPracticeSessions((prev) => {
+      const pieceLogs = prev[pieceId] || [];
+      const updated = pieceLogs.filter((session) => session.timestamp !== timestamp);
+      return { ...prev, [pieceId]: updated };
+    });
+    showToast("Session deleted!");
   };
 
   const handleCloseYouTube = () => {
@@ -354,6 +370,7 @@ function App() {
         onClose={() => setIsHistoryOpen(false)}
         pieces={pieces}
         practiceSessions={practiceSessions}
+        onDeleteSession={handleDeleteSession}
       />
 
       <Toast

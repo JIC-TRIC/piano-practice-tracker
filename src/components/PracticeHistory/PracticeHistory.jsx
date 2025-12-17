@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import "./PracticeHistory.css";
 import { formatTime } from "../../utils/youtube";
 
-function PracticeHistory({ isOpen, onClose, pieces, practiceSessions }) {
+function PracticeHistory({ isOpen, onClose, pieces, practiceSessions, onDeleteSession }) {
   const sessionHistory = useMemo(() => {
     const allSessions = [];
 
@@ -81,12 +81,12 @@ function PracticeHistory({ isOpen, onClose, pieces, practiceSessions }) {
 
         <div className="history-stats">
           <div className="stat-card">
-            <div className="stat-label">Total Sessions</div>
-            <div className="stat-value">{sessionHistory.length}</div>
+            <span className="stat-label">Sessions:</span>
+            <span className="stat-value">{sessionHistory.length}</span>
           </div>
           <div className="stat-card">
-            <div className="stat-label">Total Time</div>
-            <div className="stat-value">{formatTime(totalTime)}</div>
+            <span className="stat-label">Total Time:</span>
+            <span className="stat-value">{formatTime(totalTime)}</span>
           </div>
         </div>
 
@@ -105,7 +105,6 @@ function PracticeHistory({ isOpen, onClose, pieces, practiceSessions }) {
                     key={`${session.timestamp}-${index}`}
                     className="session-item"
                   >
-                    <div className="session-icon">🎹</div>
                     <div className="session-info">
                       <div className="session-piece">
                         <span className="piece-title">
@@ -115,13 +114,22 @@ function PracticeHistory({ isOpen, onClose, pieces, practiceSessions }) {
                           {session.pieceArtist}
                         </span>
                       </div>
-                      <div className="session-time">
-                        {formatDateTime(session.timestamp)}
+                      <div className="session-meta">
+                        <span className="session-time">
+                          {formatDateTime(session.timestamp)}
+                        </span>
+                        <span className="session-duration">
+                          {formatTime(session.duration)}
+                        </span>
                       </div>
                     </div>
-                    <div className="session-duration">
-                      {formatTime(session.duration)}
-                    </div>
+                    <button
+                      className="delete-session-btn"
+                      onClick={() => onDeleteSession(session.pieceId, session.timestamp)}
+                      title="Delete session"
+                    >
+                      🗑️
+                    </button>
                   </div>
                 ))}
               </div>
