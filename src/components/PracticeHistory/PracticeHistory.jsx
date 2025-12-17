@@ -2,7 +2,13 @@ import { useMemo } from "react";
 import "./PracticeHistory.css";
 import { formatTime } from "../../utils/youtube";
 
-function PracticeHistory({ isOpen, onClose, pieces, practiceSessions, onDeleteSession }) {
+function PracticeHistory({
+  isOpen,
+  onClose,
+  pieces,
+  practiceSessions,
+  onDeleteSession,
+}) {
   const sessionHistory = useMemo(() => {
     const allSessions = [];
 
@@ -125,7 +131,9 @@ function PracticeHistory({ isOpen, onClose, pieces, practiceSessions, onDeleteSe
                     </div>
                     <button
                       className="delete-session-btn"
-                      onClick={() => onDeleteSession(session.pieceId, session.timestamp)}
+                      onClick={() =>
+                        onDeleteSession(session.pieceId, session.timestamp)
+                      }
                       title="Delete session"
                     >
                       🗑️

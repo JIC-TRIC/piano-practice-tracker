@@ -30,32 +30,84 @@ function StatsBar({ pieces, practiceSessions }) {
     .flat()
     .reduce((sum, log) => sum + log.duration, 0);
 
+  // Berechne Practice Streak
+  const practiceStreak = (() => {
+    // Sammle alle einzigartigen Übungstage
+    const practiceDays = new Set();
+    Object.values(practiceSessions)
+      .flat()
+      .forEach((session) => {
+        const date = new Date(session.timestamp);
+        const dateKey = date.toISOString().split("T")[0]; // YYYY-MM-DD
+        practiceDays.add(dateKey);
+      });
+
+    if (practiceDays.size === 0) return 0;
+
+    // Sortiere Tage
+    const sortedDays = Array.from(practiceDays).sort().reverse();
+
+    // Prüfe ob heute geübt wurde
+    const todayKey = today.toISOString().split("T")[0];
+    const yesterdayKey = new Date(today.getTime() - 86400000)
+      .toISOString()
+      .split("T")[0];
+
+    // Streak beginnt bei gestern oder heute
+    let startDay = sortedDays[0] === todayKey ? todayKey : yesterdayKey;
+    if (sortedDays[0] !== todayKey && sortedDays[0] !== yesterdayKey) {
+      return 0; // Keine aktuelle Streak
+    }
+
+    let streak = 0;
+    let currentDay = new Date(startDay);
+
+    // Zähle rückwärts
+    while (true) {
+      const dayKey = currentDay.toISOString().split("T")[0];
+      if (practiceDays.has(dayKey)) {
+        streak++;
+        currentDay.setDate(currentDay.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+
+    return streak;
+  })();
+
   // Funktion zum Formatieren in Stunden
   const formatHours = (seconds) => {
     const hours = (seconds / 3600).toFixed(1);
     return `${hours}h`;
   };
 
-  return (
-    <div className="stats-bar">
-      <div className="stat-item">
-        <span className="stat-label">Pieces</span>
-        <span className="stat-value">{pieces.length}</span>
+  return {
+    mastered,
+    todayTime,
+    totalTime,
+    practiceStreak,
+    statsBar: (
+      <div className="stats-bar">
+        <div className="stat-item">
+          <span className="stat-label">Pieces</span>
+          <span className="stat-value">{pieces.length}</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-label">Today</span>
+          <span className="stat-value">{formatTime(todayTime)}</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-label">Total</span>
+          <span className="stat-value">{formatHours(totalTime)}</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-label">Mastered</span>
+          <span className="stat-value">{mastered}</span>
+        </div>
       </div>
-      <div className="stat-item">
-        <span className="stat-label">Today</span>
-        <span className="stat-value">{formatTime(todayTime)}</span>
-      </div>
-      <div className="stat-item">
-        <span className="stat-label">Total</span>
-        <span className="stat-value">{formatHours(totalTime)}</span>
-      </div>
-      <div className="stat-item">
-        <span className="stat-label">Mastered</span>
-        <span className="stat-value">{mastered}</span>
-      </div>
-    </div>
-  );
+    ),
+  };
 }
 
 export default StatsBar;

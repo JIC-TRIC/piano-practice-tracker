@@ -12,6 +12,7 @@ import YouTubeModal from "./components/Modal/YouTubeModal";
 import Toast from "./components/Toast/Toast";
 import Settings from "./components/Settings/Settings";
 import PracticeHistory from "./components/PracticeHistory/PracticeHistory";
+import PracticeCalendar from "./components/PracticeCalendar/PracticeCalendar";
 
 function getSessionWeight(daysAgo) {
   // Exponentieller Abfall: Jeder Tag macht einen Unterschied
@@ -40,6 +41,7 @@ function App() {
   const [isYouTubeModalOpen, setIsYouTubeModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [editingPiece, setEditingPiece] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [practicingPiece, setPracticingPiece] = useState(null);
@@ -282,7 +284,9 @@ function App() {
   const handleDeleteSession = (pieceId, timestamp) => {
     setPracticeSessions((prev) => {
       const pieceLogs = prev[pieceId] || [];
-      const updated = pieceLogs.filter((session) => session.timestamp !== timestamp);
+      const updated = pieceLogs.filter(
+        (session) => session.timestamp !== timestamp
+      );
       return { ...prev, [pieceId]: updated };
     });
     showToast("Session deleted!");
@@ -299,14 +303,17 @@ function App() {
     showToast("Settings saved!");
   };
 
+  const stats = StatsBar({ pieces, practiceSessions });
+
   return (
     <div className="App">
       <div className="scroll-container">
         <Header
           onAddClick={() => setIsAddModalOpen(true)}
           onSettingsClick={() => setIsSettingsOpen(true)}
+          streak={stats.practiceStreak}
         />
-        <StatsBar pieces={pieces} practiceSessions={practiceSessions} />
+        {stats.statsBar}
         <div className="container">
           <FilterTabs
             onSearchChange={setSearchQuery}
@@ -363,6 +370,10 @@ function App() {
           setIsSettingsOpen(false);
           setIsHistoryOpen(true);
         }}
+        onViewCalendar={() => {
+          setIsSettingsOpen(false);
+          setIsCalendarOpen(true);
+        }}
       />
 
       <PracticeHistory
@@ -371,6 +382,12 @@ function App() {
         pieces={pieces}
         practiceSessions={practiceSessions}
         onDeleteSession={handleDeleteSession}
+      />
+
+      <PracticeCalendar
+        isOpen={isCalendarOpen}
+        onClose={() => setIsCalendarOpen(false)}
+        practiceSessions={practiceSessions}
       />
 
       <Toast

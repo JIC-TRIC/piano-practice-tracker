@@ -1,6 +1,6 @@
 import "./Header.css";
 
-function Header({ onAddClick, onSettingsClick }) {
+function Header({ onAddClick, onSettingsClick, streak }) {
   return (
     <div className="app-header">
       <div className="header-content">
@@ -20,6 +20,12 @@ function Header({ onAddClick, onSettingsClick }) {
           <h1 className="app-title">Piano Tracker</h1>
         </div>
         <div className="header-buttons">
+          <button
+            className="icon-btn streak-btn"
+            title={`${streak} day${streak !== 1 ? "s" : ""} practice streak`}
+          >
+            🔥 <span className="streak-number">{streak}</span>
+          </button>
           <button
             className="icon-btn youtube-btn"
             onClick={() => window.open("https://www.youtube.com", "_blank")}
