@@ -78,7 +78,7 @@
 
 .streak-btn {
   background: var(--surface-light);
-  border: 1px solid rgba(232, 144, 85, 0.3);
+  border: 1px solid rgba(251, 146, 60, 0.4);
   cursor: default;
   pointer-events: none;
 }
@@ -92,8 +92,7 @@
 .streak-number {
   font-size: 1rem;
   font-weight: 700;
-  color: #e89055;
-  margin-left: 0.25rem;
+  color: #fb923c;
 }
 
 .add-btn {

@@ -2,41 +2,88 @@ import { useMemo } from "react";
 import "./PracticeCalendar.css";
 
 function PracticeCalendar({ isOpen, onClose, practiceSessions }) {
-  const calendarData = useMemo(() => {
+  const monthsData = useMemo(() => {
     // Sammle alle Übungstage mit Gesamtzeit
     const dayMap = {};
+    let firstSessionDate = null;
 
     Object.values(practiceSessions)
       .flat()
       .forEach((session) => {
         const date = new Date(session.timestamp);
-        const dateKey = date.toISOString().split("T")[0]; // YYYY-MM-DD
+        const dateKey = date.toISOString().split("T")[0];
 
         if (!dayMap[dateKey]) {
           dayMap[dateKey] = 0;
         }
         dayMap[dateKey] += session.duration;
+
+        // Finde früheste Session
+        if (!firstSessionDate || date < firstSessionDate) {
+          firstSessionDate = date;
+        }
       });
 
-    // Generiere die letzten 365 Tage
-    const days = [];
-    const today = new Date();
-
-    for (let i = 364; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      const dateKey = date.toISOString().split("T")[0];
-
-      days.push({
-        date: dateKey,
-        dayOfWeek: date.getDay(), // 0 = Sunday, 6 = Saturday
-        seconds: dayMap[dateKey] || 0,
-        month: date.getMonth(),
-        day: date.getDate(),
-      });
+    // Wenn keine Sessions vorhanden, verwende heute als Start
+    if (!firstSessionDate) {
+      firstSessionDate = new Date();
     }
 
-    return days;
+    // Generiere Monate von der ersten Session bis heute
+    const months = [];
+    const today = new Date();
+    const startDate = new Date(
+      firstSessionDate.getFullYear(),
+      firstSessionDate.getMonth(),
+      1
+    );
+    const endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Letzter Tag des aktuellen Monats
+
+    let currentMonth = new Date(startDate);
+
+    while (currentMonth <= endDate) {
+      const year = currentMonth.getFullYear();
+      const month = currentMonth.getMonth();
+      const monthName = currentMonth.toLocaleString("en-US", {
+        month: "long",
+        year: "numeric",
+      });
+
+      // Generiere alle Tage des Monats
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const firstDayOfMonth = new Date(year, month, 1).getDay(); // 0 = Sunday
+
+      const days = [];
+
+      // Füge leere Tage am Anfang hinzu
+      for (let i = 0; i < firstDayOfMonth; i++) {
+        days.push(null);
+      }
+
+      // Füge alle Tage des Monats hinzu
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const dateKey = date.toISOString().split("T")[0];
+
+        days.push({
+          date: dateKey,
+          day: day,
+          seconds: dayMap[dateKey] || 0,
+        });
+      }
+
+      months.push({
+        name: monthName,
+        year: year,
+        month: month,
+        days: days,
+      });
+
+      // Nächster Monat
+      currentMonth.setMonth(currentMonth.getMonth() + 1);
+    }
+
+    return months.reverse(); // Neueste Monate zuerst
   }, [practiceSessions]);
 
   // Berechne Intensitätslevel basierend auf Übungszeit
@@ -48,61 +95,6 @@ function PracticeCalendar({ isOpen, onClose, practiceSessions }) {
     return 4; // >= 1h
   };
 
-  // Gruppiere Tage in Wochen (für Grid-Layout)
-  const weeks = useMemo(() => {
-    const weeksArray = [];
-    let currentWeek = [];
-
-    // Fülle erste Woche mit leeren Tagen vor dem ersten Tag
-    const firstDay = calendarData[0];
-    if (firstDay) {
-      for (let i = 0; i < firstDay.dayOfWeek; i++) {
-        currentWeek.push(null);
-      }
-    }
-
-    calendarData.forEach((day) => {
-      currentWeek.push(day);
-
-      if (currentWeek.length === 7) {
-        weeksArray.push(currentWeek);
-        currentWeek = [];
-      }
-    });
-
-    // Fülle letzte Woche mit leeren Tagen auf
-    if (currentWeek.length > 0) {
-      while (currentWeek.length < 7) {
-        currentWeek.push(null);
-      }
-      weeksArray.push(currentWeek);
-    }
-
-    return weeksArray;
-  }, [calendarData]);
-
-  // Finde Monate für Labels
-  const monthLabels = useMemo(() => {
-    const labels = [];
-    let lastMonth = -1;
-
-    weeks.forEach((week, weekIndex) => {
-      const firstDayInWeek = week.find((day) => day !== null);
-      if (firstDayInWeek && firstDayInWeek.month !== lastMonth) {
-        if (firstDayInWeek.day <= 7) {
-          // Nur wenn es der Anfang des Monats ist
-          labels.push({
-            weekIndex,
-            month: firstDayInWeek.month,
-          });
-          lastMonth = firstDayInWeek.month;
-        }
-      }
-    });
-
-    return labels;
-  }, [weeks]);
-
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     if (minutes < 60) return `${minutes}m`;
@@ -111,21 +103,7 @@ function PracticeCalendar({ isOpen, onClose, practiceSessions }) {
     return `${hours}h ${mins}m`;
   };
 
-  const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dayNames = ["S", "M", "T", "W", "T", "F", "S"];
 
   if (!isOpen) return null;
 
@@ -140,49 +118,49 @@ function PracticeCalendar({ isOpen, onClose, practiceSessions }) {
         </div>
 
         <div className="calendar-container">
-          <div className="calendar-header">
-            <div className="month-labels">
-              {monthLabels.map((label, idx) => (
-                <span
-                  key={idx}
-                  className="month-label"
-                  style={{ gridColumn: label.weekIndex + 2 }}
-                >
-                  {monthNames[label.month]}
-                </span>
-              ))}
+          {monthsData.length === 0 ? (
+            <div className="empty-calendar">
+              <p>
+                No practice sessions yet. Start practicing to see your calendar!
+              </p>
             </div>
-          </div>
-
-          <div className="calendar-grid">
-            {/* Day labels */}
-            <div className="day-labels">
-              {dayNames.map((day, idx) => (
-                <div key={idx} className="day-label">
-                  {day.substring(0, 1)}
+          ) : (
+            monthsData.map((monthData, monthIdx) => (
+              <div key={monthIdx} className="month-block">
+                <div className="month-header">
+                  <h3 className="month-title">{monthData.name}</h3>
                 </div>
-              ))}
-            </div>
 
-            {/* Heatmap grid */}
-            <div className="heatmap-grid">
-              {weeks.map((week, weekIdx) => (
-                <div key={weekIdx} className="week-column">
-                  {week.map((day, dayIdx) => (
-                    <div
-                      key={dayIdx}
-                      className={`day-cell ${
-                        day ? `intensity-${getIntensity(day.seconds)}` : "empty"
-                      }`}
-                      title={
-                        day ? `${day.date}: ${formatTime(day.seconds)}` : ""
-                      }
-                    />
-                  ))}
+                <div className="month-calendar">
+                  <div className="weekday-labels">
+                    {dayNames.map((day, idx) => (
+                      <div key={idx} className="weekday-label">
+                        {day}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="days-grid">
+                    {monthData.days.map((day, dayIdx) => (
+                      <div
+                        key={dayIdx}
+                        className={`day-cell ${
+                          day
+                            ? `intensity-${getIntensity(day.seconds)}`
+                            : "empty"
+                        }`}
+                        title={
+                          day ? `${day.date}: ${formatTime(day.seconds)}` : ""
+                        }
+                      >
+                        {day && <span className="day-number">{day.day}</span>}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            ))
+          )}
 
           <div className="calendar-legend">
             <span className="legend-label">Less</span>

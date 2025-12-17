@@ -24,7 +24,7 @@ function Header({ onAddClick, onSettingsClick, streak }) {
             className="icon-btn streak-btn"
             title={`${streak} day${streak !== 1 ? "s" : ""} practice streak`}
           >
-            🔥 <span className="streak-number">{streak}</span>
+            <span className="streak-number">{streak}</span>
           </button>
           <button
             className="icon-btn youtube-btn"
