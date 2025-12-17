@@ -19,14 +19,14 @@ function YouTubeModal({
   const startTimeRef = useRef(null);
 
   const milestoneOptions = [
-    { id: "notes_learned", label: "Notes Learned" },
-    { id: "right_hand", label: "Right Hand Mastered" },
-    { id: "left_hand", label: "Left Hand Mastered" },
-    { id: "hands_together", label: "Hands Together" },
-    { id: "tempo_reached", label: "Target Tempo Reached" },
-    { id: "dynamics_added", label: "Dynamics Added" },
-    { id: "performance_ready", label: "Performance Ready" },
-    { id: "memorized", label: "Memorized" },
+    { id: "notes_learned", label: "Notes", icon: "🎵" },
+    { id: "right_hand", label: "Right Hand", icon: "👉" },
+    { id: "left_hand", label: "Left Hand", icon: "👈" },
+    { id: "hands_together", label: "Together", icon: "🙏" },
+    { id: "tempo_reached", label: "Tempo", icon: "⏱️" },
+    { id: "dynamics_added", label: "Dynamics", icon: "🎧" },
+    { id: "performance_ready", label: "Ready", icon: "🎭" },
+    { id: "memorized", label: "Memorized", icon: "🧠" },
   ];
 
   // Initialize selectedMilestones when modal opens
@@ -190,22 +190,37 @@ function YouTubeModal({
           <label className="form-label">
             Milestones ({selectedMilestones.length}/8)
           </label>
-          <div className="milestone-list">
-            {milestoneOptions.map((milestone) => (
-              <label
-                key={milestone.id}
-                className="milestone-item"
-                onClick={() => toggleMilestone(milestone.id)}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedMilestones.includes(milestone.id)}
-                  onChange={() => {}}
-                  className="milestone-checkbox"
-                />
-                <span className="milestone-label">{milestone.label}</span>
-              </label>
-            ))}
+          <div className="milestone-grid">
+            <div className="milestone-row">
+              {milestoneOptions.slice(0, 4).map((milestone) => (
+                <button
+                  key={milestone.id}
+                  type="button"
+                  className={`milestone-btn ${
+                    selectedMilestones.includes(milestone.id) ? "active" : ""
+                  }`}
+                  onClick={() => toggleMilestone(milestone.id)}
+                >
+                  <span className="milestone-icon">{milestone.icon}</span>
+                  <span className="milestone-label">{milestone.label}</span>
+                </button>
+              ))}
+            </div>
+            <div className="milestone-row">
+              {milestoneOptions.slice(4, 8).map((milestone) => (
+                <button
+                  key={milestone.id}
+                  type="button"
+                  className={`milestone-btn ${
+                    selectedMilestones.includes(milestone.id) ? "active" : ""
+                  }`}
+                  onClick={() => toggleMilestone(milestone.id)}
+                >
+                  <span className="milestone-icon">{milestone.icon}</span>
+                  <span className="milestone-label">{milestone.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 

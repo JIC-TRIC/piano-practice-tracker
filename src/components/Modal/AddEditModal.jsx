@@ -13,14 +13,14 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
 
   // Meilenstein-Optionen
   const milestoneOptions = [
-    { id: "notes_learned", label: "Notes Learned" },
-    { id: "right_hand", label: "Right Hand Mastered" },
-    { id: "left_hand", label: "Left Hand Mastered" },
-    { id: "hands_together", label: "Hands Together" },
-    { id: "tempo_reached", label: "Target Tempo Reached" },
-    { id: "dynamics_added", label: "Dynamics Added" },
-    { id: "performance_ready", label: "Performance Ready" },
-    { id: "memorized", label: "Memorized" },
+    { id: "notes_learned", label: "Notes", icon: "🎵" },
+    { id: "right_hand", label: "Right Hand", icon: "👉" },
+    { id: "left_hand", label: "Left Hand", icon: "👈" },
+    { id: "hands_together", label: "Together", icon: "🙏" },
+    { id: "tempo_reached", label: "Tempo", icon: "⏱️" },
+    { id: "dynamics_added", label: "Dynamics", icon: "🎧" },
+    { id: "performance_ready", label: "Ready", icon: "🎭" },
+    { id: "memorized", label: "Memorized", icon: "🧠" },
   ];
 
   useEffect(() => {
@@ -140,44 +140,133 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
 
           <div className="form-group">
             <label className="form-label">Difficulty</label>
-            <select
-              className="form-input"
-              name="difficulty"
-              value={formData.difficulty}
-              onChange={handleChange}
-              required
-            >
-              <option value="Unknown">Unknown</option>
-              <option value="Free">Free</option>
-              <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
-              <option value="Hard">Hard</option>
-              <option value="Ultrahard">Ultrahard</option>
-            </select>
+            <div className="segmented-control">
+              <button
+                type="button"
+                className={`segment-btn ${
+                  formData.difficulty === "Unknown" ? "active" : ""
+                }`}
+                onClick={() =>
+                  handleChange({
+                    target: { name: "difficulty", value: "Unknown" },
+                  })
+                }
+              >
+                <span className="segment-icon">❓</span>
+                <span className="segment-label">Unknown</span>
+              </button>
+              <button
+                type="button"
+                className={`segment-btn ${
+                  formData.difficulty === "Free" ? "active" : ""
+                }`}
+                onClick={() =>
+                  handleChange({
+                    target: { name: "difficulty", value: "Free" },
+                  })
+                }
+              >
+                <span className="segment-icon">🎵</span>
+                <span className="segment-label">Free</span>
+              </button>
+              <button
+                type="button"
+                className={`segment-btn ${
+                  formData.difficulty === "Easy" ? "active" : ""
+                }`}
+                onClick={() =>
+                  handleChange({
+                    target: { name: "difficulty", value: "Easy" },
+                  })
+                }
+              >
+                <span className="segment-icon">😊</span>
+                <span className="segment-label">Easy</span>
+              </button>
+              <button
+                type="button"
+                className={`segment-btn ${
+                  formData.difficulty === "Medium" ? "active" : ""
+                }`}
+                onClick={() =>
+                  handleChange({
+                    target: { name: "difficulty", value: "Medium" },
+                  })
+                }
+              >
+                <span className="segment-icon">😐</span>
+                <span className="segment-label">Medium</span>
+              </button>
+              <button
+                type="button"
+                className={`segment-btn ${
+                  formData.difficulty === "Hard" ? "active" : ""
+                }`}
+                onClick={() =>
+                  handleChange({
+                    target: { name: "difficulty", value: "Hard" },
+                  })
+                }
+              >
+                <span className="segment-icon">😰</span>
+                <span className="segment-label">Hard</span>
+              </button>
+              <button
+                type="button"
+                className={`segment-btn ${
+                  formData.difficulty === "Ultrahard" ? "active" : ""
+                }`}
+                onClick={() =>
+                  handleChange({
+                    target: { name: "difficulty", value: "Ultrahard" },
+                  })
+                }
+              >
+                <span className="segment-icon">💀</span>
+                <span className="segment-label">Ultra</span>
+              </button>
+            </div>
           </div>
 
           <div className="form-group">
             <label className="form-label">
               Milestones ({formData.milestones?.length || 0}/8)
             </label>
-            <div className="milestone-list">
-              {milestoneOptions.map((milestone) => (
-                <label
-                  key={milestone.id}
-                  className="milestone-item"
-                  onClick={() => toggleMilestone(milestone.id)}
-                >
-                  <input
-                    type="checkbox"
-                    checked={
-                      formData.milestones?.includes(milestone.id) || false
-                    }
-                    onChange={() => {}}
-                    className="milestone-checkbox"
-                  />
-                  <span className="milestone-label">{milestone.label}</span>
-                </label>
-              ))}
+            <div className="milestone-grid">
+              <div className="milestone-row">
+                {milestoneOptions.slice(0, 4).map((milestone) => (
+                  <button
+                    key={milestone.id}
+                    type="button"
+                    className={`milestone-btn ${
+                      formData.milestones?.includes(milestone.id)
+                        ? "active"
+                        : ""
+                    }`}
+                    onClick={() => toggleMilestone(milestone.id)}
+                  >
+                    <span className="milestone-icon">{milestone.icon}</span>
+                    <span className="milestone-label">{milestone.label}</span>
+                  </button>
+                ))}
+              </div>
+              <div className="milestone-row">
+                {milestoneOptions.slice(4, 8).map((milestone) => (
+                  <button
+                    key={milestone.id}
+                    type="button"
+                    className={`milestone-btn ${
+                      formData.milestones?.includes(milestone.id)
+                        ? "active"
+                        : ""
+                    }`}
+                    onClick={() => toggleMilestone(milestone.id)}
+                  >
+                    <span className="milestone-icon">{milestone.icon}</span>
+                    <span className="milestone-label">{milestone.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
