@@ -6,7 +6,7 @@ body {
   padding: 0;
   width: 100vw;
   box-sizing: border-box;
-  background: linear-gradient(135deg, var(--background) 0%, #1a1a2e 100%);
+  background: linear-gradient(135deg, var(--background) 0%, #252a3a 100%);
   overscroll-behavior-y: contain; /* Verhindert Bounce/Scroll "Überlauf" */
   touch-action: manipulation; /* Verhindert ungewollte Gesten */
   -webkit-user-select: none; /* Optional: verhindert Textauswahl beim Tippen */
@@ -26,17 +26,17 @@ body {
 }
 
 :root {
-  --primary: #6c5ce7;
-  --primary-dark: #5f4fd8;
-  --secondary: #a29bfe;
-  --background: #0f0f1e;
-  --surface: #1a1a2e;
-  --surface-light: #2a2a3e;
-  --text: #e1e1e6;
-  --text-secondary: #a1a1aa;
-  --success: #4ade80;
-  --warning: #fbbf24;
-  --danger: #f87171;
+  --primary: #7c9cbf;
+  --primary-dark: #6a89aa;
+  --secondary: #b4c7dc;
+  --background: #1c1e26;
+  --surface: #2d3142;
+  --surface-light: #3d4354;
+  --text: #e5e9f0;
+  --text-secondary: #b8c0cc;
+  --success: #81b88b;
+  --warning: #d4a574;
+  --danger: #c97c7c;
 }
 
 body {

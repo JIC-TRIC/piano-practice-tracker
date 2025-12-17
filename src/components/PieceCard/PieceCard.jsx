@@ -6,27 +6,27 @@ const getStatusFromMilestones = (milestones = []) => {
   const count = milestones.length;
 
   if (count === 0) {
-    return { icon: "⚪", label: "Not Started", color: "#6b7280" };
+    return { icon: "⚪", label: "Not Started", color: "#8a95a5" };
   } else if (count <= 2) {
-    return { icon: "🎯", label: "Learning", color: "#f59e0b" };
+    return { icon: "🎯", label: "Learning", color: "#d4a574" };
   } else if (count <= 4) {
-    return { icon: "🎹", label: "Practicing", color: "#22c55e" };
+    return { icon: "🎹", label: "Practicing", color: "#81b88b" };
   } else if (count <= 6) {
-    return { icon: "⭐", label: "Polishing", color: "#3b82f6" };
+    return { icon: "⭐", label: "Polishing", color: "#7c9cbf" };
   } else {
-    return { icon: "✨", label: "Mastered", color: "#8b5cf6" };
+    return { icon: "✨", label: "Mastered", color: "#9d89ba" };
   }
 }; // Hilfsfunktion für Schwierigkeit-Farbe
 const getDifficultyColor = (difficulty) => {
   const colors = {
-    Unknown: "#6b7280",
-    Free: "#4ade80",
-    Easy: "#22c55e",
-    Medium: "#fbbf24",
-    Hard: "#f97316",
-    Ultrahard: "#ef4444",
+    Unknown: "#8a95a5",
+    Free: "#7ac89f",
+    Easy: "#90d699",
+    Medium: "#e0b563",
+    Hard: "#e89055",
+    Ultrahard: "#d66565",
   };
-  return colors[difficulty] || "#a1a1aa";
+  return colors[difficulty] || "#b8c0cc";
 };
 
 function PieceCard({ piece, sessions, onEdit, onYouTubeClick }) {
