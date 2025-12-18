@@ -11,7 +11,15 @@ function PracticeCalendar({ isOpen, onClose, practiceSessions }) {
       .flat()
       .forEach((session) => {
         const date = new Date(session.timestamp);
-        const dateKey = date.toISOString().split("T")[0];
+        // Normalisiere auf lokales Datum (Mitternacht) um Zeitzone-Probleme zu vermeiden
+        const localDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate()
+        );
+        const dateKey = `${localDate.getFullYear()}-${String(
+          localDate.getMonth() + 1
+        ).padStart(2, "0")}-${String(localDate.getDate()).padStart(2, "0")}`;
 
         if (!dayMap[dateKey]) {
           dayMap[dateKey] = 0;
@@ -19,8 +27,8 @@ function PracticeCalendar({ isOpen, onClose, practiceSessions }) {
         dayMap[dateKey] += session.duration;
 
         // Finde früheste Session
-        if (!firstSessionDate || date < firstSessionDate) {
-          firstSessionDate = date;
+        if (!firstSessionDate || localDate < firstSessionDate) {
+          firstSessionDate = localDate;
         }
       });
 
@@ -63,7 +71,9 @@ function PracticeCalendar({ isOpen, onClose, practiceSessions }) {
       // Füge alle Tage des Monats hinzu
       for (let day = 1; day <= daysInMonth; day++) {
         const date = new Date(year, month, day);
-        const dateKey = date.toISOString().split("T")[0];
+        const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(
+          day
+        ).padStart(2, "0")}`;
 
         days.push({
           date: dateKey,

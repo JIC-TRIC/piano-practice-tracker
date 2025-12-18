@@ -25,12 +25,6 @@
   font-size: 1.2rem;
 }
 
-.close-btn:hover {
-  background: var(--danger);
-  border-color: var(--danger);
-  color: white;
-}
-
 .history-stats {
   display: flex;
   gap: 1.5rem;
@@ -77,10 +71,6 @@
 .history-list::-webkit-scrollbar-thumb {
   background: var(--surface-light);
   border-radius: 4px;
-}
-
-.history-list::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
 }
 
 .history-group {

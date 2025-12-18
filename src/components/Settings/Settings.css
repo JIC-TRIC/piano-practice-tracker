@@ -117,10 +117,6 @@
   background-color: white;
 }
 
-.toggle-slider:hover {
-  border-color: var(--primary);
-}
-
 /* Backup Section */
 .setting-section {
   padding: 20px;
@@ -196,12 +192,6 @@
   width: 100%;
   background: var(--success);
   color: white;
-}
-
-.history-btn:hover {
-  background: #22c55e;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
 }
 
 /* Mobile Optimization */

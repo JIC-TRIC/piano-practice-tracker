@@ -117,7 +117,7 @@
 
 .btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--text-on-primary);
 }
 
 .btn-secondary {

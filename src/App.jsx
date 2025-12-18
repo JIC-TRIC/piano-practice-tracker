@@ -13,6 +13,10 @@ import Toast from "./components/Toast/Toast";
 import Settings from "./components/Settings/Settings";
 import PracticeHistory from "./components/PracticeHistory/PracticeHistory";
 import PracticeCalendar from "./components/PracticeCalendar/PracticeCalendar";
+import BottomNav from "./components/BottomNav/BottomNav";
+import PracticeView from "./components/PracticeView/PracticeView";
+import StatsView from "./components/StatsView/StatsView";
+import MoreView from "./components/MoreView/MoreView";
 
 function getSessionWeight(daysAgo) {
   // Exponentieller Abfall: Jeder Tag macht einen Unterschied
@@ -29,8 +33,16 @@ function App() {
   );
   const [settings, setSettings] = useLocalStorage("pianoSettings", {
     showExternalYouTubeButton: true,
+    favoritePiecesCount: 3,
+    colorScheme: "ocean",
   });
 
+  // Apply color scheme
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", settings.colorScheme);
+  }, [settings.colorScheme]);
+
+  const [activeTab, setActiveTab] = useState("library");
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     difficulty: [],
@@ -305,41 +317,82 @@ function App() {
 
   const stats = StatsBar({ pieces, practiceSessions });
 
+  const handlePieceClick = (piece) => {
+    handleOpenYouTube(piece.youtubeUrl, piece.id);
+  };
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "library":
+        return (
+          <>
+            <Header />
+            <div className="container">
+              <FilterTabs
+                onSearchChange={setSearchQuery}
+                onFilterChange={setFilters}
+                onSortChange={setSort}
+              />
+            </div>
+            <div className="container">
+              {processedPieces.length === 0 ? (
+                <EmptyState onAddClick={() => setIsAddModalOpen(true)} />
+              ) : (
+                <div className="pieces-grid">
+                  {processedPieces.map((piece) => (
+                    <PieceCard
+                      key={piece.id}
+                      piece={piece}
+                      sessions={practiceSessions[piece.id] || []}
+                      onEdit={handleEditPiece}
+                      onYouTubeClick={handleOpenYouTube}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </>
+        );
+
+      case "practice":
+        return (
+          <PracticeView
+            pieces={pieces}
+            practiceSessions={practiceSessions}
+            onPieceClick={handlePieceClick}
+            practiceStreak={stats.practiceStreak}
+            onAddPiece={() => setIsAddModalOpen(true)}
+            favoritePiecesCount={settings.favoritePiecesCount}
+          />
+        );
+
+      case "stats":
+        return (
+          <StatsView
+            pieces={pieces}
+            practiceSessions={practiceSessions}
+            onDeleteSession={handleDeleteSession}
+          />
+        );
+
+      case "more":
+        return (
+          <MoreView
+            settings={settings}
+            onSaveSettings={handleSaveSettings}
+            onViewHistory={() => setIsHistoryOpen(true)}
+            onViewCalendar={() => setIsCalendarOpen(true)}
+          />
+        );
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="App">
-      <div className="scroll-container">
-        <Header
-          onAddClick={() => setIsAddModalOpen(true)}
-          onSettingsClick={() => setIsSettingsOpen(true)}
-          streak={stats.practiceStreak}
-        />
-        {stats.statsBar}
-        <div className="container">
-          <FilterTabs
-            onSearchChange={setSearchQuery}
-            onFilterChange={setFilters}
-            onSortChange={setSort}
-          />
-        </div>
-
-        <div className="container">
-          {processedPieces.length === 0 ? (
-            <EmptyState onAddClick={() => setIsAddModalOpen(true)} />
-          ) : (
-            <div className="pieces-grid">
-              {processedPieces.map((piece) => (
-                <PieceCard
-                  key={piece.id}
-                  piece={piece}
-                  sessions={practiceSessions[piece.id] || []}
-                  onEdit={handleEditPiece}
-                  onYouTubeClick={handleOpenYouTube}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+      <div className="scroll-container">{renderContent()}</div>
 
       <AddEditModal
         isOpen={isAddModalOpen}
@@ -417,6 +470,8 @@ function App() {
           />
         </svg>
       </button>
+
+      <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
     </div>
   );
 }

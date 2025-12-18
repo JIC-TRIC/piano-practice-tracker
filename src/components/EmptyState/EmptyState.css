@@ -33,11 +33,5 @@
 
 .btn-primary {
   background: var(--primary);
-  color: white;
-}
-
-.btn-primary:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(108, 92, 231, 0.3);
+  color: var(--text-on-primary);
 }
