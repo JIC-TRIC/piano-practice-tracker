@@ -36,7 +36,15 @@ function PracticeHistory({
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     const now = new Date();
-    const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
+    // Normalisiere beide Daten auf Mitternacht für korrekten Tagesvergleich
+    const dateOnly = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+    const nowOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const diffDays = Math.floor((nowOnly - dateOnly) / (1000 * 60 * 60 * 24));
 
     if (diffDays === 0) return "Today";
     if (diffDays === 1) return "Yesterday";
@@ -51,9 +59,10 @@ function PracticeHistory({
 
   const formatDateTime = (timestamp) => {
     const date = new Date(timestamp);
-    return date.toLocaleTimeString("en-US", {
+    return date.toLocaleTimeString("de-DE", {
       hour: "2-digit",
       minute: "2-digit",
+      hour12: false,
     });
   };
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Settings.css";
+import packageJson from "../../../package.json";
 
 function Settings({
   isOpen,
@@ -106,6 +107,13 @@ function Settings({
         </div>
 
         <div className="settings-list">
+          {/* Version Display */}
+          <div className="version-display">
+            <span className="version-label">Version:</span>
+            <span className="version-number">{packageJson.version}</span>
+          </div>
+
+          <div className="settings-separator"></div>
           <div className="setting-item">
             <div className="setting-info">
               <h3 className="setting-title">External YouTube Button</h3>

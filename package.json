@@ -1,7 +1,7 @@
 {
   "name": "piano-practice-tracker",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.2.4",
   "homepage": "https://dein-github-username.github.io/piano-practice-tracker/",
   "type": "module",
   "scripts": {
