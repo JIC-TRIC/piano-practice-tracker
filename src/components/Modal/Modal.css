@@ -303,12 +303,12 @@
 }
 
 .milestone-icon {
-  font-size: 1.25rem;
+  font-size: 0.5rem;
   line-height: 1;
 }
 
 .milestone-label {
-  font-size: 0.65rem;
+  font-size: 0.25rem;
   font-weight: 500;
   text-align: center;
   line-height: 1.2;
@@ -329,11 +329,11 @@
   }
 
   .milestone-icon {
-    font-size: 1.15rem;
+    font-size: 0.4rem;
   }
 
   .milestone-label {
-    font-size: 0.6rem;
+    font-size: 0.25rem;
   }
 }
 
@@ -344,11 +344,11 @@
   }
 
   .milestone-icon {
-    font-size: 1.1rem;
+    font-size: 0.35rem;
   }
 
   .milestone-label {
-    font-size: 0.55rem;
+    font-size: 0.25rem;
   }
 }
 

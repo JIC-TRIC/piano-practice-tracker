@@ -19,14 +19,14 @@ function YouTubeModal({
   const startTimeRef = useRef(null);
 
   const milestoneOptions = [
-    { id: "notes_learned", label: "Notes", icon: "🎵" },
-    { id: "right_hand", label: "Right Hand", icon: "👉" },
-    { id: "left_hand", label: "Left Hand", icon: "👈" },
-    { id: "hands_together", label: "Together", icon: "🙏" },
-    { id: "tempo_reached", label: "Tempo", icon: "⏱️" },
-    { id: "dynamics_added", label: "Dynamics", icon: "🎧" },
-    { id: "performance_ready", label: "Ready", icon: "🎭" },
-    { id: "memorized", label: "Memorized", icon: "🧠" },
+    { id: "notes_learned", label: "Notes", icon: "�" },
+    { id: "right_hand", label: "Right Hand", icon: "➡️" },
+    { id: "left_hand", label: "Left Hand", icon: "⬅️" },
+    { id: "hands_together", label: "Together", icon: "🤝" },
+    { id: "tempo_reached", label: "Tempo", icon: "⏰" },
+    { id: "dynamics_added", label: "Dynamics", icon: "🔊" },
+    { id: "performance_ready", label: "Ready", icon: "⭐" },
+    { id: "memorized", label: "Memorized", icon: "✨" },
   ];
 
   // Initialize selectedMilestones when modal opens

@@ -27,7 +27,8 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
       });
     });
 
-    const avgSessionLength = totalSessions > 0 ? totalTime / totalSessions : 0;
+    const avgSessionLength =
+      totalSessions > 0 ? Math.round(totalTime / totalSessions) : 0;
 
     // Heute
     const today = new Date().toDateString();
