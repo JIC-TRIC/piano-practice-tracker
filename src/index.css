@@ -59,32 +59,6 @@ body {
   --text-on-primary: #ffffff;
 }
 
-[data-theme="sunset"] {
-  --primary: #f97316;
-  --primary-dark: #ea580c;
-  --secondary: #fbbf24;
-  --background: #1a0f0a;
-  --background-gradient: #261510;
-  --surface: #27180f;
-  --surface-light: #3d2517;
-  --text: #fff7ed;
-  --text-secondary: #d6a87a;
-  --text-on-primary: #ffffff;
-}
-
-[data-theme="forest"] {
-  --primary: #10b981;
-  --primary-dark: #059669;
-  --secondary: #34d399;
-  --background: #0a1a0f;
-  --background-gradient: #0f2615;
-  --surface: #0f2718;
-  --surface-light: #1a3d24;
-  --text: #ecfdf5;
-  --text-secondary: #86c9a3;
-  --text-on-primary: #ffffff;
-}
-
 [data-theme="lavender"] {
   --primary: #a855f7;
   --primary-dark: #9333ea;
@@ -98,17 +72,43 @@ body {
   --text-on-primary: #ffffff;
 }
 
-[data-theme="rose"] {
-  --primary: #ec4899;
-  --primary-dark: #db2777;
-  --secondary: #f472b6;
-  --background: #1a0a10;
-  --background-gradient: #261015;
-  --surface: #270f18;
-  --surface-light: #3d1725;
-  --text: #fdf2f8;
-  --text-secondary: #d68ba8;
+[data-theme="ember"] {
+  --primary: #ef4444;
+  --primary-dark: #dc2626;
+  --secondary: #f97316;
+  --background: #1a0a0a;
+  --background-gradient: #261010;
+  --surface: #271414;
+  --surface-light: #3d1f1f;
+  --text: #fef2f2;
+  --text-secondary: #d4a3a3;
   --text-on-primary: #ffffff;
+}
+
+[data-theme="mint"] {
+  --primary: #14b8a6;
+  --primary-dark: #0d9488;
+  --secondary: #5eead4;
+  --background: #0a1a14;
+  --background-gradient: #0f261c;
+  --surface: #102720;
+  --surface-light: #1a3d32;
+  --text: #f0fdfa;
+  --text-secondary: #86c9b8;
+  --text-on-primary: #ffffff;
+}
+
+[data-theme="dusk"] {
+  --primary: #e879f9;
+  --primary-dark: #d946ef;
+  --secondary: #f0abfc;
+  --background: #1a0a14;
+  --background-gradient: #26101c;
+  --surface: #27141e;
+  --surface-light: #3d1f30;
+  --text: #fdf4ff;
+  --text-secondary: #d4a3c4;
+  --text-on-primary: #000000;
 }
 
 [data-theme="mono"] {
@@ -153,4 +153,11 @@ body {
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+/* Bottom Spacer for Navigation Bar */
+.bottom-spacer {
+  height: 100px;
+  width: 100%;
+  flex-shrink: 0;
 }

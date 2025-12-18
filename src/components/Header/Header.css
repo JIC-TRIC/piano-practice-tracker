@@ -1,5 +1,5 @@
 .app-header {
-  background: rgba(26, 26, 46, 0.95);
+  background: var(--surface);
   backdrop-filter: blur(10px);
   padding: 1rem 1.5rem;
   position: relative;
@@ -24,6 +24,14 @@
 
 .logo svg {
   opacity: 0.9;
+}
+
+.piano-keyboard {
+  transition: all 0.3s ease;
+}
+
+.piano-keyboard:hover {
+  transform: scale(1.05);
 }
 
 .app-title {

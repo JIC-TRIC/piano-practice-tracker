@@ -162,37 +162,31 @@ function MoreView({ settings, onSaveSettings, onViewHistory, onViewCalendar }) {
                 id: "ocean",
                 name: "Ocean",
                 colors: ["#0a0e1a", "#06b6d4", "#22d3ee"],
-                description: "Cool cyan tones",
-              },
-              {
-                id: "sunset",
-                name: "Sunset",
-                colors: ["#1a0a0a", "#f97316", "#fbbf24"],
-                description: "Warm orange & gold",
-              },
-              {
-                id: "forest",
-                name: "Forest",
-                colors: ["#0a1a0f", "#10b981", "#34d399"],
-                description: "Natural green",
               },
               {
                 id: "lavender",
                 name: "Lavender",
                 colors: ["#120a1a", "#a855f7", "#c084fc"],
-                description: "Soft purple",
               },
               {
-                id: "rose",
-                name: "Rose",
-                colors: ["#1a0a10", "#ec4899", "#f472b6"],
-                description: "Warm pink",
+                id: "ember",
+                name: "Ember",
+                colors: ["#1a0a0a", "#ef4444", "#f97316"],
+              },
+              {
+                id: "mint",
+                name: "Mint",
+                colors: ["#0a1a14", "#14b8a6", "#5eead4"],
+              },
+              {
+                id: "dusk",
+                name: "Dusk",
+                colors: ["#1a0a14", "#e879f9", "#f0abfc"],
               },
               {
                 id: "mono",
-                name: "Monochrome",
-                colors: ["#0a0a0a", "#ffffff", "#a0a0a0"],
-                description: "Black & white",
+                name: "Mono",
+                colors: ["#0a0a0a", "#ffffff", "#888888"],
               },
             ].map((scheme) => (
               <button
@@ -266,6 +260,9 @@ function MoreView({ settings, onSaveSettings, onViewHistory, onViewCalendar }) {
             </label>
           </div>
         </div>
+
+        {/* Bottom spacer for navigation bar */}
+        <div className="bottom-spacer"></div>
       </div>
     </>
   );

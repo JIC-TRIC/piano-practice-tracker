@@ -59,6 +59,17 @@
   transform: scale(1.1);
 }
 
+/* Disabled state when modal is open */
+.bottom-nav.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.bottom-nav.disabled .nav-tab {
+  cursor: not-allowed;
+}
+
 /* Tablet & Desktop */
 @media (min-width: 768px) {
   .bottom-nav {

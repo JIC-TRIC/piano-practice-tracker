@@ -350,6 +350,8 @@ function App() {
                   ))}
                 </div>
               )}
+              {/* Bottom spacer for navigation bar */}
+              <div className="bottom-spacer"></div>
             </div>
           </>
         );
@@ -471,7 +473,17 @@ function App() {
         </svg>
       </button>
 
-      <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+      <BottomNav
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        disabled={
+          isAddModalOpen ||
+          isYouTubeModalOpen ||
+          isSettingsOpen ||
+          isHistoryOpen ||
+          isCalendarOpen
+        }
+      />
     </div>
   );
 }

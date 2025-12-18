@@ -11,15 +11,19 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
 
   // Statistiken berechnen
   const stats = useMemo(() => {
-    const mastered = pieces.filter((p) => p.milestones.length >= 7).length;
+    const safePieces = pieces || [];
+    const safeSessions = practiceSessions || {};
+
+    const mastered = safePieces.filter((p) => p.milestones?.length >= 7).length;
 
     let totalTime = 0;
     let totalSessions = 0;
 
-    Object.values(practiceSessions).forEach((sessions) => {
+    Object.values(safeSessions).forEach((sessions) => {
+      if (!Array.isArray(sessions)) return;
       totalSessions += sessions.length;
       sessions.forEach((session) => {
-        totalTime += session.duration;
+        totalTime += session?.duration || 0;
       });
     });
 
@@ -28,10 +32,14 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
     // Heute
     const today = new Date().toDateString();
     let todayTime = 0;
-    Object.values(practiceSessions).forEach((sessions) => {
+    Object.values(safeSessions).forEach((sessions) => {
+      if (!Array.isArray(sessions)) return;
       sessions.forEach((session) => {
-        if (new Date(session.timestamp).toDateString() === today) {
-          todayTime += session.duration;
+        if (
+          session?.timestamp &&
+          new Date(session.timestamp).toDateString() === today
+        ) {
+          todayTime += session?.duration || 0;
         }
       });
     });
@@ -40,10 +48,11 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
     const weekAgo = new Date();
     weekAgo.setDate(weekAgo.getDate() - 7);
     let weekTime = 0;
-    Object.values(practiceSessions).forEach((sessions) => {
+    Object.values(safeSessions).forEach((sessions) => {
+      if (!Array.isArray(sessions)) return;
       sessions.forEach((session) => {
-        if (new Date(session.timestamp) >= weekAgo) {
-          weekTime += session.duration;
+        if (session?.timestamp && new Date(session.timestamp) >= weekAgo) {
+          weekTime += session?.duration || 0;
         }
       });
     });
@@ -211,6 +220,9 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
           practiceSessions={practiceSessions}
           onDeleteSession={onDeleteSession}
         />
+
+        {/* Bottom spacer for navigation bar */}
+        <div className="bottom-spacer"></div>
       </div>
     </>
   );

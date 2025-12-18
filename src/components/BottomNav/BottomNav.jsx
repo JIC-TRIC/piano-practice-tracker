@@ -1,6 +1,6 @@
 import "./BottomNav.css";
 
-function BottomNav({ activeTab, onTabChange }) {
+function BottomNav({ activeTab, onTabChange, disabled }) {
   const tabs = [
     {
       id: "library",
@@ -119,12 +119,13 @@ function BottomNav({ activeTab, onTabChange }) {
   ];
 
   return (
-    <nav className="bottom-nav">
+    <nav className={`bottom-nav ${disabled ? "disabled" : ""}`}>
       {tabs.map((tab) => (
         <button
           key={tab.id}
           className={`nav-tab ${activeTab === tab.id ? "active" : ""}`}
-          onClick={() => onTabChange(tab.id)}
+          onClick={() => !disabled && onTabChange(tab.id)}
+          disabled={disabled}
         >
           <span className="nav-icon">{tab.icon}</span>
           <span className="nav-label">{tab.label}</span>

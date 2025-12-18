@@ -11,19 +11,27 @@ function PracticeView({
   onAddPiece,
   favoritePiecesCount = 3,
 }) {
+  // Sichere Defaults
+  const safePieces = pieces || [];
+  const safeSessions = practiceSessions || {};
+
   // Heute geübte Zeit berechnen
   const todayTime = useMemo(() => {
     const today = new Date().toDateString();
     let total = 0;
-    Object.values(practiceSessions).forEach((sessions) => {
+    Object.values(safeSessions).forEach((sessions) => {
+      if (!Array.isArray(sessions)) return;
       sessions.forEach((session) => {
-        if (new Date(session.timestamp).toDateString() === today) {
-          total += session.duration;
+        if (
+          session?.timestamp &&
+          new Date(session.timestamp).toDateString() === today
+        ) {
+          total += session?.duration || 0;
         }
       });
     });
     return total;
-  }, [practiceSessions]);
+  }, [safeSessions]);
 
   // Daily Goal (hardcoded für jetzt, später aus Settings)
   const dailyGoal = 30 * 60; // 30 Minuten in Sekunden
@@ -31,25 +39,28 @@ function PracticeView({
 
   // Favorite Pieces (Top 3 nach Gesamtzeit)
   const favoritePieces = useMemo(() => {
-    return pieces
+    return safePieces
       .map((piece) => {
-        const sessions = practiceSessions[piece.id] || [];
-        const totalTime = sessions.reduce((sum, s) => sum + s.duration, 0);
-        const sessionCount = sessions.length;
+        const sessions = safeSessions[piece.id] || [];
+        const totalTime = Array.isArray(sessions)
+          ? sessions.reduce((sum, s) => sum + (s?.duration || 0), 0)
+          : 0;
+        const sessionCount = Array.isArray(sessions) ? sessions.length : 0;
         return { ...piece, totalTime, sessionCount };
       })
       .filter((p) => p.sessionCount > 0)
       .sort((a, b) => b.totalTime - a.totalTime)
       .slice(0, favoritePiecesCount);
-  }, [pieces, practiceSessions, favoritePiecesCount]);
+  }, [safePieces, safeSessions, favoritePiecesCount]);
 
   // Practice Milestones
   const milestoneData = useMemo(() => {
     // Gesamtzeit über alle Sessions berechnen
     let totalTime = 0;
-    Object.values(practiceSessions).forEach((sessions) => {
+    Object.values(safeSessions).forEach((sessions) => {
+      if (!Array.isArray(sessions)) return;
       sessions.forEach((session) => {
-        totalTime += session.duration;
+        totalTime += session?.duration || 0;
       });
     });
 
@@ -276,6 +287,9 @@ function PracticeView({
           </svg>
           Find Piano Tutorials
         </button>
+
+        {/* Bottom spacer for navigation bar */}
+        <div className="bottom-spacer"></div>
       </div>
     </>
   );
