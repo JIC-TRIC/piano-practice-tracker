@@ -261,45 +261,23 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
             <label className="form-label">
               Milestones ({formData.milestones?.length || 0}/8)
             </label>
-            <div className="milestone-grid">
-              <div className="milestone-row">
-                {milestoneOptions.slice(0, 4).map((milestone) => (
-                  <button
-                    key={milestone.id}
-                    type="button"
-                    className={`milestone-btn ${
-                      formData.milestones?.includes(milestone.id)
-                        ? "active"
-                        : ""
-                    }`}
-                    onClick={() => toggleMilestone(milestone.id)}
-                  >
-                    <span className="milestone-icon">
-                      <FontAwesomeIcon icon={milestone.icon} />
-                    </span>
-                    <span className="milestone-label">{milestone.label}</span>
-                  </button>
-                ))}
-              </div>
-              <div className="milestone-row">
-                {milestoneOptions.slice(4, 8).map((milestone) => (
-                  <button
-                    key={milestone.id}
-                    type="button"
-                    className={`milestone-btn ${
-                      formData.milestones?.includes(milestone.id)
-                        ? "active"
-                        : ""
-                    }`}
-                    onClick={() => toggleMilestone(milestone.id)}
-                  >
-                    <span className="milestone-icon">
-                      <FontAwesomeIcon icon={milestone.icon} />
-                    </span>
-                    <span className="milestone-label">{milestone.label}</span>
-                  </button>
-                ))}
-              </div>
+            <div className="segmented-control" style={{ flexWrap: "wrap" }}>
+              {milestoneOptions.map((milestone) => (
+                <button
+                  key={milestone.id}
+                  type="button"
+                  className={`segment-btn ${
+                    formData.milestones?.includes(milestone.id) ? "active" : ""
+                  }`}
+                  onClick={() => toggleMilestone(milestone.id)}
+                  style={{ flex: "1 1 calc(25% - 0.281rem)", minWidth: 0 }}
+                >
+                  <span className="segment-icon">
+                    <FontAwesomeIcon icon={milestone.icon} />
+                  </span>
+                  <span className="segment-label">{milestone.label}</span>
+                </button>
+              ))}
             </div>
           </div>
 
