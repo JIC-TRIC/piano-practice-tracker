@@ -2,6 +2,8 @@ import { useMemo } from "react";
 import "./PracticeView.css";
 import { formatTime } from "../../utils/youtube";
 import Header from "../Header/Header";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBullseye, faStar } from "@fortawesome/free-solid-svg-icons";
 
 function PracticeView({
   pieces,
@@ -144,7 +146,9 @@ function PracticeView({
 
         {/* Daily Goal Section */}
         <div className="goal-section">
-          <h2 className="section-title">🎯 Today's Goal</h2>
+          <h2 className="section-title">
+            <FontAwesomeIcon icon={faBullseye} /> Today's Goal
+          </h2>
           <div className="goal-card">
             <div className="goal-progress-ring">
               <svg viewBox="0 0 120 120" className="progress-svg">
@@ -235,7 +239,9 @@ function PracticeView({
         {/* Favorite Pieces Section */}
         {favoritePieces.length > 0 && (
           <div className="favorites-section">
-            <h2 className="section-title">⭐ Favorite Pieces</h2>
+            <h2 className="section-title">
+              <FontAwesomeIcon icon={faStar} /> Favorite Pieces
+            </h2>
             <div className="favorites-list">
               {favoritePieces.map((piece, index) => (
                 <button

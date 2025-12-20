@@ -1,6 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import "./Modal.css";
 import { extractVideoId, formatTimerDisplay } from "../../utils/youtube";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFileLines,
+  faHandPointRight,
+  faHandPointLeft,
+  faHandsClapping,
+  faClock,
+  faVolumeHigh,
+  faStar,
+  faWandMagicSparkles,
+} from "@fortawesome/free-solid-svg-icons";
 
 function YouTubeModal({
   isOpen,
@@ -19,14 +30,14 @@ function YouTubeModal({
   const startTimeRef = useRef(null);
 
   const milestoneOptions = [
-    { id: "notes_learned", label: "Notes", icon: "�" },
-    { id: "right_hand", label: "Right Hand", icon: "➡️" },
-    { id: "left_hand", label: "Left Hand", icon: "⬅️" },
-    { id: "hands_together", label: "Together", icon: "🤝" },
-    { id: "tempo_reached", label: "Tempo", icon: "⏰" },
-    { id: "dynamics_added", label: "Dynamics", icon: "🔊" },
-    { id: "performance_ready", label: "Ready", icon: "⭐" },
-    { id: "memorized", label: "Memorized", icon: "✨" },
+    { id: "notes_learned", label: "Notes", icon: faFileLines },
+    { id: "right_hand", label: "Right Hand", icon: faHandPointRight },
+    { id: "left_hand", label: "Left Hand", icon: faHandPointLeft },
+    { id: "hands_together", label: "Together", icon: faHandsClapping },
+    { id: "tempo_reached", label: "Tempo", icon: faClock },
+    { id: "dynamics_added", label: "Dynamics", icon: faVolumeHigh },
+    { id: "performance_ready", label: "Ready", icon: faStar },
+    { id: "memorized", label: "Memorized", icon: faWandMagicSparkles },
   ];
 
   // Initialize selectedMilestones when modal opens
@@ -201,7 +212,9 @@ function YouTubeModal({
                   }`}
                   onClick={() => toggleMilestone(milestone.id)}
                 >
-                  <span className="milestone-icon">{milestone.icon}</span>
+                  <span className="milestone-icon">
+                    <FontAwesomeIcon icon={milestone.icon} />
+                  </span>
                   <span className="milestone-label">{milestone.label}</span>
                 </button>
               ))}
@@ -216,7 +229,9 @@ function YouTubeModal({
                   }`}
                   onClick={() => toggleMilestone(milestone.id)}
                 >
-                  <span className="milestone-icon">{milestone.icon}</span>
+                  <span className="milestone-icon">
+                    <FontAwesomeIcon icon={milestone.icon} />
+                  </span>
                   <span className="milestone-label">{milestone.label}</span>
                 </button>
               ))}

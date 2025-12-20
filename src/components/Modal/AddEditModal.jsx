@@ -1,6 +1,23 @@
 import { useState, useEffect } from "react";
 import "./Modal.css";
 import { getYouTubeThumbnail } from "../../utils/youtube";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFileLines,
+  faHandPointRight,
+  faHandPointLeft,
+  faHandsClapping,
+  faClock,
+  faVolumeHigh,
+  faStar,
+  faWandMagicSparkles,
+  faCircleQuestion,
+  faMusic,
+  faFaceSmile,
+  faMeh,
+  faFaceFrown,
+  faSkull,
+} from "@fortawesome/free-solid-svg-icons";
 
 function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
   const [formData, setFormData] = useState({
@@ -13,14 +30,14 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
 
   // Meilenstein-Optionen
   const milestoneOptions = [
-    { id: "notes_learned", label: "Notes", icon: "�" },
-    { id: "right_hand", label: "Right Hand", icon: "➡️" },
-    { id: "left_hand", label: "Left Hand", icon: "⬅️" },
-    { id: "hands_together", label: "Together", icon: "🤝" },
-    { id: "tempo_reached", label: "Tempo", icon: "⏰" },
-    { id: "dynamics_added", label: "Dynamics", icon: "🔊" },
-    { id: "performance_ready", label: "Ready", icon: "⭐" },
-    { id: "memorized", label: "Memorized", icon: "✨" },
+    { id: "notes_learned", label: "Notes", icon: faFileLines },
+    { id: "right_hand", label: "Right Hand", icon: faHandPointRight },
+    { id: "left_hand", label: "Left Hand", icon: faHandPointLeft },
+    { id: "hands_together", label: "Together", icon: faHandsClapping },
+    { id: "tempo_reached", label: "Tempo", icon: faClock },
+    { id: "dynamics_added", label: "Dynamics", icon: faVolumeHigh },
+    { id: "performance_ready", label: "Ready", icon: faStar },
+    { id: "memorized", label: "Memorized", icon: faWandMagicSparkles },
   ];
 
   useEffect(() => {
@@ -152,7 +169,9 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                   })
                 }
               >
-                <span className="segment-icon">❓</span>
+                <span className="segment-icon">
+                  <FontAwesomeIcon icon={faCircleQuestion} />
+                </span>
                 <span className="segment-label">Unknown</span>
               </button>
               <button
@@ -166,7 +185,9 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                   })
                 }
               >
-                <span className="segment-icon">🎵</span>
+                <span className="segment-icon">
+                  <FontAwesomeIcon icon={faMusic} />
+                </span>
                 <span className="segment-label">Free</span>
               </button>
               <button
@@ -180,7 +201,9 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                   })
                 }
               >
-                <span className="segment-icon">😊</span>
+                <span className="segment-icon">
+                  <FontAwesomeIcon icon={faFaceSmile} />
+                </span>
                 <span className="segment-label">Easy</span>
               </button>
               <button
@@ -194,7 +217,9 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                   })
                 }
               >
-                <span className="segment-icon">😐</span>
+                <span className="segment-icon">
+                  <FontAwesomeIcon icon={faMeh} />
+                </span>
                 <span className="segment-label">Medium</span>
               </button>
               <button
@@ -208,7 +233,9 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                   })
                 }
               >
-                <span className="segment-icon">😰</span>
+                <span className="segment-icon">
+                  <FontAwesomeIcon icon={faFaceFrown} />
+                </span>
                 <span className="segment-label">Hard</span>
               </button>
               <button
@@ -222,7 +249,9 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                   })
                 }
               >
-                <span className="segment-icon">💀</span>
+                <span className="segment-icon">
+                  <FontAwesomeIcon icon={faSkull} />
+                </span>
                 <span className="segment-label">Ultra</span>
               </button>
             </div>
@@ -245,7 +274,9 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                     }`}
                     onClick={() => toggleMilestone(milestone.id)}
                   >
-                    <span className="milestone-icon">{milestone.icon}</span>
+                    <span className="milestone-icon">
+                      <FontAwesomeIcon icon={milestone.icon} />
+                    </span>
                     <span className="milestone-label">{milestone.label}</span>
                   </button>
                 ))}
@@ -262,7 +293,9 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                     }`}
                     onClick={() => toggleMilestone(milestone.id)}
                   >
-                    <span className="milestone-icon">{milestone.icon}</span>
+                    <span className="milestone-icon">
+                      <FontAwesomeIcon icon={milestone.icon} />
+                    </span>
                     <span className="milestone-label">{milestone.label}</span>
                   </button>
                 ))}
