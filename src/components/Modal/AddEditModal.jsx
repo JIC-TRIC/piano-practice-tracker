@@ -57,6 +57,18 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
     }
   }, [editingPiece, isOpen]);
 
+  // Verhindere Body-Scroll wenn Modal geöffnet ist
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   const handlePasteFromClipboard = async () => {
     try {
       const text = await navigator.clipboard.readText();
