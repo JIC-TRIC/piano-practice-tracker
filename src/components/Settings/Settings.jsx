@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Settings.css";
 import packageJson from "../../../package.json";
 
@@ -11,6 +11,24 @@ function Settings({
   onViewCalendar,
 }) {
   const [localSettings, setLocalSettings] = useState(settings);
+
+  // Verhindere Body-Scroll wenn Modal geöffnet ist
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    };
+  }, [isOpen]);
 
   const handleToggle = (key) => {
     setLocalSettings((prev) => ({
@@ -274,11 +292,11 @@ function Settings({
         </div>
 
         <div className="modal-actions">
-          <button className="btn btn-primary" onClick={handleSave}>
-            Save Settings
-          </button>
           <button className="btn btn-secondary" onClick={onClose}>
             Cancel
+          </button>
+          <button className="btn btn-primary" onClick={handleSave}>
+            Save Settings
           </button>
         </div>
       </div>

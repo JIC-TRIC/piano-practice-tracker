@@ -1,7 +1,25 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import "./PracticeCalendar.css";
 
 function PracticeCalendar({ isOpen, onClose, practiceSessions }) {
+  // Verhindere Body-Scroll wenn Modal geöffnet ist
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    };
+  }, [isOpen]);
+
   const monthsData = useMemo(() => {
     // Sammle alle Übungstage mit Gesamtzeit
     const dayMap = {};

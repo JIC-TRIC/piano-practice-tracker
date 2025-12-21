@@ -51,11 +51,17 @@ function YouTubeModal({
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
     } else {
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
     }
     return () => {
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
     };
   }, [isOpen]);
 
@@ -213,41 +219,23 @@ function YouTubeModal({
           <label className="form-label">
             Milestones ({selectedMilestones.length}/8)
           </label>
-          <div className="milestone-grid">
-            <div className="milestone-row">
-              {milestoneOptions.slice(0, 4).map((milestone) => (
-                <button
-                  key={milestone.id}
-                  type="button"
-                  className={`milestone-btn ${
-                    selectedMilestones.includes(milestone.id) ? "active" : ""
-                  }`}
-                  onClick={() => toggleMilestone(milestone.id)}
-                >
-                  <span className="milestone-icon">
-                    <FontAwesomeIcon icon={milestone.icon} />
-                  </span>
-                  <span className="milestone-label">{milestone.label}</span>
-                </button>
-              ))}
-            </div>
-            <div className="milestone-row">
-              {milestoneOptions.slice(4, 8).map((milestone) => (
-                <button
-                  key={milestone.id}
-                  type="button"
-                  className={`milestone-btn ${
-                    selectedMilestones.includes(milestone.id) ? "active" : ""
-                  }`}
-                  onClick={() => toggleMilestone(milestone.id)}
-                >
-                  <span className="milestone-icon">
-                    <FontAwesomeIcon icon={milestone.icon} />
-                  </span>
-                  <span className="milestone-label">{milestone.label}</span>
-                </button>
-              ))}
-            </div>
+          <div className="segmented-control" style={{ flexWrap: "wrap" }}>
+            {milestoneOptions.map((milestone) => (
+              <button
+                key={milestone.id}
+                type="button"
+                className={`segment-btn ${
+                  selectedMilestones.includes(milestone.id) ? "active" : ""
+                }`}
+                onClick={() => toggleMilestone(milestone.id)}
+                style={{ flex: "1 1 calc(25% - 0.281rem)", minWidth: 0 }}
+              >
+                <span className="segment-icon">
+                  <FontAwesomeIcon icon={milestone.icon} />
+                </span>
+                <span className="segment-label">{milestone.label}</span>
+              </button>
+            ))}
           </div>
         </div>
 
@@ -284,14 +272,14 @@ function YouTubeModal({
         )}
 
         <div className="modal-actions">
-          <button className="btn btn-primary" onClick={handleClose}>
-            Close and Save
-          </button>
           <button
             className="btn btn-secondary"
             onClick={handleCloseWithoutSaving}
           >
             Close
+          </button>
+          <button className="btn btn-primary" onClick={handleClose}>
+            Close and Save
           </button>
         </div>
       </div>

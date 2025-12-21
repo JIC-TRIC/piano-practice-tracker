@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import "./PracticeHistory.css";
 import { formatTime } from "../../utils/youtube";
 
@@ -9,6 +9,24 @@ function PracticeHistory({
   practiceSessions,
   onDeleteSession,
 }) {
+  // Verhindere Body-Scroll wenn Modal geöffnet ist
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    };
+  }, [isOpen]);
+
   const sessionHistory = useMemo(() => {
     const allSessions = [];
 
