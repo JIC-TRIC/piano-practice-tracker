@@ -8,7 +8,7 @@ import FilterTabs from "./components/FilterTabs/FilterTabs";
 import PieceCard from "./components/PieceCard/PieceCard";
 import EmptyState from "./components/EmptyState/EmptyState";
 import AddEditModal from "./components/Modal/AddEditModal";
-import YouTubeModal from "./components/Modal/YouTubeModal";
+import YouTubeModal from "./components/Modal/YoutubeModal";
 import Toast from "./components/Toast/Toast";
 import Settings from "./components/Settings/Settings";
 import PracticeHistory from "./components/PracticeHistory/PracticeHistory";
@@ -321,43 +321,42 @@ function App() {
     handleOpenYouTube(piece.youtubeUrl, piece.id);
   };
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case "library":
-        return (
-          <>
-            <Header />
-            <div className="container">
-              <FilterTabs
-                onSearchChange={setSearchQuery}
-                onFilterChange={setFilters}
-                onSortChange={setSort}
-              />
-            </div>
-            <div className="container">
-              {processedPieces.length === 0 ? (
-                <EmptyState onAddClick={() => setIsAddModalOpen(true)} />
-              ) : (
-                <div className="pieces-grid">
-                  {processedPieces.map((piece) => (
-                    <PieceCard
-                      key={piece.id}
-                      piece={piece}
-                      sessions={practiceSessions[piece.id] || []}
-                      onEdit={handleEditPiece}
-                      onYouTubeClick={handleOpenYouTube}
-                    />
-                  ))}
-                </div>
-              )}
-              {/* Bottom spacer for navigation bar */}
-              <div className="bottom-spacer"></div>
-            </div>
-          </>
-        );
+  return (
+    <div className="App">
+      <div className="scroll-container">
+        {/* Library View */}
+        <div style={{ display: activeTab === "library" ? "block" : "none" }}>
+          <Header />
+          <div className="container">
+            <FilterTabs
+              onSearchChange={setSearchQuery}
+              onFilterChange={setFilters}
+              onSortChange={setSort}
+            />
+          </div>
+          <div className="container">
+            {processedPieces.length === 0 ? (
+              <EmptyState onAddClick={() => setIsAddModalOpen(true)} />
+            ) : (
+              <div className="pieces-grid">
+                {processedPieces.map((piece) => (
+                  <PieceCard
+                    key={piece.id}
+                    piece={piece}
+                    sessions={practiceSessions[piece.id] || []}
+                    onEdit={handleEditPiece}
+                    onYouTubeClick={handleOpenYouTube}
+                  />
+                ))}
+              </div>
+            )}
+            {/* Bottom spacer for navigation bar */}
+            <div className="bottom-spacer"></div>
+          </div>
+        </div>
 
-      case "practice":
-        return (
+        {/* Practice View */}
+        <div style={{ display: activeTab === "practice" ? "block" : "none" }}>
           <PracticeView
             pieces={pieces}
             practiceSessions={practiceSessions}
@@ -366,35 +365,27 @@ function App() {
             onAddPiece={() => setIsAddModalOpen(true)}
             favoritePiecesCount={settings.favoritePiecesCount}
           />
-        );
+        </div>
 
-      case "stats":
-        return (
+        {/* Stats View */}
+        <div style={{ display: activeTab === "stats" ? "block" : "none" }}>
           <StatsView
             pieces={pieces}
             practiceSessions={practiceSessions}
             onDeleteSession={handleDeleteSession}
           />
-        );
+        </div>
 
-      case "more":
-        return (
+        {/* More View */}
+        <div style={{ display: activeTab === "more" ? "block" : "none" }}>
           <MoreView
             settings={settings}
             onSaveSettings={handleSaveSettings}
             onViewHistory={() => setIsHistoryOpen(true)}
             onViewCalendar={() => setIsCalendarOpen(true)}
           />
-        );
-
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div className="App">
-      <div className="scroll-container">{renderContent()}</div>
+        </div>
+      </div>
 
       <AddEditModal
         isOpen={isAddModalOpen}
