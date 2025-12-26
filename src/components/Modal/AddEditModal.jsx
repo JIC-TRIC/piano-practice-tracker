@@ -364,7 +364,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                   <div key={level} className="difficulty-info-item">
                     <div className="difficulty-info-level">
                       <span className="difficulty-icon">
-                        <FontAwesomeIcon 
+                        <FontAwesomeIcon
                           icon={
                             level === "Unknown"
                               ? faCircleQuestion
