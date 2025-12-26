@@ -10,6 +10,19 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
     difficulty: "Unknown",
     milestones: [],
   });
+  const [showDifficultyInfo, setShowDifficultyInfo] = useState(false);
+
+  // Schwierigkeitsgrad-Beschreibungen
+  const difficultyDescriptions = {
+    Unknown: "Difficulty not yet assessed",
+    Free: "Can play the piece fluently with both hands without significant errors",
+    Easy: "Can play the piece safely with both hands, but not completely perfect",
+    Medium:
+      "Can play both hands separately well, but both hands together is still difficult",
+    Hard: "Can play both hands separately with some errors, both hands together barely possible",
+    Ultrahard:
+      "Cannot play either hand separately, both hands together impossible",
+  };
 
   // Meilenstein-Optionen
   const milestoneOptions = [
@@ -139,7 +152,17 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Difficulty</label>
+            <div className="form-label-with-info">
+              <label className="form-label">Difficulty</label>
+              <button
+                type="button"
+                className="info-btn"
+                onClick={() => setShowDifficultyInfo(true)}
+                title="Show difficulty explanations"
+              >
+                ℹ️
+              </button>
+            </div>
             <div className="segmented-control">
               <button
                 type="button"
@@ -284,6 +307,54 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
           </div>
         </form>
       </div>
+
+      {/* Difficulty Info Overlay */}
+      {showDifficultyInfo && (
+        <div
+          className="difficulty-info-overlay"
+          onClick={() => setShowDifficultyInfo(false)}
+        >
+          <div
+            className="difficulty-info-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="difficulty-info-header">
+              <h3>Difficulty Levels</h3>
+              <button
+                className="close-info-btn"
+                onClick={() => setShowDifficultyInfo(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="difficulty-info-list">
+              {Object.entries(difficultyDescriptions).map(
+                ([level, description]) => (
+                  <div key={level} className="difficulty-info-item">
+                    <div className="difficulty-info-level">
+                      <span className="difficulty-icon">
+                        {level === "Unknown"
+                          ? "❓"
+                          : level === "Free"
+                          ? "🎵"
+                          : level === "Easy"
+                          ? "😊"
+                          : level === "Medium"
+                          ? "😐"
+                          : level === "Hard"
+                          ? "😰"
+                          : "💀"}
+                      </span>
+                      <span className="difficulty-name">{level}</span>
+                    </div>
+                    <p className="difficulty-description">{description}</p>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
