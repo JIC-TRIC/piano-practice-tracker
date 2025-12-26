@@ -344,14 +344,9 @@
   transition: all 0.2s ease;
   font-size: 1rem;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-}
-
-.info-btn:hover {
-  background: var(--surface-light);
-  color: var(--primary);
-  transform: scale(1.1);
+  margin-top: -0.125rem;
 }
 
 /* Difficulty Info Overlay */
@@ -410,11 +405,6 @@
   border-radius: 50%;
   transition: all 0.2s ease;
   font-size: 1.2rem;
-}
-
-.close-info-btn:hover {
-  background: var(--surface-light);
-  color: var(--text);
 }
 
 .difficulty-info-list {

@@ -17,6 +17,8 @@ import {
   faMeh,
   faFaceFrown,
   faSkull,
+  faCircleInfo,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
@@ -195,7 +197,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                 onClick={() => setShowDifficultyInfo(true)}
                 title="Show difficulty explanations"
               >
-                ℹ️
+                <FontAwesomeIcon icon={faCircleInfo} />
               </button>
             </div>
             <div className="segmented-control">
@@ -353,7 +355,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                 className="close-info-btn"
                 onClick={() => setShowDifficultyInfo(false)}
               >
-                ✕
+                <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
             <div className="difficulty-info-list">
@@ -362,17 +364,21 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                   <div key={level} className="difficulty-info-item">
                     <div className="difficulty-info-level">
                       <span className="difficulty-icon">
-                        {level === "Unknown"
-                          ? "❓"
-                          : level === "Free"
-                          ? "🎵"
-                          : level === "Easy"
-                          ? "😊"
-                          : level === "Medium"
-                          ? "😐"
-                          : level === "Hard"
-                          ? "😰"
-                          : "💀"}
+                        <FontAwesomeIcon 
+                          icon={
+                            level === "Unknown"
+                              ? faCircleQuestion
+                              : level === "Free"
+                              ? faMusic
+                              : level === "Easy"
+                              ? faFaceSmile
+                              : level === "Medium"
+                              ? faMeh
+                              : level === "Hard"
+                              ? faFaceFrown
+                              : faSkull
+                          }
+                        />
                       </span>
                       <span className="difficulty-name">{level}</span>
                     </div>
