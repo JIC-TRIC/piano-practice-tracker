@@ -15,12 +15,18 @@ const getStatusFromMilestones = (milestones = []) => {
 
   if (count === 0) {
     return { icon: faHourglass, label: "Not Started", color: "#64748b" };
-  } else if (count <= 2) {
-    return { icon: faBookOpen, label: "Learning", color: "#f59e0b" };
-  } else if (count <= 4) {
-    return { icon: faGraduationCap, label: "Practicing", color: "#14b8a6" };
-  } else if (count <= 6) {
-    return { icon: faGem, label: "Polishing", color: "#06b6d4" };
+  } else if (count === 1) {
+    return { icon: faBookOpen, label: "Notes Learned", color: "#f59e0b" };
+  } else if (count <= 3) {
+    return {
+      icon: faGraduationCap,
+      label: "Practicing Hands",
+      color: "#14b8a6",
+    };
+  } else if (count <= 5) {
+    return { icon: faGem, label: "Learning Together", color: "#06b6d4" };
+  } else if (count === 6) {
+    return { icon: faGem, label: "Adding Dynamics", color: "#06b6d4" };
   } else {
     return { icon: faTrophy, label: "Mastered", color: "#8b5cf6" };
   }

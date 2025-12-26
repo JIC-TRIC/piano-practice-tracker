@@ -30,6 +30,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
     milestones: [],
   });
   const [showDifficultyInfo, setShowDifficultyInfo] = useState(false);
+  const [showMilestoneInfo, setShowMilestoneInfo] = useState(false);
 
   // Schwierigkeitsgrad-Beschreibungen
   const difficultyDescriptions = {
@@ -43,15 +44,31 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
       "Cannot play either hand separately, both hands together impossible",
   };
 
+  // Meilenstein-Beschreibungen
+  const milestoneDescriptions = {
+    notes_learned: "Notes are learned and understood",
+    left_hand: "Can play left hand at reduced tempo",
+    right_hand: "Can play right hand at reduced tempo",
+    performance_ready: "Can play both hands separately at full speed",
+    hands_together: "Can play both hands together at reduced tempo",
+    tempo_reached: "Can play both hands together at full speed",
+    dynamics_added: "Proper dynamics (volume, touch) added",
+    memorized: "Can play the piece from memory",
+  };
+
   // Meilenstein-Optionen
   const milestoneOptions = [
-    { id: "notes_learned", label: "Notes", icon: faFileLines },
-    { id: "right_hand", label: "Right Hand", icon: faHandPointRight },
-    { id: "left_hand", label: "Left Hand", icon: faHandPointLeft },
-    { id: "hands_together", label: "Together", icon: faHandsClapping },
-    { id: "tempo_reached", label: "Tempo", icon: faClock },
+    { id: "notes_learned", label: "Notes Learned", icon: faFileLines },
+    { id: "left_hand", label: "Left Hand Slow", icon: faHandPointLeft },
+    { id: "right_hand", label: "Right Hand Slow", icon: faHandPointRight },
+    {
+      id: "performance_ready",
+      label: "Hands Separate Full",
+      icon: faHandsClapping,
+    },
+    { id: "hands_together", label: "Together Slow", icon: faHandsClapping },
+    { id: "tempo_reached", label: "Full Speed", icon: faClock },
     { id: "dynamics_added", label: "Dynamics", icon: faVolumeHigh },
-    { id: "performance_ready", label: "Ready", icon: faStar },
     { id: "memorized", label: "Memorized", icon: faWandMagicSparkles },
   ];
 
@@ -301,9 +318,19 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label">
-              Milestones ({formData.milestones?.length || 0}/8)
-            </label>
+            <div className="form-label-with-info">
+              <label className="form-label">
+                Milestones ({formData.milestones?.length || 0}/8)
+              </label>
+              <button
+                type="button"
+                className="info-btn"
+                onClick={() => setShowMilestoneInfo(true)}
+                title="Show milestone explanations"
+              >
+                <FontAwesomeIcon icon={faCircleInfo} />
+              </button>
+            </div>
             <div className="segmented-control" style={{ flexWrap: "wrap" }}>
               {milestoneOptions.map((milestone) => (
                 <button
@@ -386,6 +413,44 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                   </div>
                 )
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Milestone Info Overlay */}
+      {showMilestoneInfo && (
+        <div
+          className="difficulty-info-overlay"
+          onClick={() => setShowMilestoneInfo(false)}
+        >
+          <div
+            className="difficulty-info-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="difficulty-info-header">
+              <h3>Progress Milestones</h3>
+              <button
+                className="close-info-btn"
+                onClick={() => setShowMilestoneInfo(false)}
+              >
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+            </div>
+            <div className="difficulty-info-list">
+              {milestoneOptions.map((milestone) => (
+                <div key={milestone.id} className="difficulty-info-item">
+                  <div className="difficulty-info-level">
+                    <span className="difficulty-icon">
+                      <FontAwesomeIcon icon={milestone.icon} />
+                    </span>
+                    <span className="difficulty-name">{milestone.label}</span>
+                  </div>
+                  <p className="difficulty-description">
+                    {milestoneDescriptions[milestone.id]}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
