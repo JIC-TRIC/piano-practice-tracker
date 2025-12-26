@@ -1,5 +1,13 @@
 import { useState } from "react";
 import "./FilterTabs.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircle,
+  faBullseye,
+  faKeyboard,
+  faStar,
+  faWandMagicSparkles,
+} from "@fortawesome/free-solid-svg-icons";
 
 function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,11 +28,11 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
   ];
 
   const progressOptions = [
-    { value: "not_started", label: "⚪ Not Started" },
-    { value: "learning", label: "🎯 Learning" },
-    { value: "practicing", label: "🎹 Practicing" },
-    { value: "polishing", label: "⭐ Polishing" },
-    { value: "mastered", label: "✨ Mastered" },
+    { value: "not_started", label: "Not Started", icon: faCircle },
+    { value: "learning", label: "Learning", icon: faBullseye },
+    { value: "practicing", label: "Practicing", icon: faKeyboard },
+    { value: "polishing", label: "Polishing", icon: faStar },
+    { value: "mastered", label: "Mastered", icon: faWandMagicSparkles },
   ];
 
   const sortOptions = [
@@ -212,7 +220,7 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
                   }`}
                   onClick={() => handleProgressChange(option.value)}
                 >
-                  {option.label}
+                  <FontAwesomeIcon icon={option.icon} /> {option.label}
                 </button>
               ))}
             </div>

@@ -1,20 +1,28 @@
 import "./PieceCard.css";
 import { formatTime } from "../../utils/youtube";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHourglass,
+  faBookOpen,
+  faGraduationCap,
+  faGem,
+  faTrophy,
+} from "@fortawesome/free-solid-svg-icons";
 
 // Hilfsfunktion für Status basierend auf Meilensteinen
 const getStatusFromMilestones = (milestones = []) => {
   const count = milestones.length;
 
   if (count === 0) {
-    return { icon: "⚪", label: "Not Started", color: "#64748b" };
+    return { icon: faHourglass, label: "Not Started", color: "#64748b" };
   } else if (count <= 2) {
-    return { icon: "🎯", label: "Learning", color: "#f59e0b" };
+    return { icon: faBookOpen, label: "Learning", color: "#f59e0b" };
   } else if (count <= 4) {
-    return { icon: "🎹", label: "Practicing", color: "#14b8a6" };
+    return { icon: faGraduationCap, label: "Practicing", color: "#14b8a6" };
   } else if (count <= 6) {
-    return { icon: "⭐", label: "Polishing", color: "#06b6d4" };
+    return { icon: faGem, label: "Polishing", color: "#06b6d4" };
   } else {
-    return { icon: "✨", label: "Mastered", color: "#8b5cf6" };
+    return { icon: faTrophy, label: "Mastered", color: "#8b5cf6" };
   }
 }; // Hilfsfunktion für Schwierigkeit-Farbe
 const getDifficultyColor = (difficulty) => {
@@ -73,7 +81,9 @@ function PieceCard({ piece, sessions, onEdit, onYouTubeClick }) {
 
         <div className="progress-section">
           <div className="status-display">
-            <span className="status-icon">{status.icon}</span>
+            <span className="status-icon">
+              <FontAwesomeIcon icon={status.icon} />
+            </span>
             <span className="status-label" style={{ color: status.color }}>
               {status.label}
             </span>

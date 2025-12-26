@@ -1,6 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import "./Modal.css";
 import { extractVideoId, formatTimerDisplay } from "../../utils/youtube";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFileLines,
+  faHandPointRight,
+  faHandPointLeft,
+  faHandsClapping,
+  faClock,
+  faVolumeHigh,
+  faStar,
+  faWandMagicSparkles,
+} from "@fortawesome/free-solid-svg-icons";
 
 function YouTubeModal({
   isOpen,
@@ -19,14 +30,14 @@ function YouTubeModal({
   const startTimeRef = useRef(null);
 
   const milestoneOptions = [
-    { id: "notes_learned", label: "Notes", icon: "�" },
-    { id: "right_hand", label: "Right Hand", icon: "➡️" },
-    { id: "left_hand", label: "Left Hand", icon: "⬅️" },
-    { id: "hands_together", label: "Together", icon: "🤝" },
-    { id: "tempo_reached", label: "Tempo", icon: "⏰" },
-    { id: "dynamics_added", label: "Dynamics", icon: "🔊" },
-    { id: "performance_ready", label: "Ready", icon: "⭐" },
-    { id: "memorized", label: "Memorized", icon: "✨" },
+    { id: "notes_learned", label: "Notes", icon: faFileLines },
+    { id: "right_hand", label: "Right Hand", icon: faHandPointRight },
+    { id: "left_hand", label: "Left Hand", icon: faHandPointLeft },
+    { id: "hands_together", label: "Together", icon: faHandsClapping },
+    { id: "tempo_reached", label: "Tempo", icon: faClock },
+    { id: "dynamics_added", label: "Dynamics", icon: faVolumeHigh },
+    { id: "performance_ready", label: "Ready", icon: faStar },
+    { id: "memorized", label: "Memorized", icon: faWandMagicSparkles },
   ];
 
   // Initialize selectedMilestones when modal opens
@@ -35,6 +46,24 @@ function YouTubeModal({
       setSelectedMilestones(piece.milestones || []);
     }
   }, [isOpen, piece]);
+
+  // Verhindere Body-Scroll wenn Modal geöffnet ist
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    };
+  }, [isOpen]);
 
   // Load YouTube IFrame API
   useEffect(() => {
@@ -190,37 +219,23 @@ function YouTubeModal({
           <label className="form-label">
             Milestones ({selectedMilestones.length}/8)
           </label>
-          <div className="milestone-grid">
-            <div className="milestone-row">
-              {milestoneOptions.slice(0, 4).map((milestone) => (
-                <button
-                  key={milestone.id}
-                  type="button"
-                  className={`milestone-btn ${
-                    selectedMilestones.includes(milestone.id) ? "active" : ""
-                  }`}
-                  onClick={() => toggleMilestone(milestone.id)}
-                >
-                  <span className="milestone-icon">{milestone.icon}</span>
-                  <span className="milestone-label">{milestone.label}</span>
-                </button>
-              ))}
-            </div>
-            <div className="milestone-row">
-              {milestoneOptions.slice(4, 8).map((milestone) => (
-                <button
-                  key={milestone.id}
-                  type="button"
-                  className={`milestone-btn ${
-                    selectedMilestones.includes(milestone.id) ? "active" : ""
-                  }`}
-                  onClick={() => toggleMilestone(milestone.id)}
-                >
-                  <span className="milestone-icon">{milestone.icon}</span>
-                  <span className="milestone-label">{milestone.label}</span>
-                </button>
-              ))}
-            </div>
+          <div className="segmented-control" style={{ flexWrap: "wrap" }}>
+            {milestoneOptions.map((milestone) => (
+              <button
+                key={milestone.id}
+                type="button"
+                className={`segment-btn ${
+                  selectedMilestones.includes(milestone.id) ? "active" : ""
+                }`}
+                onClick={() => toggleMilestone(milestone.id)}
+                style={{ flex: "1 1 calc(25% - 0.281rem)", minWidth: 0 }}
+              >
+                <span className="segment-icon">
+                  <FontAwesomeIcon icon={milestone.icon} />
+                </span>
+                <span className="segment-label">{milestone.label}</span>
+              </button>
+            ))}
           </div>
         </div>
 
@@ -257,14 +272,14 @@ function YouTubeModal({
         )}
 
         <div className="modal-actions">
-          <button className="btn btn-primary" onClick={handleClose}>
-            Close and Save
-          </button>
           <button
             className="btn btn-secondary"
             onClick={handleCloseWithoutSaving}
           >
             Close
+          </button>
+          <button className="btn btn-primary" onClick={handleClose}>
+            Close and Save
           </button>
         </div>
       </div>

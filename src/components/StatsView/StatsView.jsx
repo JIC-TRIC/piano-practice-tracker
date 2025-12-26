@@ -4,6 +4,13 @@ import { formatTime } from "../../utils/youtube";
 import PracticeCalendar from "../PracticeCalendar/PracticeCalendar";
 import PracticeHistory from "../PracticeHistory/PracticeHistory";
 import Header from "../Header/Header";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faClock,
+  faBullseye,
+  faWandMagicSparkles,
+  faChartLine,
+} from "@fortawesome/free-solid-svg-icons";
 
 function StatsView({ pieces, practiceSessions, onDeleteSession }) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -77,7 +84,9 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
         {/* Stats Grid */}
         <div className="stats-grid">
           <div className="stat-card-large">
-            <div className="stat-icon">⏱️</div>
+            <div className="stat-icon">
+              <FontAwesomeIcon icon={faClock} />
+            </div>
             <div className="stat-content">
               <div className="stat-value-large">
                 {formatTime(stats.totalTime)}
@@ -87,7 +96,9 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
           </div>
 
           <div className="stat-card-large">
-            <div className="stat-icon">🎯</div>
+            <div className="stat-icon">
+              <FontAwesomeIcon icon={faBullseye} />
+            </div>
             <div className="stat-content">
               <div className="stat-value-large">{stats.totalSessions}</div>
               <div className="stat-label-large">Total Sessions</div>
@@ -95,7 +106,9 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
           </div>
 
           <div className="stat-card-large">
-            <div className="stat-icon">✨</div>
+            <div className="stat-icon">
+              <FontAwesomeIcon icon={faWandMagicSparkles} />
+            </div>
             <div className="stat-content">
               <div className="stat-value-large">{stats.mastered}</div>
               <div className="stat-label-large">Mastered Pieces</div>
@@ -103,7 +116,9 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
           </div>
 
           <div className="stat-card-large">
-            <div className="stat-icon">📈</div>
+            <div className="stat-icon">
+              <FontAwesomeIcon icon={faChartLine} />
+            </div>
             <div className="stat-content">
               <div className="stat-value-large">
                 {formatTime(stats.avgSessionLength)}
