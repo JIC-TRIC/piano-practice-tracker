@@ -7,6 +7,9 @@ import {
   faGraduationCap,
   faGem,
   faTrophy,
+  faFileLines,
+  faCircle,
+  faPencil,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Hilfsfunktion für Status basierend auf Meilensteinen
@@ -15,18 +18,20 @@ const getStatusFromMilestones = (milestones = []) => {
 
   if (count === 0) {
     return { icon: faHourglass, label: "Not Started", color: "#64748b" };
-  } else if (count === 1) {
-    return { icon: faBookOpen, label: "Notes Learned", color: "#f59e0b" };
-  } else if (count <= 3) {
+  } else if (count <= 2) {
     return {
       icon: faGraduationCap,
       label: "Practicing Hands",
       color: "#14b8a6",
     };
-  } else if (count <= 5) {
+  } else if (count <= 4) {
+    return {
+      icon: faGraduationCap,
+      label: "Hands Mastered",
+      color: "#14b8a6",
+    };
+  } else if (count <= 6) {
     return { icon: faGem, label: "Learning Together", color: "#06b6d4" };
-  } else if (count === 6) {
-    return { icon: faGem, label: "Adding Dynamics", color: "#06b6d4" };
   } else {
     return { icon: faTrophy, label: "Mastered", color: "#8b5cf6" };
   }
@@ -94,6 +99,22 @@ function PieceCard({ piece, sessions, onEdit, onYouTubeClick }) {
               {status.label}
             </span>
             <span className="milestone-count">({milestones.length}/8)</span>
+            {(piece.notesState === "learned" ||
+              piece.notesState === "own_version" ||
+              piece.notesLearned) && (
+              <span className="notes-indicator">
+                <FontAwesomeIcon
+                  icon={
+                    piece.notesState === "learned" ||
+                    (piece.notesLearned && !piece.notesState)
+                      ? faFileLines
+                      : piece.notesState === "own_version"
+                      ? faPencil
+                      : faFileLines
+                  }
+                />
+              </span>
+            )}
           </div>
         </div>
       </div>

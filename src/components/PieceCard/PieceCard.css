@@ -164,6 +164,14 @@
   margin-left: auto;
 }
 
+.notes-indicator {
+  margin-left: 8px;
+  font-size: 1.2rem;
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+}
+
 .progress-text {
   font-size: 0.75rem;
   color: var(--text);

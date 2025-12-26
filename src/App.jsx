@@ -293,6 +293,22 @@ function App() {
     showToast("Progress updated!");
   };
 
+  const handleUpdateNotesState = (pieceId, newNotesState) => {
+    setPieces((prev) =>
+      prev.map((p) =>
+        p.id === pieceId ? { ...p, notesState: newNotesState } : p
+      )
+    );
+  };
+
+  const handleUpdateDifficulty = (pieceId, newDifficulty) => {
+    setPieces((prev) =>
+      prev.map((p) =>
+        p.id === pieceId ? { ...p, difficulty: newDifficulty } : p
+      )
+    );
+  };
+
   const handleDeleteSession = (pieceId, timestamp) => {
     setPracticeSessions((prev) => {
       const pieceLogs = prev[pieceId] || [];
@@ -404,6 +420,8 @@ function App() {
         piece={practicingPiece}
         onSavePracticeTime={handleSavePracticeTime}
         onUpdateProgress={handleUpdateProgress}
+        onUpdateNotesState={handleUpdateNotesState}
+        onUpdateDifficulty={handleUpdateDifficulty}
         settings={settings}
       />
 

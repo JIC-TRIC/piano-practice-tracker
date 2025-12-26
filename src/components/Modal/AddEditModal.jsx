@@ -18,6 +18,8 @@ import {
   faFaceFrown,
   faSkull,
   faCircleInfo,
+  faCircle,
+  faPencil,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -28,6 +30,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
     artist: "",
     difficulty: "Unknown",
     milestones: [],
+    notesState: "not_learned",
   });
   const [showDifficultyInfo, setShowDifficultyInfo] = useState(false);
   const [showMilestoneInfo, setShowMilestoneInfo] = useState(false);
@@ -46,10 +49,10 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
 
   // Meilenstein-Beschreibungen
   const milestoneDescriptions = {
-    notes_learned: "Notes are learned and understood",
     left_hand: "Can play left hand at reduced tempo",
     right_hand: "Can play right hand at reduced tempo",
-    performance_ready: "Can play both hands separately at full speed",
+    left_hand_full: "Can play left hand at full speed",
+    right_hand_full: "Can play right hand at full speed",
     hands_together: "Can play both hands together at reduced tempo",
     tempo_reached: "Can play both hands together at full speed",
     dynamics_added: "Proper dynamics (volume, touch) added",
@@ -58,14 +61,10 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
 
   // Meilenstein-Optionen
   const milestoneOptions = [
-    { id: "notes_learned", label: "Notes Learned", icon: faFileLines },
     { id: "left_hand", label: "Left Hand Slow", icon: faHandPointLeft },
     { id: "right_hand", label: "Right Hand Slow", icon: faHandPointRight },
-    {
-      id: "performance_ready",
-      label: "Hands Separate Full",
-      icon: faHandsClapping,
-    },
+    { id: "left_hand_full", label: "Left Hand Full", icon: faHandPointLeft },
+    { id: "right_hand_full", label: "Right Hand Full", icon: faHandPointRight },
     { id: "hands_together", label: "Together Slow", icon: faHandsClapping },
     { id: "tempo_reached", label: "Full Speed", icon: faClock },
     { id: "dynamics_added", label: "Dynamics", icon: faVolumeHigh },
@@ -77,6 +76,9 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
       setFormData({
         ...editingPiece,
         milestones: editingPiece.milestones || [],
+        notesState:
+          editingPiece.notesState ||
+          (editingPiece.notesLearned ? "learned" : "not_learned"),
       });
     } else {
       setFormData({
@@ -85,6 +87,7 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
         artist: "",
         difficulty: "Unknown",
         milestones: [],
+        notesState: "not_learned",
       });
     }
   }, [editingPiece, isOpen]);
@@ -315,6 +318,71 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                 <span className="segment-label">Ultra</span>
               </button>
             </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Tutorial Notes</label>
+            <div className="notes-segments">
+              <button
+                type="button"
+                className={`notes-segment-btn ${
+                  formData.notesState === "not_learned" ? "active" : ""
+                }`}
+                onClick={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    notesState: "not_learned",
+                  }))
+                }
+              >
+                <span className="notes-icon">
+                  <FontAwesomeIcon icon={faCircle} />
+                </span>
+                <span className="notes-text">Not Learned</span>
+              </button>
+              <button
+                type="button"
+                className={`notes-segment-btn ${
+                  formData.notesState === "learned" ? "active" : ""
+                }`}
+                onClick={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    notesState: "learned",
+                  }))
+                }
+              >
+                <span className="notes-icon">
+                  <FontAwesomeIcon icon={faFileLines} />
+                </span>
+                <span className="notes-text">Notes Learned</span>
+              </button>
+              <button
+                type="button"
+                className={`notes-segment-btn ${
+                  formData.notesState === "own_version" ? "active" : ""
+                }`}
+                onClick={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    notesState: "own_version",
+                  }))
+                }
+              >
+                <span className="notes-icon">
+                  <FontAwesomeIcon icon={faPencil} />
+                </span>
+                <span className="notes-text">Own Version</span>
+              </button>
+            </div>
+            <p className="notes-help-text">
+              {formData.notesState === "not_learned" &&
+                "You haven't started studying the notes yet"}
+              {formData.notesState === "learned" &&
+                "You've studied all notes and are learning to play them"}
+              {formData.notesState === "own_version" &&
+                "You're creating your own easier/better version"}
+            </p>
           </div>
 
           <div className="form-group">

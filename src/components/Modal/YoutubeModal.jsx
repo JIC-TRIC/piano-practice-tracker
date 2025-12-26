@@ -11,6 +11,14 @@ import {
   faVolumeHigh,
   faStar,
   faWandMagicSparkles,
+  faCircle,
+  faPencil,
+  faCircleQuestion,
+  faMusic,
+  faFaceSmile,
+  faMeh,
+  faFaceFrown,
+  faSkull,
 } from "@fortawesome/free-solid-svg-icons";
 
 function YouTubeModal({
@@ -20,11 +28,15 @@ function YouTubeModal({
   piece,
   onSavePracticeTime,
   onUpdateProgress,
+  onUpdateNotesState,
+  onUpdateDifficulty,
   settings,
 }) {
   const [seconds, setSeconds] = useState(0);
   const [player, setPlayer] = useState(null);
   const [selectedMilestones, setSelectedMilestones] = useState([]);
+  const [notesState, setNotesState] = useState("not_learned");
+  const [difficulty, setDifficulty] = useState("Unknown");
   const intervalRef = useRef(null);
   const playerRef = useRef(null);
   const startTimeRef = useRef(null);
@@ -40,10 +52,14 @@ function YouTubeModal({
     { id: "memorized", label: "Memorized", icon: faWandMagicSparkles },
   ];
 
-  // Initialize selectedMilestones when modal opens
+  // Initialize selectedMilestones, notesState and difficulty when modal opens
   useEffect(() => {
     if (isOpen && piece) {
       setSelectedMilestones(piece.milestones || []);
+      setNotesState(
+        piece.notesState || (piece.notesLearned ? "learned" : "not_learned")
+      );
+      setDifficulty(piece.difficulty || "Unknown");
     }
   }, [isOpen, piece]);
 
@@ -195,6 +211,16 @@ function YouTubeModal({
     if (milestonesChanged) {
       onUpdateProgress(piece.id, selectedMilestones);
     }
+    const notesStateChanged =
+      notesState !==
+      (piece?.notesState || (piece?.notesLearned ? "learned" : "not_learned"));
+    if (notesStateChanged && onUpdateNotesState) {
+      onUpdateNotesState(piece.id, notesState);
+    }
+    const difficultyChanged = difficulty !== (piece?.difficulty || "Unknown");
+    if (difficultyChanged && onUpdateDifficulty) {
+      onUpdateDifficulty(piece.id, difficulty);
+    }
     onClose();
   };
 
@@ -212,6 +238,130 @@ function YouTubeModal({
         <div className="modal-header">
           <h2 className="modal-title">{piece?.title || "YouTube Video"}</h2>
           <div className="timer-display">⏱️ {formatTimerDisplay(seconds)}</div>
+        </div>
+
+        {/* Difficulty Selector */}
+        <div className="form-group">
+          <label className="form-label">Difficulty</label>
+          <div className="segmented-control">
+            <button
+              type="button"
+              className={`segment-btn ${
+                difficulty === "Unknown" ? "active" : ""
+              }`}
+              onClick={() => setDifficulty("Unknown")}
+            >
+              <span className="segment-icon">
+                <FontAwesomeIcon icon={faCircleQuestion} />
+              </span>
+              <span className="segment-label">Unknown</span>
+            </button>
+            <button
+              type="button"
+              className={`segment-btn ${difficulty === "Free" ? "active" : ""}`}
+              onClick={() => setDifficulty("Free")}
+            >
+              <span className="segment-icon">
+                <FontAwesomeIcon icon={faMusic} />
+              </span>
+              <span className="segment-label">Free</span>
+            </button>
+            <button
+              type="button"
+              className={`segment-btn ${difficulty === "Easy" ? "active" : ""}`}
+              onClick={() => setDifficulty("Easy")}
+            >
+              <span className="segment-icon">
+                <FontAwesomeIcon icon={faFaceSmile} />
+              </span>
+              <span className="segment-label">Easy</span>
+            </button>
+            <button
+              type="button"
+              className={`segment-btn ${
+                difficulty === "Medium" ? "active" : ""
+              }`}
+              onClick={() => setDifficulty("Medium")}
+            >
+              <span className="segment-icon">
+                <FontAwesomeIcon icon={faMeh} />
+              </span>
+              <span className="segment-label">Medium</span>
+            </button>
+            <button
+              type="button"
+              className={`segment-btn ${difficulty === "Hard" ? "active" : ""}`}
+              onClick={() => setDifficulty("Hard")}
+            >
+              <span className="segment-icon">
+                <FontAwesomeIcon icon={faFaceFrown} />
+              </span>
+              <span className="segment-label">Hard</span>
+            </button>
+            <button
+              type="button"
+              className={`segment-btn ${
+                difficulty === "Ultrahard" ? "active" : ""
+              }`}
+              onClick={() => setDifficulty("Ultrahard")}
+            >
+              <span className="segment-icon">
+                <FontAwesomeIcon icon={faSkull} />
+              </span>
+              <span className="segment-label">Ultra</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Notes State Selector */}
+        <div className="form-group">
+          <label className="form-label">Tutorial Notes</label>
+          <div className="notes-segments">
+            <button
+              type="button"
+              className={`notes-segment-btn ${
+                notesState === "not_learned" ? "active" : ""
+              }`}
+              onClick={() => setNotesState("not_learned")}
+            >
+              <span className="notes-icon">
+                <FontAwesomeIcon icon={faCircle} />
+              </span>
+              <span className="notes-text">Not Learned</span>
+            </button>
+            <button
+              type="button"
+              className={`notes-segment-btn ${
+                notesState === "learned" ? "active" : ""
+              }`}
+              onClick={() => setNotesState("learned")}
+            >
+              <span className="notes-icon">
+                <FontAwesomeIcon icon={faFileLines} />
+              </span>
+              <span className="notes-text">Notes Learned</span>
+            </button>
+            <button
+              type="button"
+              className={`notes-segment-btn ${
+                notesState === "own_version" ? "active" : ""
+              }`}
+              onClick={() => setNotesState("own_version")}
+            >
+              <span className="notes-icon">
+                <FontAwesomeIcon icon={faPencil} />
+              </span>
+              <span className="notes-text">Own Version</span>
+            </button>
+          </div>
+          <p className="notes-help-text">
+            {notesState === "not_learned" &&
+              "You haven't started studying the notes yet"}
+            {notesState === "learned" &&
+              "You've studied all notes and are learning to play them"}
+            {notesState === "own_version" &&
+              "You're creating your own easier/better version"}
+          </p>
         </div>
 
         {/* Milestone Selector */}
