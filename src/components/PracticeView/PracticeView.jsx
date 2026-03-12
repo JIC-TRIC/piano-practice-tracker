@@ -95,7 +95,7 @@ function PracticeView({
       return {
         totalTime,
         completed: true,
-        message: "All milestones completed! 🎉",
+        message: "All milestones completed!",
         progress: 100,
       };
     }
@@ -199,11 +199,13 @@ function PracticeView({
 
         {/* Practice Milestones Section */}
         <div className="milestone-section">
-          <h2 className="section-title">🏆 Practice Milestones</h2>
+          <h2 className="section-title">Practice Milestones</h2>
           <div className="milestone-card">
             {milestoneData.completed ? (
               <div className="milestone-completed">
-                <div className="milestone-icon">🎉</div>
+                <div className="milestone-icon">
+                  <FontAwesomeIcon icon={faStar} />
+                </div>
                 <div className="milestone-text">{milestoneData.message}</div>
                 <div className="milestone-total">
                   Total: {formatTime(milestoneData.totalTime)}

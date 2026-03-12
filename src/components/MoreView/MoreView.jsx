@@ -29,10 +29,10 @@ function MoreView({ settings, onSaveSettings, onViewHistory, onViewCalendar }) {
       const data = {
         pianoPieces: JSON.parse(localStorage.getItem("pianoPieces") || "[]"),
         practiceSessions: JSON.parse(
-          localStorage.getItem("practiceSessions") || "{}"
+          localStorage.getItem("practiceSessions") || "{}",
         ),
         pianoSettings: JSON.parse(
-          localStorage.getItem("pianoSettings") || "{}"
+          localStorage.getItem("pianoSettings") || "{}",
         ),
         exportDate: new Date().toISOString(),
         version: packageJson.version,
@@ -73,12 +73,12 @@ function MoreView({ settings, onSaveSettings, onViewHistory, onViewCalendar }) {
           localStorage.setItem("pianoPieces", JSON.stringify(data.pianoPieces));
           localStorage.setItem(
             "practiceSessions",
-            JSON.stringify(data.practiceSessions)
+            JSON.stringify(data.practiceSessions),
           );
           if (data.pianoSettings) {
             localStorage.setItem(
               "pianoSettings",
-              JSON.stringify(data.pianoSettings)
+              JSON.stringify(data.pianoSettings),
             );
           }
 
@@ -97,7 +97,7 @@ function MoreView({ settings, onSaveSettings, onViewHistory, onViewCalendar }) {
     <>
       <Header />
       <div className="more-view">
-        <h1 className="more-header">⚙️ More</h1>
+        <h1 className="more-header">More</h1>
 
         {/* Version */}
         <div className="more-section">

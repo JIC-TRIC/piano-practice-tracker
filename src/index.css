@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap");
+
 html,
 body {
   min-height: 100vh;
@@ -6,15 +8,11 @@ body {
   padding: 0;
   width: 100vw;
   box-sizing: border-box;
-  background: linear-gradient(
-    135deg,
-    var(--background) 0%,
-    var(--background-gradient) 100%
-  );
-  overscroll-behavior-y: contain; /* Verhindert Bounce/Scroll "Überlauf" */
-  touch-action: manipulation; /* Verhindert ungewollte Gesten */
-  -webkit-user-select: none; /* Optional: verhindert Textauswahl beim Tippen */
-  -webkit-touch-callout: none; /* Kein Callout-Menü auf iOS automatisch */
+  background: var(--background);
+  overscroll-behavior-y: contain;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
   overflow-x: hidden;
 }
 
@@ -33,29 +31,35 @@ body {
   --primary: #06b6d4;
   --primary-dark: #0891b2;
   --secondary: #22d3ee;
-  --background: #0a0e1a;
-  --background-gradient: #0c1426;
-  --surface: #111827;
-  --surface-light: #1f2937;
-  --text: #f0f9ff;
-  --text-secondary: #94a3b8;
+  --background: #000000;
+  --surface: #0a0a0a;
+  --surface-light: #141414;
+  --text: #e5e5e5;
+  --text-secondary: #737373;
+  --text-tertiary: #525252;
   --text-on-primary: #ffffff;
-  --success: #10b981;
-  --warning: #f59e0b;
+  --success: #22c55e;
+  --warning: #eab308;
   --danger: #ef4444;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --border: rgba(255, 255, 255, 0.04);
+  --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
+  --font-sans:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* Color Schemes - Complete Themes */
+/* Color Schemes */
 [data-theme="ocean"] {
   --primary: #06b6d4;
   --primary-dark: #0891b2;
   --secondary: #22d3ee;
-  --background: #0a0e1a;
-  --background-gradient: #0c1426;
-  --surface: #111827;
-  --surface-light: #1f2937;
-  --text: #f0f9ff;
-  --text-secondary: #94a3b8;
+  --background: #000000;
+  --surface: #0a0a0a;
+  --surface-light: #141414;
+  --text: #e5e5e5;
+  --text-secondary: #737373;
   --text-on-primary: #ffffff;
 }
 
@@ -63,12 +67,11 @@ body {
   --primary: #a855f7;
   --primary-dark: #9333ea;
   --secondary: #c084fc;
-  --background: #120a1a;
-  --background-gradient: #1a1026;
-  --surface: #1e1427;
-  --surface-light: #2e1f3d;
-  --text: #faf5ff;
-  --text-secondary: #b794d4;
+  --background: #000000;
+  --surface: #0a090c;
+  --surface-light: #14121a;
+  --text: #e5e0ee;
+  --text-secondary: #8b7ba8;
   --text-on-primary: #ffffff;
 }
 
@@ -76,12 +79,11 @@ body {
   --primary: #ef4444;
   --primary-dark: #dc2626;
   --secondary: #f97316;
-  --background: #1a0a0a;
-  --background-gradient: #261010;
-  --surface: #271414;
-  --surface-light: #3d1f1f;
-  --text: #fef2f2;
-  --text-secondary: #d4a3a3;
+  --background: #000000;
+  --surface: #0a0808;
+  --surface-light: #141010;
+  --text: #e5dede;
+  --text-secondary: #8b7070;
   --text-on-primary: #ffffff;
 }
 
@@ -89,12 +91,11 @@ body {
   --primary: #14b8a6;
   --primary-dark: #0d9488;
   --secondary: #5eead4;
-  --background: #0a1a14;
-  --background-gradient: #0f261c;
-  --surface: #102720;
-  --surface-light: #1a3d32;
-  --text: #f0fdfa;
-  --text-secondary: #86c9b8;
+  --background: #000000;
+  --surface: #080a0a;
+  --surface-light: #101414;
+  --text: #e0e5e3;
+  --text-secondary: #708b85;
   --text-on-primary: #ffffff;
 }
 
@@ -102,12 +103,11 @@ body {
   --primary: #e879f9;
   --primary-dark: #d946ef;
   --secondary: #f0abfc;
-  --background: #1a0a14;
-  --background-gradient: #26101c;
-  --surface: #27141e;
-  --surface-light: #3d1f30;
-  --text: #fdf4ff;
-  --text-secondary: #d4a3c4;
+  --background: #000000;
+  --surface: #0a080a;
+  --surface-light: #141014;
+  --text: #e5dee5;
+  --text-secondary: #8b7088;
   --text-on-primary: #000000;
 }
 
@@ -115,38 +115,29 @@ body {
   --primary: #ffffff;
   --primary-dark: #d0d0d0;
   --secondary: #888888;
-  --background: #0a0a0a;
-  --background-gradient: #141414;
-  --surface: #1a1a1a;
-  --surface-light: #2a2a2a;
-  --text: #ffffff;
-  --text-secondary: #888888;
+  --background: #000000;
+  --surface: #0a0a0a;
+  --surface-light: #141414;
+  --text: #e5e5e5;
+  --text-secondary: #737373;
   --text-on-primary: #000000;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, sans-serif;
+  font-family: var(--font-sans);
   color: var(--text);
-  background: transparent;
+  background: var(--background);
   min-height: 100vh;
   overflow-x: hidden;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 @keyframes slideUp {
   from {
-    transform: translateY(50px);
+    transform: translateY(20px);
     opacity: 0;
   }
   to {
@@ -157,7 +148,7 @@ body {
 
 /* Bottom Spacer for Navigation Bar */
 .bottom-spacer {
-  height: 100px;
+  height: 80px;
   width: 100%;
   flex-shrink: 0;
 }

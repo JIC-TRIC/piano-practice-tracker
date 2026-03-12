@@ -48,10 +48,10 @@ function Settings({
       const data = {
         pianoPieces: JSON.parse(localStorage.getItem("pianoPieces") || "[]"),
         practiceSessions: JSON.parse(
-          localStorage.getItem("practiceSessions") || "{}"
+          localStorage.getItem("practiceSessions") || "{}",
         ),
         pianoSettings: JSON.parse(
-          localStorage.getItem("pianoSettings") || "{}"
+          localStorage.getItem("pianoSettings") || "{}",
         ),
         exportDate: new Date().toISOString(),
         version: "1.0",
@@ -95,12 +95,12 @@ function Settings({
           localStorage.setItem("pianoPieces", JSON.stringify(data.pianoPieces));
           localStorage.setItem(
             "practiceSessions",
-            JSON.stringify(data.practiceSessions)
+            JSON.stringify(data.practiceSessions),
           );
           if (data.pianoSettings) {
             localStorage.setItem(
               "pianoSettings",
-              JSON.stringify(data.pianoSettings)
+              JSON.stringify(data.pianoSettings),
             );
           }
 
@@ -121,7 +121,7 @@ function Settings({
     <div className={`modal ${isOpen ? "active" : ""}`}>
       <div className="modal-content settings-modal-content">
         <div className="modal-header">
-          <h2 className="modal-title">⚙️ Settings</h2>
+          <h2 className="modal-title">Settings</h2>
         </div>
 
         <div className="settings-list">

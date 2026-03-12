@@ -1,5 +1,6 @@
 import "./StatsBar.css";
 import { formatTime } from "../../utils/youtube";
+import { getStatusFromProgress } from "../../App";
 
 // Hilfsfunktion: Prüft ob zwei Daten am selben Tag sind
 const isSameDay = (date1, date2) => {
@@ -11,10 +12,12 @@ const isSameDay = (date1, date2) => {
 };
 
 function StatsBar({ pieces, practiceSessions }) {
-  // Gemeistert = 7 oder 8 Meilensteine erreicht
-  const mastered = pieces.filter((p) => {
-    const milestones = p.milestones || [];
-    return milestones.length >= 7;
+  // Gelernt = dynamics true (or mastered/memorizing)
+  const learned = pieces.filter((p) => {
+    const status = getStatusFromProgress(p.progress);
+    return (
+      status === "learned" || status === "memorizing" || status === "mastered"
+    );
   }).length;
 
   const today = new Date();
@@ -83,7 +86,7 @@ function StatsBar({ pieces, practiceSessions }) {
   };
 
   return {
-    mastered,
+    mastered: learned,
     todayTime,
     totalTime,
     practiceStreak,
@@ -102,8 +105,8 @@ function StatsBar({ pieces, practiceSessions }) {
           <span className="stat-value">{formatHours(totalTime)}</span>
         </div>
         <div className="stat-item">
-          <span className="stat-label">Mastered</span>
-          <span className="stat-value">{mastered}</span>
+          <span className="stat-label">Learned</span>
+          <span className="stat-value">{learned}</span>
         </div>
       </div>
     ),

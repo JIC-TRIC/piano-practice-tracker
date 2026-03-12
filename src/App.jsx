@@ -25,11 +25,96 @@ function getSessionWeight(daysAgo) {
   return 10 * Math.exp(-daysAgo / 13);
 }
 
+// Default progress object
+const DEFAULT_PROGRESS = {
+  rightHand: 0,
+  leftHand: 0,
+  together: 0,
+  dynamics: false,
+  memorized: 0,
+};
+
+// Migrate old milestones[] to new progress object
+function migrateProgress(piece) {
+  if (piece.progress) return piece;
+  const ms = piece.milestones || [];
+  return {
+    ...piece,
+    progress: {
+      rightHand: ms.includes("right_hand_full")
+        ? 2
+        : ms.includes("right_hand")
+          ? 1
+          : 0,
+      leftHand: ms.includes("left_hand_full")
+        ? 2
+        : ms.includes("left_hand")
+          ? 1
+          : 0,
+      together: ms.includes("tempo_reached")
+        ? 2
+        : ms.includes("hands_together")
+          ? 1
+          : 0,
+      dynamics: ms.includes("dynamics_added"),
+      memorized: ms.includes("memorized")
+        ? 2
+        : ms.includes("performance_ready")
+          ? 1
+          : 0,
+    },
+  };
+}
+
+// Get status from progress object
+export function getStatusFromProgress(progress = DEFAULT_PROGRESS) {
+  const p = { ...DEFAULT_PROGRESS, ...progress };
+  if (p.memorized === 2) return "mastered";
+  if (p.memorized === 1) return "memorizing";
+  if (p.dynamics) return "learned";
+  if (p.together >= 1) return "together";
+  if (p.rightHand >= 1 || p.leftHand >= 1) return "hands";
+  return "not_started";
+}
+
+export function getStatusLabel(status) {
+  const labels = {
+    not_started: "Not Started",
+    hands: "Hands Separately",
+    together: "Hands Together",
+    learned: "Learned",
+    memorizing: "Memorizing",
+    mastered: "Mastered",
+  };
+  return labels[status] || "Not Started";
+}
+
+export function getStatusValue(status) {
+  const values = {
+    not_started: 0,
+    hands: 1,
+    together: 2,
+    learned: 3,
+    memorizing: 4,
+    mastered: 5,
+  };
+  return values[status] || 0;
+}
+
 function App() {
-  const [pieces, setPieces] = useLocalStorage("pianoPieces", []);
+  const [rawPieces, setRawPieces] = useLocalStorage("pianoPieces", []);
+  // Auto-migrate old pieces on load
+  const pieces = useMemo(() => rawPieces.map(migrateProgress), [rawPieces]);
+  const setPieces = (updater) => {
+    if (typeof updater === "function") {
+      setRawPieces((prev) => updater(prev.map(migrateProgress)));
+    } else {
+      setRawPieces(updater);
+    }
+  };
   const [practiceSessions, setPracticeSessions] = useLocalStorage(
     "practiceSessions",
-    {}
+    {},
   );
   const [settings, setSettings] = useLocalStorage("pianoSettings", {
     showExternalYouTubeButton: true,
@@ -93,26 +178,6 @@ function App() {
     });
   };
 
-  const getStatusFromMilestones = (milestones = []) => {
-    const count = milestones.length;
-    if (count === 0) return "not_started";
-    if (count <= 2) return "learning";
-    if (count <= 4) return "practicing";
-    if (count <= 6) return "polishing";
-    return "mastered";
-  };
-
-  const getStatusValue = (status) => {
-    const values = {
-      not_started: 0,
-      learning: 1,
-      practicing: 2,
-      polishing: 3,
-      mastered: 4,
-    };
-    return values[status] || 0;
-  };
-
   const getDifficultyValue = (difficulty) => {
     const values = {
       Unknown: -1,
@@ -162,7 +227,7 @@ function App() {
     }
     if (filters.progress && filters.progress.length > 0) {
       result = result.filter((p) => {
-        const status = getStatusFromMilestones(p.milestones);
+        const status = getStatusFromProgress(p.progress);
         return filters.progress.includes(status);
       });
     }
@@ -177,26 +242,26 @@ function App() {
       });
     } else if (sort.sortBy === "progress") {
       result = result.sort((a, b) => {
-        const statusA = getStatusFromMilestones(a.milestones);
-        const statusB = getStatusFromMilestones(b.milestones);
+        const statusA = getStatusFromProgress(a.progress);
+        const statusB = getStatusFromProgress(b.progress);
         return getStatusValue(statusA) - getStatusValue(statusB);
       });
     } else if (sort.sortBy === "difficulty") {
       result = result.sort(
         (a, b) =>
-          getDifficultyValue(a.difficulty) - getDifficultyValue(b.difficulty)
+          getDifficultyValue(a.difficulty) - getDifficultyValue(b.difficulty),
       );
     } else if (sort.sortBy === "title") {
       result = result.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sort.sortBy === "practiceTime") {
       result = result.sort(
-        (a, b) => getTotalPracticeTime(b.id) - getTotalPracticeTime(a.id)
+        (a, b) => getTotalPracticeTime(b.id) - getTotalPracticeTime(a.id),
       );
     } else if (sort.sortBy === "trending") {
       // NEU: Trending-Algorithmus mit Gewichtung über 3 Monate
       const now = new Date();
       result = result.sort(
-        (a, b) => trendingScore(b, now) - trendingScore(a, now)
+        (a, b) => trendingScore(b, now) - trendingScore(a, now),
       );
     } else if (sort.sortBy === "default") {
       result = result.sort((a, b) => {
@@ -216,19 +281,19 @@ function App() {
   const handleSavePiece = (pieceData) => {
     const isDuplicate = isDuplicateYouTubeUrl(
       pieceData.youtubeUrl,
-      editingPiece?.id
+      editingPiece?.id,
     );
 
     if (isDuplicate) {
-      showToast("⚠️ This YouTube video already exists!");
+      showToast("This YouTube video already exists!");
       return;
     }
 
     if (editingPiece) {
       setPieces(
         pieces.map((p) =>
-          p.id === editingPiece.id ? { ...p, ...pieceData } : p
-        )
+          p.id === editingPiece.id ? { ...p, ...pieceData } : p,
+        ),
       );
       showToast("Piece updated!");
     } else {
@@ -270,42 +335,32 @@ function App() {
       // Nur noch das letzte Übungsdatum im Piece speichern!
       setPieces((prev) =>
         prev.map((p) =>
-          p.id === pieceId ? { ...p, lastPracticed: timestamp } : p
-        )
+          p.id === pieceId ? { ...p, lastPracticed: timestamp } : p,
+        ),
       );
       showToast("Practice time saved!");
     } else if (pieceId && seconds > 0) {
       // Update last practiced even for short sessions
       setPieces((prev) =>
         prev.map((p) =>
-          p.id === pieceId ? { ...p, lastPracticed: timestamp } : p
-        )
+          p.id === pieceId ? { ...p, lastPracticed: timestamp } : p,
+        ),
       );
     }
   };
 
-  const handleUpdateProgress = (pieceId, newMilestones) => {
+  const handleUpdateProgress = (pieceId, newProgress) => {
     setPieces((prev) =>
-      prev.map((p) =>
-        p.id === pieceId ? { ...p, milestones: newMilestones } : p
-      )
+      prev.map((p) => (p.id === pieceId ? { ...p, progress: newProgress } : p)),
     );
     showToast("Progress updated!");
-  };
-
-  const handleUpdateNotesState = (pieceId, newNotesState) => {
-    setPieces((prev) =>
-      prev.map((p) =>
-        p.id === pieceId ? { ...p, notesState: newNotesState } : p
-      )
-    );
   };
 
   const handleUpdateDifficulty = (pieceId, newDifficulty) => {
     setPieces((prev) =>
       prev.map((p) =>
-        p.id === pieceId ? { ...p, difficulty: newDifficulty } : p
-      )
+        p.id === pieceId ? { ...p, difficulty: newDifficulty } : p,
+      ),
     );
   };
 
@@ -313,7 +368,7 @@ function App() {
     setPracticeSessions((prev) => {
       const pieceLogs = prev[pieceId] || [];
       const updated = pieceLogs.filter(
-        (session) => session.timestamp !== timestamp
+        (session) => session.timestamp !== timestamp,
       );
       return { ...prev, [pieceId]: updated };
     });
@@ -420,7 +475,6 @@ function App() {
         piece={practicingPiece}
         onSavePracticeTime={handleSavePracticeTime}
         onUpdateProgress={handleUpdateProgress}
-        onUpdateNotesState={handleUpdateNotesState}
         onUpdateDifficulty={handleUpdateDifficulty}
         settings={settings}
       />

@@ -1,41 +1,33 @@
 import "./PieceCard.css";
 import { formatTime } from "../../utils/youtube";
+import { getStatusFromProgress, getStatusLabel } from "../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHourglass,
-  faBookOpen,
+  faHandsClapping,
   faGraduationCap,
-  faGem,
-  faTrophy,
-  faFileLines,
-  faCircle,
-  faPencil,
+  faCheck,
+  faBrain,
+  faCrown,
 } from "@fortawesome/free-solid-svg-icons";
 
-// Hilfsfunktion für Status basierend auf Meilensteinen
-const getStatusFromMilestones = (milestones = []) => {
-  const count = milestones.length;
+const DEFAULT_PROGRESS = {
+  rightHand: 0,
+  leftHand: 0,
+  together: 0,
+  dynamics: false,
+  memorized: 0,
+};
 
-  if (count === 0) {
-    return { icon: faHourglass, label: "Not Started", color: "#64748b" };
-  } else if (count <= 2) {
-    return {
-      icon: faGraduationCap,
-      label: "Practicing Hands",
-      color: "#14b8a6",
-    };
-  } else if (count <= 4) {
-    return {
-      icon: faGraduationCap,
-      label: "Hands Mastered",
-      color: "#14b8a6",
-    };
-  } else if (count <= 6) {
-    return { icon: faGem, label: "Learning Together", color: "#06b6d4" };
-  } else {
-    return { icon: faTrophy, label: "Mastered", color: "#8b5cf6" };
-  }
-}; // Hilfsfunktion für Schwierigkeit-Farbe
+const statusConfig = {
+  not_started: { icon: faHourglass, color: "#64748b" },
+  hands: { icon: faGraduationCap, color: "#14b8a6" },
+  together: { icon: faHandsClapping, color: "#06b6d4" },
+  learned: { icon: faCheck, color: "#4ade80" },
+  memorizing: { icon: faBrain, color: "#a78bfa" },
+  mastered: { icon: faCrown, color: "#f59e0b" },
+};
+
 const getDifficultyColor = (difficulty) => {
   const colors = {
     Unknown: "#64748b",
@@ -48,15 +40,52 @@ const getDifficultyColor = (difficulty) => {
   return colors[difficulty] || "#94a3b8";
 };
 
+function ProgressDots({ progress }) {
+  const p = { ...DEFAULT_PROGRESS, ...progress };
+  // RH(2) LH(2) | Together(2) | Dynamics(1) | Memorized(2) = 9 segments max
+  // We show: RH dots, LH dots, separator, Together dots, Dynamics dot, optional Memorize dots
+  return (
+    <div className="progress-dots">
+      <div className="dot-group">
+        <span className="dot-label">RH</span>
+        <span className={`dot ${p.rightHand >= 1 ? "filled" : ""}`}></span>
+        <span className={`dot ${p.rightHand >= 2 ? "filled" : ""}`}></span>
+      </div>
+      <div className="dot-group">
+        <span className="dot-label">LH</span>
+        <span className={`dot ${p.leftHand >= 1 ? "filled" : ""}`}></span>
+        <span className={`dot ${p.leftHand >= 2 ? "filled" : ""}`}></span>
+      </div>
+      <span className="dot-separator">│</span>
+      <div className="dot-group">
+        <span
+          className={`dot ${p.together >= 1 ? "filled together" : ""}`}
+        ></span>
+        <span
+          className={`dot ${p.together >= 2 ? "filled together" : ""}`}
+        ></span>
+      </div>
+      <span className={`dot ${p.dynamics ? "filled dynamics" : ""}`}></span>
+      <span className="dot-separator">│</span>
+      <span
+        className={`dot ${p.memorized >= 1 ? "filled memorize" : ""}`}
+      ></span>
+      <span
+        className={`dot ${p.memorized >= 2 ? "filled memorize" : ""}`}
+      ></span>
+    </div>
+  );
+}
+
 function PieceCard({ piece, sessions, onEdit, onYouTubeClick }) {
-  const milestones = piece.milestones || [];
-  const status = getStatusFromMilestones(milestones);
+  const progress = piece.progress || DEFAULT_PROGRESS;
+  const status = getStatusFromProgress(progress);
+  const config = statusConfig[status] || statusConfig.not_started;
   const difficultyColor = getDifficultyColor(piece.difficulty);
 
-  // Gesamtzeit aus practiceLog berechnen
   const totalPracticeTime = sessions.reduce(
     (sum, log) => sum + log.duration,
-    0
+    0,
   );
 
   return (
@@ -92,30 +121,14 @@ function PieceCard({ piece, sessions, onEdit, onYouTubeClick }) {
 
         <div className="progress-section">
           <div className="status-display">
-            <span className="status-icon">
-              <FontAwesomeIcon icon={status.icon} />
+            <span className="status-icon" style={{ color: config.color }}>
+              <FontAwesomeIcon icon={config.icon} />
             </span>
-            <span className="status-label" style={{ color: status.color }}>
-              {status.label}
+            <span className="status-label" style={{ color: config.color }}>
+              {getStatusLabel(status)}
             </span>
-            <span className="milestone-count">({milestones.length}/8)</span>
-            {(piece.notesState === "learned" ||
-              piece.notesState === "own_version" ||
-              piece.notesLearned) && (
-              <span className="notes-indicator">
-                <FontAwesomeIcon
-                  icon={
-                    piece.notesState === "learned" ||
-                    (piece.notesLearned && !piece.notesState)
-                      ? faFileLines
-                      : piece.notesState === "own_version"
-                      ? faPencil
-                      : faFileLines
-                  }
-                />
-              </span>
-            )}
           </div>
+          <ProgressDots progress={progress} />
         </div>
       </div>
     </div>

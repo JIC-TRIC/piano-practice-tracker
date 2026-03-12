@@ -1,26 +1,32 @@
 .more-view {
-  padding: 16px;
-  padding-bottom: 80px;
+  padding: 12px;
+  padding-bottom: 70px;
   max-width: 800px;
   margin: 0 auto;
 }
 
 .more-header {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 500;
   color: var(--text);
-  margin-bottom: 20px;
+  margin-bottom: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .more-section {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .section-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* Version Card */
@@ -28,36 +34,39 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
+  padding: 10px;
   background: var(--surface);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
 }
 
 .version-label {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .version-value {
-  font-size: 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
   color: var(--primary);
-  font-weight: 600;
-  font-family: "Courier New", monospace;
+  font-weight: 500;
 }
 
-/* Setting Item (from Settings.css) */
+/* Setting Item */
 .setting-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
+  gap: 10px;
+  padding: 10px;
   background: var(--surface);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  margin-bottom: 6px;
 }
 
 .setting-item:last-child {
@@ -69,14 +78,14 @@
 }
 
 .setting-title {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 500;
   color: var(--text);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .setting-description {
-  font-size: 0.85rem;
+  font-size: 0.68rem;
   color: var(--text-secondary);
   line-height: 1.4;
   margin: 0;
@@ -86,8 +95,8 @@
 .toggle-switch {
   position: relative;
   display: inline-block;
-  width: 52px;
-  height: 28px;
+  width: 40px;
+  height: 22px;
   flex-shrink: 0;
 }
 
@@ -105,20 +114,20 @@
   right: 0;
   bottom: 0;
   background-color: var(--surface-light);
-  transition: 0.3s;
-  border-radius: 28px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: 0.15s;
+  border-radius: 22px;
+  border: 1px solid var(--border);
 }
 
 .toggle-slider:before {
   position: absolute;
   content: "";
-  height: 20px;
-  width: 20px;
+  height: 16px;
+  width: 16px;
   left: 2px;
   bottom: 2px;
   background-color: var(--text-secondary);
-  transition: 0.3s;
+  transition: 0.15s;
   border-radius: 50%;
 }
 
@@ -128,89 +137,93 @@
 }
 
 .toggle-switch input:checked + .toggle-slider:before {
-  transform: translateX(24px);
+  transform: translateX(18px);
   background-color: var(--text-on-primary);
 }
 
 /* Count Selector */
 .count-selector {
   display: flex;
-  gap: 8px;
+  gap: 4px;
   flex-shrink: 0;
 }
 
 .count-btn {
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--surface-light);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   color: var(--text-secondary);
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: opacity 0.1s ease;
 }
 
 .count-btn:active {
-  transform: scale(0.95);
+  opacity: 0.7;
 }
 
 .count-btn.active {
-  background: var(--primary);
+  background: transparent;
   border-color: var(--primary);
-  color: var(--text-on-primary);
+  color: var(--primary);
 }
 
 /* Color Schemes */
 .color-schemes {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 6px;
 }
 
 .color-scheme-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 14px;
+  gap: 6px;
+  padding: 10px;
   background: var(--surface);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: opacity 0.1s ease;
 }
 
 .color-scheme-btn:active {
-  transform: scale(0.98);
+  opacity: 0.7;
 }
 
 .color-scheme-btn.active {
   border-color: var(--primary);
-  background: var(--surface-light);
+  background: var(--surface);
 }
 
 .scheme-colors {
   display: flex;
-  gap: 4px;
+  gap: 2px;
 }
 
 .scheme-color {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  width: 18px;
+  height: 18px;
+  border-radius: 1px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .scheme-name {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--text-secondary);
   text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 @media (min-width: 640px) {
@@ -223,30 +236,32 @@
 .more-buttons {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .more-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 14px 20px;
-  background: var(--surface);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  gap: 6px;
+  padding: 10px 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   color: var(--text);
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: opacity 0.1s ease;
   width: 100%;
   text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .more-btn:active {
-  transform: scale(0.98);
-  background: var(--surface-light);
+  opacity: 0.7;
 }
 
 .export-btn {
@@ -261,17 +276,17 @@
 
 /* About Card */
 .about-card {
-  padding: 16px;
+  padding: 12px;
   background: var(--surface);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
 }
 
 .about-text {
-  font-size: 0.9rem;
+  font-size: 0.78rem;
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 8px;
+  line-height: 1.5;
+  margin-bottom: 6px;
 }
 
 .about-text:last-child {
@@ -292,10 +307,10 @@
 /* Mobile Optimization */
 @media (max-width: 480px) {
   .more-view {
-    padding: 12px;
+    padding: 10px;
   }
 
   .more-header {
-    font-size: 1.3rem;
+    font-size: 0.88rem;
   }
 }

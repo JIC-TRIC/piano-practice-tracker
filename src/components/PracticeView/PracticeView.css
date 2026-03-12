@@ -1,6 +1,6 @@
 .practice-view {
-  padding: 16px;
-  padding-bottom: 80px;
+  padding: 12px;
+  padding-bottom: 70px;
   max-width: 800px;
   margin: 0 auto;
 }
@@ -10,30 +10,35 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
-  padding: 14px 20px;
+  padding: 10px 12px;
   background: var(--primary);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   color: var(--text-on-primary);
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-bottom: 20px;
+  transition: opacity 0.1s ease;
+  margin-bottom: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .add-piece-btn:active {
-  transform: scale(0.98);
-  background: var(--primary-dark);
+  opacity: 0.7;
 }
 
 .section-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* YouTube Bottom Button */
@@ -41,44 +46,46 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 6px;
   width: 100%;
-  padding: 14px 20px;
-  background: #fb7185;
-  border: none;
-  border-radius: 12px;
-  color: white;
-  font-size: 0.95rem;
-  font-weight: 600;
+  padding: 10px 12px;
+  background: transparent;
+  border: 1px solid #fb7185;
+  border-radius: var(--radius-sm);
+  color: #fb7185;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 20px;
+  transition: opacity 0.1s ease;
+  margin-top: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .youtube-bottom-btn:active {
-  transform: scale(0.98);
-  background: #f43f5e;
+  opacity: 0.7;
 }
 
 /* Goal Section */
 .goal-section {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .goal-card {
   display: flex;
-  gap: 20px;
-  padding: 24px;
+  gap: 12px;
+  padding: 12px;
   background: var(--surface);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
   align-items: center;
 }
 
 .goal-progress-ring {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   flex-shrink: 0;
 }
 
@@ -94,8 +101,8 @@
 
 .progress-fill {
   stroke: var(--primary);
-  stroke-linecap: round;
-  transition: stroke-dasharray 0.5s ease;
+  stroke-linecap: butt;
+  transition: stroke-dasharray 0.3s ease;
 }
 
 .progress-text {
@@ -107,22 +114,26 @@
 }
 
 .progress-value {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 500;
   color: var(--primary);
   line-height: 1;
 }
 
 .progress-label {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .goal-info {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   flex: 1;
 }
 
@@ -133,15 +144,16 @@
 }
 
 .stat-label {
-  font-size: 0.9rem;
+  font-size: 0.72rem;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .stat-value {
-  font-size: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
   color: var(--text);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .streak-value {
@@ -150,35 +162,38 @@
 
 /* Practice Milestones Section */
 .milestone-section {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .milestone-card {
-  padding: 20px;
+  padding: 12px;
   background: var(--surface);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
 }
 
 .milestone-completed {
   text-align: center;
-  padding: 20px 0;
+  padding: 12px 0;
 }
 
 .milestone-icon {
-  font-size: 3rem;
-  margin-bottom: 12px;
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: var(--primary);
 }
 
 .milestone-text {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
   color: var(--primary);
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .milestone-total {
-  font-size: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   color: var(--text-secondary);
 }
 
@@ -186,101 +201,104 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .milestone-label {
-  font-size: 0.9rem;
+  font-size: 0.72rem;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .milestone-target {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 500;
   color: var(--primary);
 }
 
 .milestone-progress-bar {
-  height: 12px;
+  height: 3px;
   background: var(--surface-light);
-  border-radius: 12px;
+  border-radius: 0;
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .milestone-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-  border-radius: 12px;
-  transition: width 0.5s ease;
+  background: var(--primary);
+  border-radius: 0;
+  transition: width 0.3s ease;
 }
 
 .milestone-stats {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
 }
 
 .milestone-stat {
-  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
   color: var(--text-secondary);
 }
 
 /* Favorite Pieces Section */
 .favorites-section {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .favorites-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .favorite-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
+  gap: 8px;
+  padding: 8px 10px;
   background: var(--surface);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: opacity 0.1s ease;
   text-align: left;
 }
 
 .favorite-item:active {
-  transform: scale(0.98);
-  background: var(--surface-light);
+  opacity: 0.7;
 }
 
 .favorite-rank {
-  width: 32px;
-  height: 32px;
+  font-family: var(--font-mono);
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary);
-  color: var(--text-on-primary);
-  border-radius: 50%;
-  font-size: 0.9rem;
-  font-weight: 700;
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  font-weight: 500;
   flex-shrink: 0;
 }
 
 .favorite-info {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0;
   flex: 1;
   min-width: 0;
 }
 
 .favorite-title {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 500;
   color: var(--text);
   white-space: nowrap;
   overflow: hidden;
@@ -288,7 +306,7 @@
 }
 
 .favorite-artist {
-  font-size: 0.8rem;
+  font-size: 0.65rem;
   color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
@@ -299,43 +317,45 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 2px;
+  gap: 0;
   flex-shrink: 0;
 }
 
 .favorite-time {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
   color: var(--primary);
 }
 
 .favorite-count {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-tertiary);
 }
 
 /* Empty State */
 .empty-practice {
   text-align: center;
-  padding: 40px 20px;
+  padding: 24px 12px;
   color: var(--text-secondary);
 }
 
 /* Mobile Adjustments */
 @media (max-width: 480px) {
   .practice-view {
-    padding: 12px;
+    padding: 10px;
   }
 
   .goal-card {
     flex-direction: column;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
   }
 
   .goal-progress-ring {
-    width: 140px;
-    height: 140px;
+    width: 120px;
+    height: 120px;
   }
 
   .goal-info {
@@ -343,6 +363,6 @@
   }
 
   .progress-value {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
 }

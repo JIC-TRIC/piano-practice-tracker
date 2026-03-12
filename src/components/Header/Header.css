@@ -1,10 +1,9 @@
 .app-header {
-  background: var(--surface);
-  backdrop-filter: blur(10px);
-  padding: 1rem 1.5rem;
+  background: var(--background);
+  padding: 0.6rem 1rem;
   position: relative;
   z-index: 100;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border);
 }
 
 .header-content {
@@ -15,85 +14,64 @@
   align-items: center;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--primary);
-}
-
-.logo svg {
-  opacity: 0.9;
-}
-
-.piano-keyboard {
-  transition: all 0.3s ease;
-}
-
-.piano-keyboard:hover {
-  transform: scale(1.05);
-}
-
 .app-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text);
   margin: 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .header-buttons {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.3rem;
   align-items: center;
 }
 
 .icon-btn {
-  background: var(--surface-light);
-  color: var(--text);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: opacity 0.1s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .icon-btn:active {
-  transform: translateY(0);
+  opacity: 0.7;
 }
 
 .youtube-btn:hover {
-  border-color: #ff0000;
   color: #ff0000;
 }
 
 .settings-btn:hover {
-  border-color: var(--primary);
   color: var(--primary);
 }
 
 .streak-btn {
-  background: var(--surface-light);
-  border: 1px solid rgba(251, 146, 60, 0.4);
+  background: transparent;
+  border: 1px solid rgba(251, 146, 60, 0.2);
   cursor: default;
   pointer-events: none;
 }
 
 .streak-btn:hover {
-  background: var(--surface-light);
-  border-color: rgba(232, 144, 85, 0.3);
+  background: transparent;
   transform: none;
 }
 
 .streak-number {
-  font-size: 1rem;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
   color: #fb923c;
 }
 
@@ -101,40 +79,33 @@
   background: var(--primary);
   color: var(--text-on-primary);
   border: none;
-  width: 45px;
-  height: 45px;
-  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.2);
+  transition: opacity 0.1s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.add-btn:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
-}
-
 .add-btn:active {
-  transform: translateY(0);
+  opacity: 0.7;
 }
 
 /* Mobile Optimization */
 @media (max-width: 480px) {
   .app-header {
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.75rem;
   }
 
   .logo svg {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
   }
 
   .app-title {
-    font-size: 1.25rem;
+    font-size: 0.78rem;
   }
 
   .icon-btn {
@@ -153,7 +124,7 @@
   }
 
   .add-btn svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
 }

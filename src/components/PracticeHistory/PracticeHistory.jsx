@@ -1,6 +1,8 @@
 import { useMemo, useEffect } from "react";
 import "./PracticeHistory.css";
 import { formatTime } from "../../utils/youtube";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 function PracticeHistory({
   isOpen,
@@ -47,7 +49,7 @@ function PracticeHistory({
 
     // Sortiere nach Datum (neueste zuerst)
     return allSessions.sort(
-      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+      (a, b) => new Date(b.timestamp) - new Date(a.timestamp),
     );
   }, [pieces, practiceSessions]);
 
@@ -59,7 +61,7 @@ function PracticeHistory({
     const dateOnly = new Date(
       date.getFullYear(),
       date.getMonth(),
-      date.getDate()
+      date.getDate(),
     );
     const nowOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const diffDays = Math.floor((nowOnly - dateOnly) / (1000 * 60 * 60 * 24));
@@ -106,7 +108,7 @@ function PracticeHistory({
     <div className={`modal ${isOpen ? "active" : ""}`}>
       <div className="modal-content history-modal-content">
         <div className="modal-header">
-          <h2 className="modal-title">📊 Practice History</h2>
+          <h2 className="modal-title">Practice History</h2>
           <button className="close-btn" onClick={onClose}>
             ✕
           </button>
@@ -163,7 +165,7 @@ function PracticeHistory({
                       }
                       title="Delete session"
                     >
-                      🗑️
+                      <FontAwesomeIcon icon={faTrashCan} />
                     </button>
                   </div>
                 ))}

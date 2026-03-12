@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import "./StatsView.css";
 import { formatTime } from "../../utils/youtube";
+import { getStatusFromProgress } from "../../App";
 import PracticeCalendar from "../PracticeCalendar/PracticeCalendar";
 import PracticeHistory from "../PracticeHistory/PracticeHistory";
 import Header from "../Header/Header";
@@ -8,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClock,
   faBullseye,
-  faWandMagicSparkles,
+  faCheck,
   faChartLine,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -21,7 +22,12 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
     const safePieces = pieces || [];
     const safeSessions = practiceSessions || {};
 
-    const mastered = safePieces.filter((p) => p.milestones?.length >= 7).length;
+    const mastered = safePieces.filter((p) => {
+      const status = getStatusFromProgress(p.progress);
+      return (
+        status === "learned" || status === "memorizing" || status === "mastered"
+      );
+    }).length;
 
     let totalTime = 0;
     let totalSessions = 0;
@@ -79,7 +85,7 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
     <>
       <Header />
       <div className="stats-view">
-        <h1 className="stats-header">📊 Statistics</h1>
+        <h1 className="stats-header">Statistics</h1>
 
         {/* Stats Grid */}
         <div className="stats-grid">
@@ -107,11 +113,11 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
 
           <div className="stat-card-large">
             <div className="stat-icon">
-              <FontAwesomeIcon icon={faWandMagicSparkles} />
+              <FontAwesomeIcon icon={faCheck} />
             </div>
             <div className="stat-content">
               <div className="stat-value-large">{stats.mastered}</div>
-              <div className="stat-label-large">Mastered Pieces</div>
+              <div className="stat-label-large">Learned Pieces</div>
             </div>
           </div>
 

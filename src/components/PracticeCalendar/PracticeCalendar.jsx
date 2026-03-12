@@ -33,10 +33,10 @@ function PracticeCalendar({ isOpen, onClose, practiceSessions }) {
         const localDate = new Date(
           date.getFullYear(),
           date.getMonth(),
-          date.getDate()
+          date.getDate(),
         );
         const dateKey = `${localDate.getFullYear()}-${String(
-          localDate.getMonth() + 1
+          localDate.getMonth() + 1,
         ).padStart(2, "0")}-${String(localDate.getDate()).padStart(2, "0")}`;
 
         if (!dayMap[dateKey]) {
@@ -61,7 +61,7 @@ function PracticeCalendar({ isOpen, onClose, practiceSessions }) {
     const startDate = new Date(
       firstSessionDate.getFullYear(),
       firstSessionDate.getMonth(),
-      1
+      1,
     );
     const endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Letzter Tag des aktuellen Monats
 
@@ -90,7 +90,7 @@ function PracticeCalendar({ isOpen, onClose, practiceSessions }) {
       for (let day = 1; day <= daysInMonth; day++) {
         const date = new Date(year, month, day);
         const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(
-          day
+          day,
         ).padStart(2, "0")}`;
 
         days.push({
@@ -139,7 +139,7 @@ function PracticeCalendar({ isOpen, onClose, practiceSessions }) {
     <div className={`modal ${isOpen ? "active" : ""}`}>
       <div className="modal-content calendar-modal-content">
         <div className="modal-header">
-          <h2 className="modal-title">📅 Practice Calendar</h2>
+          <h2 className="modal-title">Practice Calendar</h2>
           <button className="close-btn" onClick={onClose}>
             ✕
           </button>

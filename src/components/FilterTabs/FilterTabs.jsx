@@ -3,10 +3,11 @@ import "./FilterTabs.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircle,
-  faBullseye,
-  faKeyboard,
-  faStar,
-  faWandMagicSparkles,
+  faGraduationCap,
+  faHandsClapping,
+  faCheck,
+  faBrain,
+  faCrown,
 } from "@fortawesome/free-solid-svg-icons";
 
 function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
@@ -29,21 +30,22 @@ function FilterTabs({ onFilterChange, onSortChange, onSearchChange }) {
 
   const progressOptions = [
     { value: "not_started", label: "Not Started", icon: faCircle },
-    { value: "learning", label: "Learning", icon: faBullseye },
-    { value: "practicing", label: "Practicing", icon: faKeyboard },
-    { value: "polishing", label: "Polishing", icon: faStar },
-    { value: "mastered", label: "Mastered", icon: faWandMagicSparkles },
+    { value: "hands", label: "Hands", icon: faGraduationCap },
+    { value: "together", label: "Together", icon: faHandsClapping },
+    { value: "learned", label: "Learned", icon: faCheck },
+    { value: "memorizing", label: "Memorizing", icon: faBrain },
+    { value: "mastered", label: "Mastered", icon: faCrown },
   ];
 
   const sortOptions = [
-    { value: "default", label: "Date Added" },
     { value: "trending", label: "Trending" },
-    { value: "random", label: "Random" },
+    { value: "practiceTime", label: "Practice Time" },
     { value: "lastPracticed", label: "Last Practiced" },
+    { value: "default", label: "Date Added" },
     { value: "progress", label: "Progress" },
     { value: "difficulty", label: "Difficulty" },
     { value: "title", label: "Title" },
-    { value: "practiceTime", label: "Practice Time" },
+    { value: "random", label: "Random" },
   ];
 
   const handleSearchChange = (e) => {

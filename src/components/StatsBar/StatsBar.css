@@ -1,10 +1,10 @@
 .stats-bar {
-  background: var(--surface);
-  padding: 1rem 1.5rem;
+  background: var(--background);
+  padding: 0.5rem 1rem;
   display: flex;
-  gap: 2rem;
+  gap: 1.25rem;
   overflow-x: auto;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border);
 }
 
 .stat-item {
@@ -14,14 +14,17 @@
 }
 
 .stat-label {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.1em;
+  font-weight: 400;
 }
 
 .stat-value {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 500;
   color: var(--primary);
 }

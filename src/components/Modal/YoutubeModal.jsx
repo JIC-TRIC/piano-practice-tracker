@@ -3,23 +3,27 @@ import "./Modal.css";
 import { extractVideoId, formatTimerDisplay } from "../../utils/youtube";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faFileLines,
   faHandPointRight,
   faHandPointLeft,
   faHandsClapping,
-  faClock,
   faVolumeHigh,
-  faStar,
   faWandMagicSparkles,
-  faCircle,
-  faPencil,
   faCircleQuestion,
   faMusic,
   faFaceSmile,
   faMeh,
   faFaceFrown,
   faSkull,
+  faLock,
 } from "@fortawesome/free-solid-svg-icons";
+
+const DEFAULT_PROGRESS = {
+  rightHand: 0,
+  leftHand: 0,
+  together: 0,
+  dynamics: false,
+  memorized: 0,
+};
 
 function YouTubeModal({
   isOpen,
@@ -28,37 +32,21 @@ function YouTubeModal({
   piece,
   onSavePracticeTime,
   onUpdateProgress,
-  onUpdateNotesState,
   onUpdateDifficulty,
   settings,
 }) {
   const [seconds, setSeconds] = useState(0);
   const [player, setPlayer] = useState(null);
-  const [selectedMilestones, setSelectedMilestones] = useState([]);
-  const [notesState, setNotesState] = useState("not_learned");
+  const [progress, setProgress] = useState({ ...DEFAULT_PROGRESS });
   const [difficulty, setDifficulty] = useState("Unknown");
   const intervalRef = useRef(null);
   const playerRef = useRef(null);
   const startTimeRef = useRef(null);
 
-  const milestoneOptions = [
-    { id: "notes_learned", label: "Notes", icon: faFileLines },
-    { id: "right_hand", label: "Right Hand", icon: faHandPointRight },
-    { id: "left_hand", label: "Left Hand", icon: faHandPointLeft },
-    { id: "hands_together", label: "Together", icon: faHandsClapping },
-    { id: "tempo_reached", label: "Tempo", icon: faClock },
-    { id: "dynamics_added", label: "Dynamics", icon: faVolumeHigh },
-    { id: "performance_ready", label: "Ready", icon: faStar },
-    { id: "memorized", label: "Memorized", icon: faWandMagicSparkles },
-  ];
-
-  // Initialize selectedMilestones, notesState and difficulty when modal opens
+  // Initialize progress and difficulty when modal opens
   useEffect(() => {
     if (isOpen && piece) {
-      setSelectedMilestones(piece.milestones || []);
-      setNotesState(
-        piece.notesState || (piece.notesLearned ? "learned" : "not_learned")
-      );
+      setProgress(piece.progress || { ...DEFAULT_PROGRESS });
       setDifficulty(piece.difficulty || "Unknown");
     }
   }, [isOpen, piece]);
@@ -189,12 +177,8 @@ function YouTubeModal({
     };
   }, [isOpen]);
 
-  const toggleMilestone = (milestoneId) => {
-    setSelectedMilestones((prev) =>
-      prev.includes(milestoneId)
-        ? prev.filter((id) => id !== milestoneId)
-        : [...prev, milestoneId]
-    );
+  const updateProgress = (field, value) => {
+    setProgress((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleCloseWithoutSaving = () => {
@@ -205,17 +189,11 @@ function YouTubeModal({
     if (seconds > 0 && piece) {
       onSavePracticeTime(piece.id, seconds, new Date().toISOString());
     }
-    const milestonesChanged =
-      JSON.stringify(selectedMilestones) !==
-      JSON.stringify(piece?.milestones || []);
-    if (milestonesChanged) {
-      onUpdateProgress(piece.id, selectedMilestones);
-    }
-    const notesStateChanged =
-      notesState !==
-      (piece?.notesState || (piece?.notesLearned ? "learned" : "not_learned"));
-    if (notesStateChanged && onUpdateNotesState) {
-      onUpdateNotesState(piece.id, notesState);
+    const progressChanged =
+      JSON.stringify(progress) !==
+      JSON.stringify(piece?.progress || DEFAULT_PROGRESS);
+    if (progressChanged) {
+      onUpdateProgress(piece.id, progress);
     }
     const difficultyChanged = difficulty !== (piece?.difficulty || "Unknown");
     if (difficultyChanged && onUpdateDifficulty) {
@@ -244,149 +222,254 @@ function YouTubeModal({
         <div className="form-group">
           <label className="form-label">Difficulty</label>
           <div className="segmented-control">
-            <button
-              type="button"
-              className={`segment-btn ${
-                difficulty === "Unknown" ? "active" : ""
-              }`}
-              onClick={() => setDifficulty("Unknown")}
-            >
-              <span className="segment-icon">
-                <FontAwesomeIcon icon={faCircleQuestion} />
-              </span>
-              <span className="segment-label">Unknown</span>
-            </button>
-            <button
-              type="button"
-              className={`segment-btn ${difficulty === "Free" ? "active" : ""}`}
-              onClick={() => setDifficulty("Free")}
-            >
-              <span className="segment-icon">
-                <FontAwesomeIcon icon={faMusic} />
-              </span>
-              <span className="segment-label">Free</span>
-            </button>
-            <button
-              type="button"
-              className={`segment-btn ${difficulty === "Easy" ? "active" : ""}`}
-              onClick={() => setDifficulty("Easy")}
-            >
-              <span className="segment-icon">
-                <FontAwesomeIcon icon={faFaceSmile} />
-              </span>
-              <span className="segment-label">Easy</span>
-            </button>
-            <button
-              type="button"
-              className={`segment-btn ${
-                difficulty === "Medium" ? "active" : ""
-              }`}
-              onClick={() => setDifficulty("Medium")}
-            >
-              <span className="segment-icon">
-                <FontAwesomeIcon icon={faMeh} />
-              </span>
-              <span className="segment-label">Medium</span>
-            </button>
-            <button
-              type="button"
-              className={`segment-btn ${difficulty === "Hard" ? "active" : ""}`}
-              onClick={() => setDifficulty("Hard")}
-            >
-              <span className="segment-icon">
-                <FontAwesomeIcon icon={faFaceFrown} />
-              </span>
-              <span className="segment-label">Hard</span>
-            </button>
-            <button
-              type="button"
-              className={`segment-btn ${
-                difficulty === "Ultrahard" ? "active" : ""
-              }`}
-              onClick={() => setDifficulty("Ultrahard")}
-            >
-              <span className="segment-icon">
-                <FontAwesomeIcon icon={faSkull} />
-              </span>
-              <span className="segment-label">Ultra</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Notes State Selector */}
-        <div className="form-group">
-          <label className="form-label">Tutorial Notes</label>
-          <div className="notes-segments">
-            <button
-              type="button"
-              className={`notes-segment-btn ${
-                notesState === "not_learned" ? "active" : ""
-              }`}
-              onClick={() => setNotesState("not_learned")}
-            >
-              <span className="notes-icon">
-                <FontAwesomeIcon icon={faCircle} />
-              </span>
-              <span className="notes-text">Not Learned</span>
-            </button>
-            <button
-              type="button"
-              className={`notes-segment-btn ${
-                notesState === "learned" ? "active" : ""
-              }`}
-              onClick={() => setNotesState("learned")}
-            >
-              <span className="notes-icon">
-                <FontAwesomeIcon icon={faFileLines} />
-              </span>
-              <span className="notes-text">Notes Learned</span>
-            </button>
-            <button
-              type="button"
-              className={`notes-segment-btn ${
-                notesState === "own_version" ? "active" : ""
-              }`}
-              onClick={() => setNotesState("own_version")}
-            >
-              <span className="notes-icon">
-                <FontAwesomeIcon icon={faPencil} />
-              </span>
-              <span className="notes-text">Own Version</span>
-            </button>
-          </div>
-          <p className="notes-help-text">
-            {notesState === "not_learned" &&
-              "You haven't started studying the notes yet"}
-            {notesState === "learned" &&
-              "You've studied all notes and are learning to play them"}
-            {notesState === "own_version" &&
-              "You're creating your own easier/better version"}
-          </p>
-        </div>
-
-        {/* Milestone Selector */}
-        <div className="form-group">
-          <label className="form-label">
-            Milestones ({selectedMilestones.length}/8)
-          </label>
-          <div className="segmented-control" style={{ flexWrap: "wrap" }}>
-            {milestoneOptions.map((milestone) => (
+            {[
+              { v: "Unknown", icon: faCircleQuestion, l: "Unknown" },
+              { v: "Free", icon: faMusic, l: "Free" },
+              { v: "Easy", icon: faFaceSmile, l: "Easy" },
+              { v: "Medium", icon: faMeh, l: "Medium" },
+              { v: "Hard", icon: faFaceFrown, l: "Hard" },
+              { v: "Ultrahard", icon: faSkull, l: "Ultra" },
+            ].map((d) => (
               <button
-                key={milestone.id}
+                key={d.v}
                 type="button"
-                className={`segment-btn ${
-                  selectedMilestones.includes(milestone.id) ? "active" : ""
-                }`}
-                onClick={() => toggleMilestone(milestone.id)}
-                style={{ flex: "1 1 calc(25% - 0.281rem)", minWidth: 0 }}
+                className={`segment-btn ${difficulty === d.v ? "active" : ""}`}
+                onClick={() => setDifficulty(d.v)}
               >
                 <span className="segment-icon">
-                  <FontAwesomeIcon icon={milestone.icon} />
+                  <FontAwesomeIcon icon={d.icon} />
                 </span>
-                <span className="segment-label">{milestone.label}</span>
+                <span className="segment-label">{d.l}</span>
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Progress Selector */}
+        <div className="form-group">
+          <label className="form-label">Progress</label>
+          {(() => {
+            // Forward locks: can't advance until previous phase is done
+            const handsReady =
+              progress.rightHand >= 2 && progress.leftHand >= 2;
+            const togetherReady = progress.together >= 2;
+            // Backward locks: can't go back once next phase has progress
+            const handsLocked = progress.together >= 1;
+            const togetherLocked = progress.dynamics === true;
+            const dynamicsLocked = progress.memorized >= 1;
+
+            const handsDisabled = handsLocked;
+            const togetherDisabled = !handsReady || togetherLocked;
+            const dynamicsDisabled = !togetherReady || dynamicsLocked;
+            const memorizeDisabled = !progress.dynamics;
+
+            return (
+              <div className="progress-stepper">
+                <div className="progress-phase">
+                  <div className="phase-title">
+                    <FontAwesomeIcon
+                      icon={faHandPointRight}
+                      className="phase-icon"
+                    />{" "}
+                    Hands Separately
+                  </div>
+                  <div
+                    className={`progress-toggle-row ${handsDisabled ? "disabled" : ""}`}
+                  >
+                    <div className="progress-toggle-label">
+                      <FontAwesomeIcon icon={faHandPointRight} />{" "}
+                      <span>Right Hand</span>
+                      {handsLocked && (
+                        <span className="locked-hint">
+                          <FontAwesomeIcon icon={faLock} /> Hands Together
+                          started
+                        </span>
+                      )}
+                    </div>
+                    <div className="progress-toggle-btns">
+                      {["—", "Slow", "Tempo"].map((lbl, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          className={`progress-toggle-btn ${progress.rightHand === i ? "active" : ""}`}
+                          onClick={() =>
+                            !handsDisabled && updateProgress("rightHand", i)
+                          }
+                          disabled={handsDisabled}
+                        >
+                          {lbl}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div
+                    className={`progress-toggle-row ${handsDisabled ? "disabled" : ""}`}
+                  >
+                    <div className="progress-toggle-label">
+                      <FontAwesomeIcon icon={faHandPointLeft} />{" "}
+                      <span>Left Hand</span>
+                      {handsLocked && (
+                        <span className="locked-hint">
+                          <FontAwesomeIcon icon={faLock} /> Hands Together
+                          started
+                        </span>
+                      )}
+                    </div>
+                    <div className="progress-toggle-btns">
+                      {["—", "Slow", "Tempo"].map((lbl, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          className={`progress-toggle-btn ${progress.leftHand === i ? "active" : ""}`}
+                          onClick={() =>
+                            !handsDisabled && updateProgress("leftHand", i)
+                          }
+                          disabled={handsDisabled}
+                        >
+                          {lbl}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="progress-phase">
+                  <div className="phase-title">
+                    <FontAwesomeIcon
+                      icon={faHandsClapping}
+                      className="phase-icon"
+                    />{" "}
+                    Hands Together
+                  </div>
+                  <div
+                    className={`progress-toggle-row ${togetherDisabled ? "disabled" : ""}`}
+                  >
+                    <div className="progress-toggle-label">
+                      <FontAwesomeIcon icon={faHandsClapping} />{" "}
+                      <span>Together</span>
+                      {togetherLocked ? (
+                        <span className="locked-hint">
+                          <FontAwesomeIcon icon={faLock} /> Dynamics started
+                        </span>
+                      ) : (
+                        !handsReady && (
+                          <span className="locked-hint">
+                            <FontAwesomeIcon icon={faLock} /> Both hands on
+                            tempo first
+                          </span>
+                        )
+                      )}
+                    </div>
+                    <div className="progress-toggle-btns">
+                      {["—", "Slow", "Tempo"].map((lbl, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          className={`progress-toggle-btn ${progress.together === i ? "active" : ""}`}
+                          onClick={() =>
+                            !togetherDisabled && updateProgress("together", i)
+                          }
+                          disabled={togetherDisabled}
+                        >
+                          {lbl}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="progress-phase">
+                  <div className="phase-title">
+                    <FontAwesomeIcon
+                      icon={faVolumeHigh}
+                      className="phase-icon"
+                    />{" "}
+                    Expression
+                  </div>
+                  <div
+                    className={`progress-toggle-row ${dynamicsDisabled ? "disabled" : ""}`}
+                  >
+                    <div className="progress-toggle-label">
+                      <FontAwesomeIcon icon={faVolumeHigh} />{" "}
+                      <span>Dynamics</span>
+                      {dynamicsLocked ? (
+                        <span className="locked-hint">
+                          <FontAwesomeIcon icon={faLock} /> Memorize started
+                        </span>
+                      ) : (
+                        !togetherReady && (
+                          <span className="locked-hint">
+                            <FontAwesomeIcon icon={faLock} /> Hands together on
+                            tempo first
+                          </span>
+                        )
+                      )}
+                    </div>
+                    <div className="progress-toggle-btns">
+                      <button
+                        type="button"
+                        className={`progress-toggle-btn ${!progress.dynamics ? "active" : ""}`}
+                        onClick={() =>
+                          !dynamicsDisabled && updateProgress("dynamics", false)
+                        }
+                        disabled={dynamicsDisabled}
+                      >
+                        —
+                      </button>
+                      <button
+                        type="button"
+                        className={`progress-toggle-btn ${progress.dynamics ? "active" : ""}`}
+                        onClick={() =>
+                          !dynamicsDisabled && updateProgress("dynamics", true)
+                        }
+                        disabled={dynamicsDisabled}
+                      >
+                        Yes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="progress-phase optional-phase">
+                  <div className="phase-title">
+                    <FontAwesomeIcon
+                      icon={faWandMagicSparkles}
+                      className="phase-icon"
+                    />{" "}
+                    Memorize <span className="optional-tag">optional</span>
+                  </div>
+                  <div
+                    className={`progress-toggle-row ${memorizeDisabled ? "disabled" : ""}`}
+                  >
+                    <div className="progress-toggle-label">
+                      <FontAwesomeIcon icon={faWandMagicSparkles} />{" "}
+                      <span>By Heart</span>
+                      {memorizeDisabled && (
+                        <span className="locked-hint">
+                          <FontAwesomeIcon icon={faLock} /> Dynamics first
+                        </span>
+                      )}
+                    </div>
+                    <div className="progress-toggle-btns">
+                      {["—", "Notes", "Complete"].map((lbl, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          className={`progress-toggle-btn ${progress.memorized === i ? "active" : ""}`}
+                          onClick={() =>
+                            !memorizeDisabled && updateProgress("memorized", i)
+                          }
+                          disabled={memorizeDisabled}
+                        >
+                          {lbl}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
         </div>
 
         {/* Show either external button OR YouTube player */}
