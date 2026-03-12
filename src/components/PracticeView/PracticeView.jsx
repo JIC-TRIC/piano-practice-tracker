@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import "./PracticeView.css";
 import { formatTime } from "../../utils/youtube";
 import Header from "../Header/Header";
+import SessionPlaylist from "../SessionPlaylist/SessionPlaylist";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBullseye, faStar } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,6 +13,8 @@ function PracticeView({
   practiceStreak,
   onAddPiece,
   favoritePiecesCount = 3,
+  playlistData,
+  onPlaylistUpdate,
 }) {
   // Sichere Defaults
   const safePieces = pieces || [];
@@ -143,6 +146,15 @@ function PracticeView({
           </svg>
           Add Piece
         </button>
+
+        {/* Session Playlist */}
+        <SessionPlaylist
+          pieces={safePieces}
+          practiceSessions={safeSessions}
+          onPieceClick={onPieceClick}
+          playlistData={playlistData}
+          onPlaylistUpdate={onPlaylistUpdate}
+        />
 
         {/* Daily Goal Section */}
         <div className="goal-section">

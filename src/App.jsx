@@ -17,6 +17,8 @@ import BottomNav from "./components/BottomNav/BottomNav";
 import PracticeView from "./components/PracticeView/PracticeView";
 import StatsView from "./components/StatsView/StatsView";
 import MoreView from "./components/MoreView/MoreView";
+import HomeView from "./components/HomeView/HomeView";
+import { useLocalStorage as useLocalStoragePlaylist } from "./hooks/useLocalStorage";
 
 function getSessionWeight(daysAgo) {
   // Exponentieller Abfall: Jeder Tag macht einen Unterschied
@@ -121,13 +123,17 @@ function App() {
     favoritePiecesCount: 3,
     colorScheme: "ocean",
   });
+  const [playlistData, setPlaylistData] = useLocalStoragePlaylist(
+    "sessionPlaylist",
+    null,
+  );
 
   // Apply color scheme
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", settings.colorScheme);
   }, [settings.colorScheme]);
 
-  const [activeTab, setActiveTab] = useState("library");
+  const [activeTab, setActiveTab] = useState("home");
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     difficulty: [],
@@ -395,6 +401,15 @@ function App() {
   return (
     <div className="App">
       <div className="scroll-container">
+        {/* Home View */}
+        <div style={{ display: activeTab === "home" ? "block" : "none" }}>
+          <HomeView
+            pieces={pieces}
+            practiceSessions={practiceSessions}
+            onNavigate={setActiveTab}
+          />
+        </div>
+
         {/* Library View */}
         <div style={{ display: activeTab === "library" ? "block" : "none" }}>
           <Header />
@@ -435,6 +450,8 @@ function App() {
             practiceStreak={stats.practiceStreak}
             onAddPiece={() => setIsAddModalOpen(true)}
             favoritePiecesCount={settings.favoritePiecesCount}
+            playlistData={playlistData}
+            onPlaylistUpdate={setPlaylistData}
           />
         </div>
 

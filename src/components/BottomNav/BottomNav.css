@@ -8,9 +8,9 @@
   align-items: center;
   background: var(--background);
   border-top: 1px solid var(--border);
-  padding: 4px 0 calc(4px + env(safe-area-inset-bottom));
+  padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
   z-index: 1000;
-  height: 48px;
+  height: 60px;
 }
 
 .nav-tab {
@@ -70,8 +70,8 @@
 /* Tablet & Desktop */
 @media (min-width: 768px) {
   .bottom-nav {
-    padding: 6px 0;
-    height: 52px;
+    padding: 8px 0;
+    height: 64px;
   }
 
   .nav-tab {
