@@ -1,6 +1,6 @@
 .home-view {
   padding: 0 1rem;
-  padding-bottom: 90px;
+  padding-bottom: 105px;
   max-width: 480px;
   margin: 0 auto;
 }
@@ -228,7 +228,7 @@
 @media (min-width: 768px) {
   .home-view {
     max-width: 560px;
-    padding-bottom: 90px;
+    padding-bottom: 105px;
   }
 
   .home-hero {
