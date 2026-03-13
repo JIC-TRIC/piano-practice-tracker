@@ -8,21 +8,21 @@
   align-items: center;
   background: var(--background);
   border-top: 1px solid var(--border);
-  padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
+  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
   z-index: 1000;
-  height: 60px;
+  height: 70px;
 }
 
 .nav-tab {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   background: none;
   border: none;
   color: var(--text-tertiary);
   cursor: pointer;
-  padding: 4px 12px;
+  padding: 6px 12px;
   transition: color 0.1s ease;
   flex: 1;
   max-width: 90px;
