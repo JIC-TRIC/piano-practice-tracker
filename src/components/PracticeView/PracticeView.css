@@ -67,6 +67,31 @@
   opacity: 0.7;
 }
 
+/* Setlists Button */
+.setlists-open-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.setlists-open-btn:active {
+  opacity: 0.7;
+}
+
 /* Goal Section */
 .goal-section {
   margin-bottom: 16px;

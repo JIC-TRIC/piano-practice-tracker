@@ -18,6 +18,7 @@ import PracticeView from "./components/PracticeView/PracticeView";
 import StatsView from "./components/StatsView/StatsView";
 import MoreView from "./components/MoreView/MoreView";
 import HomeView from "./components/HomeView/HomeView";
+import SetlistsView from "./components/Setlists/SetlistsView";
 import { useLocalStorage as useLocalStoragePlaylist } from "./hooks/useLocalStorage";
 
 function getSessionWeight(daysAgo) {
@@ -127,6 +128,7 @@ function App() {
     "sessionPlaylist",
     null,
   );
+  const [setlists, setSetlists] = useLocalStorage("pianoSetlists", []);
 
   // Apply color scheme
   useEffect(() => {
@@ -145,6 +147,7 @@ function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isSetlistsOpen, setIsSetlistsOpen] = useState(false);
   const [editingPiece, setEditingPiece] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [practicingPiece, setPracticingPiece] = useState(null);
@@ -452,6 +455,7 @@ function App() {
             favoritePiecesCount={settings.favoritePiecesCount}
             playlistData={playlistData}
             onPlaylistUpdate={setPlaylistData}
+            onOpenSetlists={() => setIsSetlistsOpen(true)}
           />
         </div>
 
@@ -525,6 +529,19 @@ function App() {
         practiceSessions={practiceSessions}
       />
 
+      <SetlistsView
+        isOpen={isSetlistsOpen}
+        onClose={() => setIsSetlistsOpen(false)}
+        pieces={pieces}
+        practiceSessions={practiceSessions}
+        setlists={setlists}
+        onSetlistsUpdate={setSetlists}
+        onPieceClick={(piece) => {
+          setIsSetlistsOpen(false);
+          handlePieceClick(piece);
+        }}
+      />
+
       <Toast
         message={toast.message}
         isVisible={toast.isVisible}
@@ -561,7 +578,8 @@ function App() {
           isYouTubeModalOpen ||
           isSettingsOpen ||
           isHistoryOpen ||
-          isCalendarOpen
+          isCalendarOpen ||
+          isSetlistsOpen
         }
       />
     </div>

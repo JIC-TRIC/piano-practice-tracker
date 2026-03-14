@@ -4,7 +4,11 @@ import { formatTime } from "../../utils/youtube";
 import Header from "../Header/Header";
 import SessionPlaylist from "../SessionPlaylist/SessionPlaylist";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBullseye, faStar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBullseye,
+  faStar,
+  faListOl,
+} from "@fortawesome/free-solid-svg-icons";
 
 function PracticeView({
   pieces,
@@ -15,6 +19,7 @@ function PracticeView({
   favoritePiecesCount = 3,
   playlistData,
   onPlaylistUpdate,
+  onOpenSetlists,
 }) {
   // Sichere Defaults
   const safePieces = pieces || [];
@@ -155,6 +160,11 @@ function PracticeView({
           playlistData={playlistData}
           onPlaylistUpdate={onPlaylistUpdate}
         />
+
+        {/* Setlists Button */}
+        <button className="setlists-open-btn" onClick={onOpenSetlists}>
+          <FontAwesomeIcon icon={faListOl} /> My Setlists
+        </button>
 
         {/* Daily Goal Section */}
         <div className="goal-section">

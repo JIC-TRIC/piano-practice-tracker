@@ -186,7 +186,8 @@ function SessionPlaylist({
   playlistData,
   onPlaylistUpdate,
 }) {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const todayStr = new Date().toDateString();
 
@@ -271,7 +272,10 @@ function SessionPlaylist({
             <span className="playlist-estimate">
               ~{formatTime(Math.round(estimatedTime))}
             </span>
-            <button className="playlist-refresh-btn" onClick={handleRegenerate}>
+            <button
+              className="playlist-refresh-btn"
+              onClick={() => setShowConfirm(true)}
+            >
               <FontAwesomeIcon icon={faShuffle} />
               <span>New Playlist</span>
             </button>
@@ -346,6 +350,40 @@ function SessionPlaylist({
                 </button>
               );
             })}
+          </div>
+        </div>
+      )}
+
+      {showConfirm && (
+        <div
+          className="playlist-confirm-overlay"
+          onClick={() => setShowConfirm(false)}
+        >
+          <div
+            className="playlist-confirm-dialog"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="playlist-confirm-title">New Playlist?</p>
+            <p className="playlist-confirm-text">
+              Your current playlist will be replaced.
+            </p>
+            <div className="playlist-confirm-actions">
+              <button
+                className="playlist-confirm-cancel"
+                onClick={() => setShowConfirm(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="playlist-confirm-ok"
+                onClick={() => {
+                  setShowConfirm(false);
+                  handleRegenerate();
+                }}
+              >
+                <FontAwesomeIcon icon={faShuffle} /> Shuffle
+              </button>
+            </div>
           </div>
         </div>
       )}
