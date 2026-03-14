@@ -98,7 +98,7 @@
 
 .day-cell.intensity-0 {
   background: var(--surface);
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
 }
 
 .day-cell.intensity-0 .day-number {
@@ -106,31 +106,31 @@
 }
 
 .day-cell.intensity-1 {
-  background: rgba(6, 182, 212, 0.1);
-  border: 1px solid rgba(6, 182, 212, 0.15);
+  background: var(--primary-10);
+  border: 1px solid var(--primary-15);
 }
 
 .day-cell.intensity-1 .day-number {
-  color: #22d3ee;
+  color: var(--secondary);
 }
 
 .day-cell.intensity-2 {
-  background: rgba(6, 182, 212, 0.25);
-  border: 1px solid rgba(6, 182, 212, 0.35);
+  background: var(--primary-25);
+  border: 1px solid var(--primary-35);
 }
 
 .day-cell.intensity-2 .day-number {
-  color: #22d3ee;
+  color: var(--secondary);
   opacity: 1;
 }
 
 .day-cell.intensity-3 {
-  background: rgba(6, 182, 212, 0.45);
-  border: 1px solid rgba(6, 182, 212, 0.55);
+  background: var(--primary-45);
+  border: 1px solid var(--primary-55);
 }
 
 .day-cell.intensity-3 .day-number {
-  color: #67e8f9;
+  color: var(--text-on-primary);
   opacity: 1;
 }
 

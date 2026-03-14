@@ -156,57 +156,76 @@ function MoreView({ settings, onSaveSettings, onViewHistory, onViewCalendar }) {
         {/* Color Scheme */}
         <div className="more-section">
           <h2 className="section-title">Color Scheme</h2>
-          <div className="color-schemes">
+          <div className="color-schemes-grid">
             {[
               {
-                id: "ocean",
-                name: "Ocean",
-                colors: ["#0a0e1a", "#06b6d4", "#22d3ee"],
+                label: "Dark",
+                schemes: [
+                  {
+                    id: "midnight",
+                    name: "Midnight",
+                    colors: ["#040a14", "#60a5fa", "#93c5fd"],
+                  },
+                  {
+                    id: "monochrome",
+                    name: "Mono",
+                    colors: ["#000000", "#a3a3a3", "#d4d4d4"],
+                  },
+                ],
               },
               {
-                id: "lavender",
-                name: "Lavender",
-                colors: ["#120a1a", "#a855f7", "#c084fc"],
+                label: "Medium",
+                schemes: [
+                  {
+                    id: "sandstorm",
+                    name: "Sandstorm",
+                    colors: ["#0e0c06", "#d97706", "#f59e0b"],
+                  },
+                  {
+                    id: "slate",
+                    name: "Slate",
+                    colors: ["#192435", "#22d3ee", "#67e8f9"],
+                  },
+                ],
               },
               {
-                id: "ember",
-                name: "Ember",
-                colors: ["#1a0a0a", "#ef4444", "#f97316"],
+                label: "Light",
+                schemes: [
+                  {
+                    id: "ivory",
+                    name: "Ivory",
+                    colors: ["#faf7f2", "#92400e", "#b45309"],
+                  },
+                  {
+                    id: "breeze",
+                    name: "Breeze",
+                    colors: ["#fafaf9", "#0d9488", "#14b8a6"],
+                  },
+                ],
               },
-              {
-                id: "mint",
-                name: "Mint",
-                colors: ["#0a1a14", "#14b8a6", "#5eead4"],
-              },
-              {
-                id: "dusk",
-                name: "Dusk",
-                colors: ["#1a0a14", "#e879f9", "#f0abfc"],
-              },
-              {
-                id: "mono",
-                name: "Mono",
-                colors: ["#0a0a0a", "#ffffff", "#888888"],
-              },
-            ].map((scheme) => (
-              <button
-                key={scheme.id}
-                className={`color-scheme-btn ${
-                  localSettings.colorScheme === scheme.id ? "active" : ""
-                }`}
-                onClick={() => handleCountChange("colorScheme", scheme.id)}
-              >
-                <div className="scheme-colors">
-                  {scheme.colors.map((color, idx) => (
-                    <div
-                      key={idx}
-                      className="scheme-color"
-                      style={{ background: color }}
-                    />
-                  ))}
-                </div>
-                <span className="scheme-name">{scheme.name}</span>
-              </button>
+            ].map((group) => (
+              <div key={group.label} className="color-scheme-row">
+                {group.schemes.map((scheme) => (
+                  <button
+                    key={scheme.id}
+                    className={`color-scheme-btn ${
+                      localSettings.colorScheme === scheme.id ? "active" : ""
+                    }`}
+                    onClick={() => handleCountChange("colorScheme", scheme.id)}
+                  >
+                    <div className="scheme-colors">
+                      {scheme.colors.map((color, idx) => (
+                        <div
+                          key={idx}
+                          className="scheme-color"
+                          style={{ background: color }}
+                        />
+                      ))}
+                    </div>
+                    <span className="scheme-name">{scheme.name}</span>
+                  </button>
+                ))}
+              </div>
             ))}
           </div>
         </div>

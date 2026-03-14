@@ -176,7 +176,13 @@
 }
 
 /* Color Schemes */
-.color-schemes {
+.color-schemes-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.color-scheme-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 6px;
@@ -213,7 +219,7 @@
   width: 18px;
   height: 18px;
   border-radius: 1px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
 }
 
 .scheme-name {
@@ -224,12 +230,6 @@
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-}
-
-@media (min-width: 640px) {
-  .color-schemes {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 /* Buttons */
@@ -270,8 +270,8 @@
 }
 
 .import-btn {
-  border-color: #8b5cf6;
-  color: #8b5cf6;
+  border-color: var(--accent-import);
+  color: var(--accent-import);
 }
 
 /* About Card */

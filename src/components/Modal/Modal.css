@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.92);
+  background: var(--overlay);
   z-index: 1000;
 }
 
@@ -256,8 +256,8 @@
   width: 100%;
   padding: 8px 12px;
   background: transparent;
-  color: #fb7185;
-  border: 1px solid #fb7185;
+  color: var(--accent-youtube);
+  border: 1px solid var(--accent-youtube);
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-size: 0.78rem;
@@ -405,7 +405,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.92);
+  background: var(--overlay);
   z-index: 2000;
   display: flex;
   align-items: center;

@@ -50,9 +50,9 @@
   width: 100%;
   padding: 10px 12px;
   background: transparent;
-  border: 1px solid #fb7185;
+  border: 1px solid var(--accent-youtube);
   border-radius: var(--radius-sm);
-  color: #fb7185;
+  color: var(--accent-youtube);
   font-family: var(--font-sans);
   font-size: 0.78rem;
   font-weight: 500;
@@ -182,7 +182,7 @@
 }
 
 .streak-value {
-  color: #fb923c;
+  color: var(--accent-streak);
 }
 
 /* Practice Milestones Section */

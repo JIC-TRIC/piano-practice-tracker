@@ -146,7 +146,7 @@
   position: absolute;
   top: 3px;
   left: 3px;
-  color: white;
+  color: var(--badge-text);
   padding: 1px 5px;
   border-radius: var(--radius-sm);
   font-family: var(--font-mono);
@@ -270,7 +270,7 @@
 .playlist-confirm-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: var(--overlay);
   z-index: 1100;
   display: flex;
   align-items: center;

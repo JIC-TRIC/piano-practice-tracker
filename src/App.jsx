@@ -122,7 +122,7 @@ function App() {
   const [settings, setSettings] = useLocalStorage("pianoSettings", {
     showExternalYouTubeButton: true,
     favoritePiecesCount: 3,
-    colorScheme: "ocean",
+    colorScheme: "midnight",
   });
   const [playlistData, setPlaylistData] = useLocalStoragePlaylist(
     "sessionPlaylist",
@@ -131,8 +131,22 @@ function App() {
   const [setlists, setSetlists] = useLocalStorage("pianoSetlists", []);
 
   // Apply color scheme
+  const validThemes = [
+    "midnight",
+    "monochrome",
+    "sandstorm",
+    "slate",
+    "ivory",
+    "breeze",
+  ];
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", settings.colorScheme);
+    const theme = validThemes.includes(settings.colorScheme)
+      ? settings.colorScheme
+      : "midnight";
+    if (theme !== settings.colorScheme) {
+      setSettings({ ...settings, colorScheme: theme });
+    }
+    document.documentElement.setAttribute("data-theme", theme);
   }, [settings.colorScheme]);
 
   const [activeTab, setActiveTab] = useState("home");

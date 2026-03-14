@@ -430,7 +430,7 @@
   font-family: var(--font-mono);
   font-size: 0.48rem;
   font-weight: 500;
-  color: #000;
+  color: var(--badge-text);
   padding: 1px 3px;
   border-radius: 2px;
   letter-spacing: 0.03em;
