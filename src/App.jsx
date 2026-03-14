@@ -11,8 +11,6 @@ import AddEditModal from "./components/Modal/AddEditModal";
 import YouTubeModal from "./components/Modal/YoutubeModal";
 import Toast from "./components/Toast/Toast";
 import Settings from "./components/Settings/Settings";
-import PracticeHistory from "./components/PracticeHistory/PracticeHistory";
-import PracticeCalendar from "./components/PracticeCalendar/PracticeCalendar";
 import BottomNav from "./components/BottomNav/BottomNav";
 import PracticeView from "./components/PracticeView/PracticeView";
 import StatsView from "./components/StatsView/StatsView";
@@ -186,8 +184,6 @@ function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isYouTubeModalOpen, setIsYouTubeModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isSetlistsOpen, setIsSetlistsOpen] = useState(false);
   const [editingPiece, setEditingPiece] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState("");
@@ -511,12 +507,7 @@ function App() {
 
         {/* More View */}
         <div style={{ display: activeTab === "more" ? "block" : "none" }}>
-          <MoreView
-            settings={settings}
-            onSaveSettings={handleSaveSettings}
-            onViewHistory={() => setIsHistoryOpen(true)}
-            onViewCalendar={() => setIsCalendarOpen(true)}
-          />
+          <MoreView settings={settings} onSaveSettings={handleSaveSettings} />
         </div>
       </div>
 
@@ -546,28 +537,6 @@ function App() {
         onClose={() => setIsSettingsOpen(false)}
         settings={settings}
         onSaveSettings={handleSaveSettings}
-        onViewHistory={() => {
-          setIsSettingsOpen(false);
-          setIsHistoryOpen(true);
-        }}
-        onViewCalendar={() => {
-          setIsSettingsOpen(false);
-          setIsCalendarOpen(true);
-        }}
-      />
-
-      <PracticeHistory
-        isOpen={isHistoryOpen}
-        onClose={() => setIsHistoryOpen(false)}
-        pieces={pieces}
-        practiceSessions={practiceSessions}
-        onDeleteSession={handleDeleteSession}
-      />
-
-      <PracticeCalendar
-        isOpen={isCalendarOpen}
-        onClose={() => setIsCalendarOpen(false)}
-        practiceSessions={practiceSessions}
       />
 
       <SetlistsView
@@ -618,8 +587,6 @@ function App() {
           isAddModalOpen ||
           isYouTubeModalOpen ||
           isSettingsOpen ||
-          isHistoryOpen ||
-          isCalendarOpen ||
           isSetlistsOpen
         }
       />

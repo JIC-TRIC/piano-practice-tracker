@@ -388,18 +388,18 @@ function AddEditModal({ isOpen, onClose, onSave, editingPiece }) {
                   Hands Separately
                 </div>
                 <ProgressToggle
-                  label="Right Hand"
-                  icon={faHandPointRight}
-                  value={progress.rightHand}
-                  onChange={(v) => updateProgress("rightHand", v)}
-                  disabled={handsLocked}
-                  lockedMessage={handsLocked ? "Hands Together started" : null}
-                />
-                <ProgressToggle
                   label="Left Hand"
                   icon={faHandPointLeft}
                   value={progress.leftHand}
                   onChange={(v) => updateProgress("leftHand", v)}
+                  disabled={handsLocked}
+                  lockedMessage={handsLocked ? "Hands Together started" : null}
+                />
+                <ProgressToggle
+                  label="Right Hand"
+                  icon={faHandPointRight}
+                  value={progress.rightHand}
+                  onChange={(v) => updateProgress("rightHand", v)}
                   disabled={handsLocked}
                   lockedMessage={handsLocked ? "Hands Together started" : null}
                 />

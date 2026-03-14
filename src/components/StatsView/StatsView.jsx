@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import "./StatsView.css";
 import { formatTime } from "../../utils/youtube";
 import { getStatusFromProgress } from "../../App";
@@ -14,9 +14,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function StatsView({ pieces, practiceSessions, onDeleteSession }) {
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-
   // Statistiken berechnen
   const stats = useMemo(() => {
     const safePieces = pieces || [];
@@ -151,93 +148,11 @@ function StatsView({ pieces, practiceSessions, onDeleteSession }) {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="stats-actions">
-          <button
-            className="stats-action-btn calendar-btn"
-            onClick={() => setIsCalendarOpen(true)}
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="3"
-                y="4"
-                width="18"
-                height="18"
-                rx="2"
-                stroke="currentColor"
-                strokeWidth="2"
-                fill="none"
-              />
-              <path
-                d="M16 2v4M8 2v4M3 10h18"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-            Practice Calendar
-          </button>
+        {/* Heatmap */}
+        <PracticeCalendar practiceSessions={practiceSessions} />
 
-          <button
-            className="stats-action-btn history-btn"
-            onClick={() => setIsHistoryOpen(true)}
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3 3v18h18"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M18 17V9"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M13 17v-4"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M8 17v-8"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            Session History
-          </button>
-        </div>
-
-        {/* Modals */}
-        <PracticeCalendar
-          isOpen={isCalendarOpen}
-          onClose={() => setIsCalendarOpen(false)}
-          practiceSessions={practiceSessions}
-        />
-
+        {/* Session History */}
         <PracticeHistory
-          isOpen={isHistoryOpen}
-          onClose={() => setIsHistoryOpen(false)}
           pieces={pieces}
           practiceSessions={practiceSessions}
           onDeleteSession={onDeleteSession}

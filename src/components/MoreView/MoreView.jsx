@@ -3,7 +3,7 @@ import "./MoreView.css";
 import packageJson from "../../../package.json";
 import Header from "../Header/Header";
 
-function MoreView({ settings, onSaveSettings, onViewHistory, onViewCalendar }) {
+function MoreView({ settings, onSaveSettings }) {
   const [localSettings, setLocalSettings] = useState(settings);
 
   const handleToggle = (key) => {

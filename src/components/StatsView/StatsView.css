@@ -107,46 +107,6 @@
   font-weight: 500;
 }
 
-/* Action Buttons */
-.stats-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.stats-action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px 12px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-family: var(--font-sans);
-  font-size: 0.78rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: opacity 0.1s ease;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.stats-action-btn:active {
-  opacity: 0.7;
-}
-
-.calendar-btn {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-.history-btn {
-  border-color: var(--secondary);
-  color: var(--secondary);
-}
-
 /* Tablet/Desktop */
 @media (min-width: 640px) {
   .stats-grid {
@@ -171,14 +131,6 @@
     flex-direction: column;
     text-align: center;
     padding: 14px;
-  }
-
-  .stats-actions {
-    flex-direction: row;
-  }
-
-  .stats-action-btn {
-    flex: 1;
   }
 }
 

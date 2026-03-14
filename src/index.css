@@ -52,6 +52,12 @@ body {
   --primary-35: rgba(96, 165, 250, 0.35);
   --primary-45: rgba(96, 165, 250, 0.45);
   --primary-55: rgba(96, 165, 250, 0.55);
+  --heatmap-0: #0d1927;
+  --heatmap-1: #0e2a4a;
+  --heatmap-2: #1a4070;
+  --heatmap-3: #2563a0;
+  --heatmap-4: #3b82d0;
+  --heatmap-5: #60a5fa;
   --radius-sm: 2px;
   --radius-md: 3px;
   --radius-lg: 4px;
@@ -85,6 +91,12 @@ body {
   --primary-35: rgba(96, 165, 250, 0.35);
   --primary-45: rgba(96, 165, 250, 0.45);
   --primary-55: rgba(96, 165, 250, 0.55);
+  --heatmap-0: #0d1927;
+  --heatmap-1: #0e2a4a;
+  --heatmap-2: #1a4070;
+  --heatmap-3: #2563a0;
+  --heatmap-4: #3b82d0;
+  --heatmap-5: #60a5fa;
 }
 
 [data-theme="monochrome"] {
@@ -113,6 +125,12 @@ body {
   --primary-35: rgba(163, 163, 163, 0.35);
   --primary-45: rgba(163, 163, 163, 0.45);
   --primary-55: rgba(163, 163, 163, 0.55);
+  --heatmap-0: #0a0a0a;
+  --heatmap-1: #262626;
+  --heatmap-2: #404040;
+  --heatmap-3: #666666;
+  --heatmap-4: #8a8a8a;
+  --heatmap-5: #b0b0b0;
 }
 
 /* Color Schemes - Medium */
@@ -139,6 +157,12 @@ body {
   --primary-35: rgba(217, 119, 6, 0.35);
   --primary-45: rgba(217, 119, 6, 0.45);
   --primary-55: rgba(217, 119, 6, 0.55);
+  --heatmap-0: #1a1508;
+  --heatmap-1: #3d2a06;
+  --heatmap-2: #6b4508;
+  --heatmap-3: #9a6008;
+  --heatmap-4: #c47c06;
+  --heatmap-5: #f59e0b;
 }
 
 [data-theme="slate"] {
@@ -167,6 +191,12 @@ body {
   --primary-35: rgba(34, 211, 238, 0.3);
   --primary-45: rgba(34, 211, 238, 0.4);
   --primary-55: rgba(34, 211, 238, 0.5);
+  --heatmap-0: #1e2d40;
+  --heatmap-1: #164050;
+  --heatmap-2: #0e5a6a;
+  --heatmap-3: #0a8090;
+  --heatmap-4: #14a8be;
+  --heatmap-5: #22d3ee;
 }
 
 /* Color Schemes - Light */
@@ -196,6 +226,12 @@ body {
   --primary-35: rgba(146, 64, 14, 0.25);
   --primary-45: rgba(146, 64, 14, 0.35);
   --primary-55: rgba(146, 64, 14, 0.45);
+  --heatmap-0: #f0ebe2;
+  --heatmap-1: #e8d5b8;
+  --heatmap-2: #d4a870;
+  --heatmap-3: #b87830;
+  --heatmap-4: #a05a14;
+  --heatmap-5: #7c3a0a;
 }
 
 [data-theme="breeze"] {
@@ -224,6 +260,12 @@ body {
   --primary-35: rgba(13, 148, 136, 0.22);
   --primary-45: rgba(13, 148, 136, 0.32);
   --primary-55: rgba(13, 148, 136, 0.42);
+  --heatmap-0: #eeeee8;
+  --heatmap-1: #c8e8e4;
+  --heatmap-2: #85ccc5;
+  --heatmap-3: #40a89e;
+  --heatmap-4: #1a8a7e;
+  --heatmap-5: #0d6b62;
 }
 
 body {

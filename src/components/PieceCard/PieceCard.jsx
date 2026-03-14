@@ -42,37 +42,45 @@ const getDifficultyColor = (difficulty) => {
 
 function ProgressDots({ progress }) {
   const p = { ...DEFAULT_PROGRESS, ...progress };
-  // RH(2) LH(2) | Together(2) | Dynamics(1) | Memorized(2) = 9 segments max
-  // We show: RH dots, LH dots, separator, Together dots, Dynamics dot, optional Memorize dots
   return (
     <div className="progress-dots">
       <div className="dot-group">
-        <span className="dot-label">RH</span>
-        <span className={`dot ${p.rightHand >= 1 ? "filled" : ""}`}></span>
-        <span className={`dot ${p.rightHand >= 2 ? "filled" : ""}`}></span>
+        <span className={`dot-label ${p.leftHand > 0 ? "hands-label" : ""}`}>
+          LH
+        </span>
+        <span className={`dot ${p.leftHand >= 1 ? "filled hands" : ""}`}></span>
+        <span className={`dot ${p.leftHand >= 2 ? "filled hands" : ""}`}></span>
       </div>
       <div className="dot-group">
-        <span className="dot-label">LH</span>
-        <span className={`dot ${p.leftHand >= 1 ? "filled" : ""}`}></span>
-        <span className={`dot ${p.leftHand >= 2 ? "filled" : ""}`}></span>
+        <span className={`dot-label ${p.rightHand > 0 ? "hands-label" : ""}`}>
+          RH
+        </span>
+        <span
+          className={`dot ${p.rightHand >= 1 ? "filled hands" : ""}`}
+        ></span>
+        <span
+          className={`dot ${p.rightHand >= 2 ? "filled hands" : ""}`}
+        ></span>
       </div>
       <span className="dot-separator">│</span>
-      <div className="dot-group">
+      <div className="dot-group together-group">
         <span
           className={`dot ${p.together >= 1 ? "filled together" : ""}`}
         ></span>
         <span
           className={`dot ${p.together >= 2 ? "filled together" : ""}`}
         ></span>
+        <span className={`dot ${p.dynamics ? "filled dynamics" : ""}`}></span>
       </div>
-      <span className={`dot ${p.dynamics ? "filled dynamics" : ""}`}></span>
       <span className="dot-separator">│</span>
-      <span
-        className={`dot ${p.memorized >= 1 ? "filled memorize" : ""}`}
-      ></span>
-      <span
-        className={`dot ${p.memorized >= 2 ? "filled memorize" : ""}`}
-      ></span>
+      <div className="dot-group memorize-group">
+        <span
+          className={`dot ${p.memorized >= 1 ? "filled memorize" : ""}`}
+        ></span>
+        <span
+          className={`dot ${p.memorized >= 2 ? "filled memorize" : ""}`}
+        ></span>
+      </div>
     </div>
   );
 }
@@ -128,8 +136,11 @@ function PieceCard({ piece, sessions, onEdit, onYouTubeClick }) {
               {getStatusLabel(status)}
             </span>
           </div>
-          <ProgressDots progress={progress} />
         </div>
+      </div>
+
+      <div className="progress-dots-bar">
+        <ProgressDots progress={progress} />
       </div>
     </div>
   );
