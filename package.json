@@ -1,7 +1,7 @@
 {
   "name": "piano-practice-tracker",
   "private": true,
-  "version": "1.4.5",
+  "version": "1.4.6",
   "homepage": "https://jic-tric.github.io/piano-practice-tracker/",
   "type": "module",
   "scripts": {

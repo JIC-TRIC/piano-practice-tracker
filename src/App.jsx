@@ -37,13 +37,40 @@ const DEFAULT_PROGRESS = {
   memorized: 0,
 };
 
+// Ensure progress consistency: if a later stage has progress,
+// all previous stages must be completed (fixes migration artifacts)
+function normalizeProgress(p) {
+  const out = { ...p };
+  // If memorized started → dynamics must be done
+  if (out.memorized >= 1) out.dynamics = true;
+  // If dynamics done → together must be at Tempo
+  if (out.dynamics) out.together = 2;
+  // If together started → both hands must be at Tempo
+  if (out.together >= 1) {
+    out.rightHand = 2;
+    out.leftHand = 2;
+  }
+  return out;
+}
+
 // Migrate old milestones[] to new progress object
 function migrateProgress(piece) {
-  if (piece.progress) return piece;
+  if (piece.progress) {
+    const normalized = normalizeProgress(piece.progress);
+    if (
+      normalized.rightHand !== piece.progress.rightHand ||
+      normalized.leftHand !== piece.progress.leftHand ||
+      normalized.together !== piece.progress.together ||
+      normalized.dynamics !== piece.progress.dynamics
+    ) {
+      return { ...piece, progress: normalized };
+    }
+    return piece;
+  }
   const ms = piece.milestones || [];
   return {
     ...piece,
-    progress: {
+    progress: normalizeProgress({
       rightHand: ms.includes("right_hand_full")
         ? 2
         : ms.includes("right_hand")
@@ -65,7 +92,7 @@ function migrateProgress(piece) {
         : ms.includes("performance_ready")
           ? 1
           : 0,
-    },
+    }),
   };
 }
 
